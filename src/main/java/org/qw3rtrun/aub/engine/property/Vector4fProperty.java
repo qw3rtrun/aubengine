@@ -13,7 +13,7 @@ import java.lang.ref.WeakReference;
 /**
  * Created by strunov on 9/8/2015.
  */
-public class Vector3fProperty extends ObservableValueBase<Vector4f> implements Property<Vector4f> {
+public class Vector4fProperty extends ObservableValueBase<Vector4f> implements Property<Vector4f> {
 
     private Vector4f value = Vector4f.vZERO;
     private ObservableValue<? extends Vector4f> observable;
@@ -21,10 +21,10 @@ public class Vector3fProperty extends ObservableValueBase<Vector4f> implements P
 
     private boolean valid = true;
 
-    public Vector3fProperty() {
+    public Vector4fProperty() {
     }
 
-    public Vector3fProperty(Vector4f value) {
+    public Vector4fProperty(Vector4f value) {
         this.value = value;
     }
 
@@ -104,18 +104,42 @@ public class Vector3fProperty extends ObservableValueBase<Vector4f> implements P
         }
     }
 
+    @Override
+    public String toString() {
+        final Object bean = getBean();
+        final String name = getName();
+        final StringBuilder result = new StringBuilder("Vector4fProperty [");
+        if (bean != null) {
+            result.append("bean: ").append(bean).append(", ");
+        }
+        if ((name != null) && (!name.equals(""))) {
+            result.append("name: ").append(name).append(", ");
+        }
+        if (isBound()) {
+            result.append("bound, ");
+            if (valid) {
+                result.append("value: ").append(getValue());
+            } else {
+                result.append("invalid");
+            }
+        } else {
+            result.append("value: ").append(getValue());
+        }
+        result.append("]");
+        return result.toString();
+    }
 
     private static class Listener implements InvalidationListener {
 
-        private final WeakReference<Vector3fProperty> wref;
+        private final WeakReference<Vector4fProperty> wref;
 
-        public Listener(Vector3fProperty ref) {
+        public Listener(Vector4fProperty ref) {
             this.wref = new WeakReference<>(ref);
         }
 
         @Override
         public void invalidated(Observable observable) {
-            Vector3fProperty ref = wref.get();
+            Vector4fProperty ref = wref.get();
             if (ref == null) {
                 observable.removeListener(this);
             } else {

@@ -16,7 +16,7 @@ import java.util.function.Supplier;
 /**
  * Created by strunov on 9/8/2015.
  */
-public class Vector3fBinding extends ObservableValueBase<Vector4f> implements Binding<Vector4f> {
+public class Vector4fBinding extends ObservableValueBase<Vector4f> implements Binding<Vector4f> {
 
     private Supplier<Vector4f> func;
     private Vector4f value;
@@ -102,7 +102,7 @@ public class Vector3fBinding extends ObservableValueBase<Vector4f> implements Bi
 
     @Override
     public String toString() {
-        return valid ? "Vector3fBinding [value: " + getValue() + "]"
-                : "Vector3fBinding [invalid]";
+        return valid ? "Vector4fBinding [value: " + getValue() + "]"
+                : "Vector4fBinding [invalid]";
     }
 }

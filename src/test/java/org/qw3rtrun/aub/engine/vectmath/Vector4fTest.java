@@ -14,11 +14,11 @@ public class Vector4fTest {
 
     private static final float EPSILON = .000001f;
 
-    private void assertNear(Vector4f exp, Vector4f act) {
+    public static void assertNear(Vector4f exp, Vector4f act) {
         if (exp.distanceBound(act) > EPSILON) throw new AssertionFailedError(exp + " <> " + act);
     }
 
-    private void assertNotNear(Vector4f exp, Vector4f act) {
+    public static void assertNotNear(Vector4f exp, Vector4f act) {
         if (exp.distanceBound(act) <= EPSILON) throw new AssertionFailedError(exp + " == " + act);
     }
 

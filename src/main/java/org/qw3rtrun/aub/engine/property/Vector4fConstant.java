@@ -10,15 +10,15 @@ import static org.qw3rtrun.aub.engine.vectmath.Vector4f.*;
 /**
  * Created by strunov on 9/8/2015.
  */
-public class Vector3fConstant implements ObservableValue<Vector4f> {
+public class Vector4fConstant implements ObservableValue<Vector4f> {
 
-    public static Vector3fConstant CONST_X = new Vector3fConstant(vX);
-    public static Vector3fConstant CONST_Y = new Vector3fConstant(vY);
-    public static Vector3fConstant CONST_Z = new Vector3fConstant(vZ);
+    public static Vector4fConstant CONST_X = new Vector4fConstant(vX);
+    public static Vector4fConstant CONST_Y = new Vector4fConstant(vY);
+    public static Vector4fConstant CONST_Z = new Vector4fConstant(vZ);
 
     private final Vector4f v;
 
-    public Vector3fConstant(Vector4f v) {
+    public Vector4fConstant(Vector4f v) {
         this.v = v;
     }
 
