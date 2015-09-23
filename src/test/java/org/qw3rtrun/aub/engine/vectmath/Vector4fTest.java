@@ -101,9 +101,6 @@ public class Vector4fTest {
         assertEquals(vX.inverse(), vect(-1, -0f, -0f));
         assertNear(vX.inverse(), vect(-1, 0, 0));
         assertNear(vect(-5, -4, -3).inverse(), vect(5, 4, 3));
-        assertNear(vect(-5, -4, -3).inverse(), vect(5, 4, 3));
-        assertNear(vect(-5, -4, -3).inverse(), vect(5, -4, 3));
-        assertNear(vect(-5, -4, -3).inverse(), vect(5, -4, -3));
     }
 
 

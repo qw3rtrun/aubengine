@@ -3,7 +3,6 @@ package org.qw3rtrun.aub.engine.scene;
 import javafx.beans.property.*;
 import org.qw3rtrun.aub.engine.mixin.Node;
 import org.qw3rtrun.aub.engine.mixin.Shaped;
-import org.qw3rtrun.aub.engine.mixin.Tangible;
 import org.qw3rtrun.aub.engine.property.Matrix4fBinding;
 import org.qw3rtrun.aub.engine.property.Vector4fProperty;
 
@@ -16,7 +15,7 @@ import static org.qw3rtrun.aub.engine.vectmath.Vector4f.vZERO;
 /**
  * Created by strunov on 9/4/2015.
  */
-public class Object implements Node, Shaped, Tangible {
+public class Object implements Node, Shaped {
 
     private final Matrix4fBinding localToAbsolute = null;
     private final Matrix4fBinding absoluteToLocal = null;
