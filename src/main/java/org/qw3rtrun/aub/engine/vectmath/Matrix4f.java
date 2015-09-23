@@ -5,8 +5,49 @@ import java.io.Serializable;
 import static org.qw3rtrun.aub.engine.vectmath.Vector4f.*;
 
 /**
- * Created by qw3rt_000 on 09.09.2015.
+ *
+ * Enter the Matrix...
+ *
+ * M = M.xx M.xy M.xz M.xw
+ *     M.yx M.yy M.yz M.yw
+ *     M.zx M.zy M.zz M.zw
+ *     M.wx M.wy M.wz M.ww
+ *
+ * Matrix can be construct from rows ...
+ *
+ * rows (X, Y, Z, w) = X.x X.y X.z 0
+ *                     Y.x Y.y Y.z 0
+ *                     Z.x Z.y Z.z 0
+ *                     0   0   0   w
+ *
+ * ... or from cols ...
+ *
+ * cols(X, Y, Z, w) = X.x Y.x Z.x 0
+ *                    X.y Y.y Z.y 0
+ *                    X.z Y.z Z.z 0
+ *                    0   0   0   w
+ *
+ * The matrix can be multiply by the matrix ...
+ *
+ * M.multiply(V) = M.xx M.xy M.xz M.xw * V.x = M.xx*V.x + M.xy*V.y + M.xz*V.z + M.xw*V.w
+ *                 M.yx M.yy M.yz M.yw   V.y   M.yx*V.x + M.yy*V.y + M.yz*V.z + M.yw*V.w
+ *                 M.zx M.zy M.zz M.zw   V.z   M.zx*V.x + M.zy*V.y + M.zz*V.z + M.zw*V.w
+ *                 M.wx M.wy M.wz M.ww   V.w   M.wx*V.x + M.wy*V.y + M.wz*V.z + M.ww*V.w
+ *
+ *... also the matrix can be multiply by another matrix ...
+ *
+ * M.multiply(A) = M.xx M.xy M.xz M.xw * A.xx A.xy A.xz A.xw =
+ *                 M.yx M.yy M.yz M.yw   A.yx A.yy A.yz A.yw
+ *                 M.zx M.zy M.zz M.zw   A.zx A.zy A.zz A.zw
+ *                 M.wx M.wy M.wz M.ww   A.wx A.wy A.wz A.ww
+ *
+ * = M.xx*A.xx+M.xy*A.yx+M.xz*V.zx+M.xw*A.zw M.xx*A.xx+M.xy*A.yx+M.xz*V.zx+M.xw*A.zw
+ *
+ *
+ *
  */
+
+
 public class Matrix4f implements Serializable {
     public static final Matrix4f O0 = rows(vZERO, vZERO, vZERO, 0);
     public static final Matrix4f O1 = rows(vZERO, vZERO, vZERO, 1);
@@ -84,6 +125,16 @@ public class Matrix4f implements Serializable {
     public Vector4f multiply(Vector4f v) {
         return vect(xx * v.x + xy * v.y + xz * v.z + xw, yx * v.x + yy * v.y + yz * v.z + yw, zx * v.x + zy * v.y + zz * v.z + zw);
     }
+
+    public Matrix4f multiply(Matrix4f matrix4f){
+        return null;
+//        return new Vector4f(
+//                xx*V.x + M.yx*V.y + M.zx*V.z + M.wx*V.w,
+//                M.xy*V.x + M.yy*V.y + M.zy*V.z + M.wy*V.w,
+//                M.xz*V.x + M.yz*V.y + M.zz*V.z + M.wz*V.w,
+//                M.xw*V.x + M.yw*V.y + M.zw*V.z + M.ww*V.w);
+    }
+
 
     @Override
     public boolean equals(Object o) {

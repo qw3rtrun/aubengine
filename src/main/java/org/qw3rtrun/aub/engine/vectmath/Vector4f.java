@@ -154,7 +154,7 @@ public class Vector4f implements Serializable {
         return x * v.x + y * v.y + z * v.z;
     }
 
-    public Vector4f vectorProduct(Vector4f v) {
+    public Vector4f product(Vector4f v) {
         return vect(z * v.y - y * v.z, x * v.z - z * v.x, y * v.x - x * v.y);
     }
 
