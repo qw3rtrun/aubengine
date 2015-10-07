@@ -81,6 +81,4 @@ public class BindingsTest {
         z.setValue(100);
         assertNear(vect(101, 3, 103), v.getValue());
     }
-
-
 }

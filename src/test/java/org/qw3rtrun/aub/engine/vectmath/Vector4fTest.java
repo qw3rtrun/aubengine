@@ -79,7 +79,6 @@ public class Vector4fTest {
         assertEquals(Math.sqrt(1 + 9 + 9), point(-1, -3, -3, -1).length(), EPSILON);
     }
 
-
     @Test
     public void testEqual() {
         assertNotNear(vZERO, vX);
@@ -93,8 +92,6 @@ public class Vector4fTest {
 
         assertSame(pX, point(1, 0, 0, 1));
     }
-
-
 
     @Test
     public void testInverse() {

@@ -90,6 +90,22 @@ public class Vector4f implements Serializable {
         }
     }
 
+    public float getX() {
+        return x;
+    }
+
+    public float getY() {
+        return y;
+    }
+
+    public float getZ() {
+        return z;
+    }
+
+    public float getW() {
+        return w;
+    }
+
     public boolean isVector() {
         return w == 0;
     }

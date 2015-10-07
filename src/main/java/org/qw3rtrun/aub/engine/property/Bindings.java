@@ -1,10 +1,14 @@
 package org.qw3rtrun.aub.engine.property;
 
+import com.sun.javafx.binding.FloatConstant;
 import javafx.beans.Observable;
+import javafx.beans.binding.FloatBinding;
 import javafx.beans.value.ObservableFloatValue;
 import javafx.beans.value.ObservableValue;
 import org.qw3rtrun.aub.engine.vectmath.Matrix4f;
 import org.qw3rtrun.aub.engine.vectmath.Vector4f;
+
+import java.util.function.Function;
 
 import static com.sun.javafx.binding.FloatConstant.valueOf;
 import static java.util.Arrays.asList;
@@ -14,6 +18,7 @@ import static org.qw3rtrun.aub.engine.vectmath.Vector4f.*;
  * Created by strunov on 9/8/2015.
  */
 public class Bindings {
+
     private static Vector4fBinding multiply0(ObservableFloatValue k, ObservableValue<Vector4f> v, Observable... dependencies) {
         return new Vector4fBinding() {{
             bind(() -> {
@@ -28,6 +33,19 @@ public class Bindings {
                 return v1.getValue().add(v2.getValue());
             }, dependencies);
         }};
+    }
+
+    public static <P, T extends Number> FloatBinding func(Function<P, T> f, ObservableValue<P> p) {
+        return new FloatBinding() {
+            {
+                bind(p);
+            }
+
+            @Override
+            protected float computeValue() {
+                return f.apply(p.getValue()).floatValue();
+            }
+        };
     }
 
     public static Vector4fBinding multiply(ObservableFloatValue k, ObservableValue<Vector4f> v) {
@@ -82,6 +100,10 @@ public class Bindings {
         }};
     }
 
+    public static ObservableFloatValue x(ObservableValue<Vector4f> vector) {
+        return func(Vector4f::getX, vector);
+    }
+
     public static Vector4fBinding product(ObservableValue<Matrix4f> matrix, ObservableValue<Vector4f> vector) {
         return new Vector4fBinding() {{
             bind(() -> {
@@ -120,6 +142,14 @@ public class Bindings {
                 final Vector4f s = scale.getValue();
                 return Matrix4f.rows(vX.multiply(s.x), vY.multiply(s.y), vZ.multiply(s.z), 1);
             }, scale);
+        }};
+    }
+
+    public static Matrix4fBinding rotate(ObservableValue<Vector4f> rotation) {
+        return new Matrix4fBinding() {{
+            FloatBinding c = func(x -> {
+                return Math.cos(x.doubleValue());
+            }, FloatConstant.valueOf(1));
         }};
     }
 }
