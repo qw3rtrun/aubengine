@@ -12,6 +12,7 @@ import java.util.function.Function;
 
 import static com.sun.javafx.binding.FloatConstant.valueOf;
 import static java.util.Arrays.asList;
+import static org.qw3rtrun.aub.engine.property.Matrix4fBinding.binding;
 import static org.qw3rtrun.aub.engine.vectmath.Vector4f.*;
 
 /**
@@ -21,17 +22,13 @@ public class Bindings {
 
     private static Vector4fBinding multiply0(ObservableFloatValue k, ObservableValue<Vector4f> v, Observable... dependencies) {
         return new Vector4fBinding() {{
-            bind(() -> {
-                return v.getValue().multiply(k.get());
-            }, dependencies);
+            bind(() -> v.getValue().multiply(k.get()), dependencies);
         }};
     }
 
     private static Vector4fBinding add0(ObservableValue<Vector4f> v1, ObservableValue<Vector4f> v2, Observable... dependencies) {
         return new Vector4fBinding() {{
-            bind(() -> {
-                return v1.getValue().add(v2.getValue());
-            }, dependencies);
+            bind(() -> v1.getValue().add(v2.getValue()), dependencies);
         }};
     }
 
@@ -73,9 +70,7 @@ public class Bindings {
         switch (vectors.length) {
             case 0:
                 return new Vector4fBinding() {{
-                    bind(() -> {
-                        return vZERO;
-                    });
+                    bind(() -> vZERO);
                 }};
             case 1:
                 return new Vector4fBinding() {{
@@ -85,18 +80,14 @@ public class Bindings {
                 return add0(vectors[0], vectors[1], vectors);
             default:
                 return new Vector4fBinding() {{
-                    bind(() -> {
-                        return sum(asList(vectors).stream().map(ObservableValue::getValue).toArray(Vector4f[]::new));
-                    }, vectors);
+                    bind(() -> sum(asList(vectors).stream().map(ObservableValue::getValue).toArray(Vector4f[]::new)), vectors);
                 }};
         }
     }
 
     public static Vector4fBinding vector(ObservableFloatValue x, ObservableFloatValue y, ObservableFloatValue z) {
         return new Vector4fBinding() {{
-            bind(() -> {
-                return vect(x.get(), y.get(), z.get());
-            }, x, y, z);
+            bind(() -> vect(x.get(), y.get(), z.get()), x, y, z);
         }};
     }
 
@@ -104,36 +95,34 @@ public class Bindings {
         return func(Vector4f::getX, vector);
     }
 
+    public static ObservableFloatValue y(ObservableValue<Vector4f> vector) {
+        return func(Vector4f::getY, vector);
+    }
+
+    public static ObservableFloatValue z(ObservableValue<Vector4f> vector) {
+        return func(Vector4f::getZ, vector);
+    }
+
     public static Vector4fBinding product(ObservableValue<Matrix4f> matrix, ObservableValue<Vector4f> vector) {
         return new Vector4fBinding() {{
-            bind(() -> {
-                return matrix.getValue().multiply(vector.getValue());
-            }, matrix, vector);
+            bind(() -> matrix.getValue().multiply(vector.getValue()), matrix, vector);
         }};
     }
 
     public static Vector4fBinding product(ObservableValue<Matrix4f> matrix, Vector4f vector) {
         return new Vector4fBinding() {{
-            bind(() -> {
-                return matrix.getValue().multiply(vector);
-            }, matrix);
+            bind(() -> matrix.getValue().multiply(vector), matrix);
         }};
     }
 
     public static Vector4fBinding product(Matrix4f matrix, ObservableValue<Vector4f> vector) {
         return new Vector4fBinding() {{
-            bind(() -> {
-                return matrix.multiply(vector.getValue());
-            }, vector);
+            bind(() -> matrix.multiply(vector.getValue()), vector);
         }};
     }
 
     public static Matrix4fBinding translate(ObservableValue<Vector4f> translation) {
-        return new Matrix4fBinding() {{
-            bind(() -> {
-                return Matrix4f.cols(vX, vY, vZ, translation.getValue().point(1));
-            }, translation);
-        }};
+        return binding(() -> Matrix4f.cols(vX, vY, vZ, translation.getValue().point(1)), translation);
     }
 
     public static Matrix4fBinding scale(ObservableValue<Vector4f> scale) {
@@ -147,9 +136,7 @@ public class Bindings {
 
     public static Matrix4fBinding rotate(ObservableValue<Vector4f> rotation) {
         return new Matrix4fBinding() {{
-            FloatBinding c = func(x -> {
-                return Math.cos(x.doubleValue());
-            }, FloatConstant.valueOf(1));
+            FloatBinding c = func(x -> Math.cos(x.doubleValue()), FloatConstant.valueOf(1));
         }};
     }
 }

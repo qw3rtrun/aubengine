@@ -24,6 +24,10 @@ public class Matrix4fBinding extends ObservableValueBase<Matrix4f> implements Bi
     private BindingHelperObserver observer;
     private ExpressionHelper<Matrix4f> helper = null;
 
+    public static Matrix4fBinding binding(Supplier<Matrix4f> f, Observable... dependencies){
+        return new Matrix4fBinding() {{bind(f, dependencies);}};
+    }
+
     @Override
     public void addListener(InvalidationListener listener) {
         helper = ExpressionHelper.addListener(helper, this, listener);
