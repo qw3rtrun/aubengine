@@ -5,6 +5,7 @@ import javafx.beans.property.SimpleFloatProperty;
 import javafx.beans.value.ObservableValue;
 import org.junit.Before;
 import org.junit.Test;
+import org.qw3rtrun.aub.engine.property.Vector4fProperty;
 
 import static org.qw3rtrun.aub.engine.property.Bindings.*;
 import static org.qw3rtrun.aub.engine.vectmath.Vector4f.*;
@@ -80,5 +81,15 @@ public class BindingsTest {
         y.setValue(1);
         z.setValue(100);
         assertNear(vect(101, 3, 103), v.getValue());
+    }
+
+    @Test
+    public void testRotate() {
+        ObservableValue<Vector4f> q = new Vector4fProperty(pX.point(3.14f));
+        ObservableValue<Matrix4f> r = rotate(q);
+
+        System.out.println(product(r, vX).getValue());
+        System.out.println(product(r, vY).getValue());
+        System.out.println(product(r, vZ).getValue());
     }
 }

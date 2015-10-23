@@ -110,4 +110,5 @@ public class Vector4fTest {
         assertNear(vect(-3, 0, 6), v.multiply(-3f));
     }
 
+
 }

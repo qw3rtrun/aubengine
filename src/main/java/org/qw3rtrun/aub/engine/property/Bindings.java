@@ -1,6 +1,5 @@
 package org.qw3rtrun.aub.engine.property;
 
-import com.sun.javafx.binding.FloatConstant;
 import javafx.beans.Observable;
 import javafx.beans.binding.FloatBinding;
 import javafx.beans.value.ObservableFloatValue;
@@ -12,6 +11,7 @@ import java.util.function.Function;
 
 import static com.sun.javafx.binding.FloatConstant.valueOf;
 import static java.util.Arrays.asList;
+import static org.qw3rtrun.aub.engine.vectmath.Matrix4f.transform;
 import static org.qw3rtrun.aub.engine.vectmath.Vector4f.*;
 
 /**
@@ -145,11 +145,26 @@ public class Bindings {
         }};
     }
 
-    public static Matrix4fBinding rotate(ObservableValue<Vector4f> rotation) {
+    public static Matrix4fBinding rotate(ObservableValue<Vector4f> quaternion) {
         return new Matrix4fBinding() {{
-            FloatBinding c = func(x -> {
-                return Math.cos(x.doubleValue());
-            }, FloatConstant.valueOf(1));
+            bind(() -> {
+                double x = quaternion.getValue().x;
+                double y = quaternion.getValue().y;
+                double z = quaternion.getValue().z;
+                double a = quaternion.getValue().w;
+                double C = Math.cos(a);
+                double S = Math.sin(a);
+                double iC = 1 - C;
+                double iS = 1 - S;
+                double x2 = Math.sqrt(x);
+                double y2 = Math.sqrt(y);
+                double z2 = Math.sqrt(z);
+                return transform(
+                        (float) (x2 + (1 - x2) * C), (float) (iC * x * y - z * S), (float) (iC * x * z + y * S),
+                        (float) (iC * x * y + z * S), (float) (y2 + (1 - y2) * C), (float) (iC * y * z - x * S),
+                        (float) (iC * x * z - y * S), (float) (iC * y * z + x * S), (float) (z2 + (1 - z2) * C),
+                        1);
+            }, quaternion);
         }};
     }
 }

@@ -88,6 +88,13 @@ public class Matrix4f implements Serializable {
         this.ww = ww;
     }
 
+    public static Matrix4f transform(float xx, float xy, float xz,
+                                     float yx, float yy, float yz,
+                                     float zx, float zy, float zz,
+                                     float ww) {
+        return new Matrix4f(xx, xy, xz, 0, yx, yy, yz, 0, zx, zy, zz, 0, 0, 0, 0, ww);
+    }
+
     public static Matrix4f rows(Vector4f x, Vector4f y, Vector4f z, Vector4f w) {
         return new Matrix4f(x.x, x.y, x.z, x.w, y.x, y.y, y.z, y.w, z.x, z.y, z.z, z.w, w.x, w.y, w.z, w.w);
     }
