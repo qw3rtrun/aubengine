@@ -15,24 +15,24 @@ import static org.qw3rtrun.aub.engine.vectmath.Vector4f.*;
  *
  * Matrix can be construct from rows ...
  *
- * rows (X, Y, Z, w) = X.x X.y X.z 0
+ * rows (X, Y, Z, a) = X.x X.y X.z 0
  *                     Y.x Y.y Y.z 0
  *                     Z.x Z.y Z.z 0
- *                     0   0   0   w
+ *                     0   0   0   a
  *
  * ... or from cols ...
  *
- * cols(X, Y, Z, w) = X.x Y.x Z.x 0
+ * cols(X, Y, Z, a) = X.x Y.x Z.x 0
  *                    X.y Y.y Z.y 0
  *                    X.z Y.z Z.z 0
- *                    0   0   0   w
+ *                    0   0   0   a
  *
  * The matrix can be multiply by the matrix ...
  *
- * M.multiply(V) = M.xx M.xy M.xz M.xw * V.x = M.xx*V.x + M.xy*V.y + M.xz*V.z + M.xw*V.w
- *                 M.yx M.yy M.yz M.yw   V.y   M.yx*V.x + M.yy*V.y + M.yz*V.z + M.yw*V.w
- *                 M.zx M.zy M.zz M.zw   V.z   M.zx*V.x + M.zy*V.y + M.zz*V.z + M.zw*V.w
- *                 M.wx M.wy M.wz M.ww   V.w   M.wx*V.x + M.wy*V.y + M.wz*V.z + M.ww*V.w
+ * M.multiply(V) = M.xx M.xy M.xz M.xw * V.x = M.xx*V.x + M.xy*V.y + M.xz*V.z + M.xw*V.a
+ *                 M.yx M.yy M.yz M.yw   V.y   M.yx*V.x + M.yy*V.y + M.yz*V.z + M.yw*V.a
+ *                 M.zx M.zy M.zz M.zw   V.z   M.zx*V.x + M.zy*V.y + M.zz*V.z + M.zw*V.a
+ *                 M.wx M.wy M.wz M.ww   V.a   M.wx*V.x + M.wy*V.y + M.wz*V.z + M.ww*V.a
  *
  *... also the matrix can be multiply by another matrix ...
  *
@@ -41,17 +41,17 @@ import static org.qw3rtrun.aub.engine.vectmath.Vector4f.*;
  *                 M.zx M.zy M.zz M.zw   A.zx A.zy A.zz A.zw
  *                 M.wx M.wy M.wz M.ww   A.wx A.wy A.wz A.ww
  *
- * = M.xx*A.xx+M.xy*A.yx+M.xz*V.zx+M.xw*A.zw M.xx*A.xx+M.xy*A.yx+M.xz*V.zx+M.xw*A.zw
- *
- *
+ * = M.x_*A._x M.x_*A._y M.x_*A._z M.x_*A._w
+ *   M.y_*A._x M.y_*A._y M.y_*A._z M.y_*A._w
+ *   M.z_*A._x M.z_*A._y M.z_*A._z M.z_*A._w
+ *   M.w_*A._x M.w_*A._y M.w_*A._z M.w_*A._w
  *
  */
 
-
 public class Matrix4f implements Serializable {
-    public static final Matrix4f O0 = rows(vZERO, vZERO, vZERO, 0);
-    public static final Matrix4f O1 = rows(vZERO, vZERO, vZERO, 1);
-    public static final Matrix4f E = rows(vX, vY, vZ, 1);
+    public static final Matrix4f O0 = rows(ZERO, ZERO, ZERO, ZERO);
+    public static final Matrix4f O1 = rows(ZERO, ZERO, ZERO, W);
+    public static final Matrix4f E = rows(X, Y, Z, W);
     public final float xx;
     public final float xy;
     public final float xz;
@@ -69,7 +69,7 @@ public class Matrix4f implements Serializable {
     public final float wz;
     public final float ww;
 
-    public Matrix4f(float xx, float xy, float xz, float xw, float yx, float yy, float yz, float yw, float zx, float zy, float zz, float zw, float wx, float wy, float wz, float ww) {
+    private Matrix4f(float xx, float xy, float xz, float xw, float yx, float yy, float yz, float yw, float zx, float zy, float zz, float zw, float wx, float wy, float wz, float ww) {
         this.xx = xx;
         this.xy = xy;
         this.xz = xz;
@@ -88,23 +88,26 @@ public class Matrix4f implements Serializable {
         this.ww = ww;
     }
 
-    public static Matrix4f transform(float xx, float xy, float xz,
+    public static  Matrix4f matr(float xx, float xy, float xz, float xw, float yx, float yy, float yz, float yw, float zx, float zy, float zz, float zw, float wx, float wy, float wz, float ww) {
+        return new  Matrix4f(xx, xy, xz, xw, yx, yy, yz, yw, zx, zy, zz, zw, wx, wy, wz, ww);
+    }
+
+    public static Matrix4f matr(float xx, float xy, float xz,
                                      float yx, float yy, float yz,
                                      float zx, float zy, float zz,
                                      float ww) {
         return new Matrix4f(xx, xy, xz, 0, yx, yy, yz, 0, zx, zy, zz, 0, 0, 0, 0, ww);
     }
 
+    public static Matrix4f matr(float xx, float xy, float xz,
+                                float yx, float yy, float yz,
+                                float zx, float zy, float zz) {
+        return new Matrix4f(xx, xy, xz, 0, yx, yy, yz, 0, zx, zy, zz, 0, 0, 0, 0, 1);
+    }
+
+
     public static Matrix4f rows(Vector4f x, Vector4f y, Vector4f z, Vector4f w) {
         return new Matrix4f(x.x, x.y, x.z, x.w, y.x, y.y, y.z, y.w, z.x, z.y, z.z, z.w, w.x, w.y, w.z, w.w);
-    }
-
-    public static Matrix4f rows(Vector4f x, Vector4f y, Vector4f z, float ww) {
-        return new Matrix4f(x.x, x.y, x.z, 0, y.x, y.y, y.z, 0, z.x, z.y, z.z, 0, 0, 0, 0, ww);
-    }
-
-    public static Matrix4f cols(Vector4f x, Vector4f y, Vector4f z, float ww) {
-        return new Matrix4f(x.x, y.x, z.x, 0, x.y, y.y, z.y, 0, x.z, y.z, z.z, 0, 0, 0, 0, ww);
     }
 
     public static Matrix4f cols(Vector4f x, Vector4f y, Vector4f z, Vector4f w) {
@@ -130,16 +133,18 @@ public class Matrix4f implements Serializable {
     }
 
     public Vector4f multiply(Vector4f v) {
-        return vect(xx * v.x + xy * v.y + xz * v.z + xw, yx * v.x + yy * v.y + yz * v.z + yw, zx * v.x + zy * v.y + zz * v.z + zw);
+        return vect(xx * v.x + xy * v.y + xz * v.z + xw * v.w,
+                yx * v.x + yy * v.y + yz * v.z + yw * v.w,
+                    zx * v.x + zy * v.y + zz * v.z + zw * v.w,
+                    wx * v.x + wy * v.y + wz * v.z + ww * v.w);
     }
 
-    public Matrix4f multiply(Matrix4f matrix4f){
-        return null;
-//        return new Vector4f(
-//                xx*V.x + M.yx*V.y + M.zx*V.z + M.wx*V.w,
-//                M.xy*V.x + M.yy*V.y + M.zy*V.z + M.wy*V.w,
-//                M.xz*V.x + M.yz*V.y + M.zz*V.z + M.wz*V.w,
-//                M.xw*V.x + M.yw*V.y + M.zw*V.z + M.ww*V.w);
+    public Matrix4f multiply(Matrix4f m){
+        return new Matrix4f(
+                xx*m.xx+xy*m.yx+xz*m.zx+xw*m.wx, xx*m.xy+xy*m.yy+xz*m.zy+xw*m.wy, xx*m.xz+xy*m.yz+xz*m.zz+xw*m.wz, xx*m.xw+xy*m.yw+xz*m.zw+xw*m.ww,
+                yx*m.xx+yy*m.yx+yz*m.zx+yw*m.wx, yx*m.xy+yy*m.yy+yz*m.zy+yw*m.wy, yx*m.xz+yy*m.yz+yz*m.zz+yw*m.wz, yx*m.xw+yy*m.yw+yz*m.zw+yw*m.ww,
+                zx*m.xx+zy*m.yx+zz*m.zx+zw*m.wx, zx*m.xy+zy*m.yy+zz*m.zy+zw*m.wy, zx*m.xz+zy*m.yz+zz*m.zz+zw*m.wz, zx*m.xw+zy*m.yw+zz*m.zw+zw*m.ww,
+                wx*m.xx+wy*m.yx+wz*m.zx+ww*m.wx, wx*m.xy+wy*m.yy+wz*m.zy+ww*m.wy, wx*m.xz+wy*m.yz+wz*m.zz+ww*m.wz, wx*m.xw+wy*m.yw+wz*m.zw+ww*m.ww);
     }
 
 

@@ -11,8 +11,8 @@ import java.util.function.Function;
 
 import static com.sun.javafx.binding.FloatConstant.valueOf;
 import static java.util.Arrays.asList;
-import static org.qw3rtrun.aub.engine.vectmath.Matrix4f.transform;
 import static org.qw3rtrun.aub.engine.property.Matrix4fBinding.binding;
+import static org.qw3rtrun.aub.engine.vectmath.Matrix4f.matr;
 import static org.qw3rtrun.aub.engine.vectmath.Vector4f.*;
 
 /**
@@ -70,7 +70,7 @@ public class Bindings {
         switch (vectors.length) {
             case 0:
                 return new Vector4fBinding() {{
-                    bind(() -> vZERO);
+                    bind(() -> ZERO);
                 }};
             case 1:
                 return new Vector4fBinding() {{
@@ -80,7 +80,7 @@ public class Bindings {
                 return add0(vectors[0], vectors[1], vectors);
             default:
                 return new Vector4fBinding() {{
-                    bind(() -> sum(asList(vectors).stream().map(ObservableValue::getValue).toArray(Vector4f[]::new)), vectors);
+                    bind(() -> vect().addAll(asList(vectors).stream().map(ObservableValue::getValue).toArray(Vector4f[]::new)), vectors);
                 }};
         }
     }
@@ -122,14 +122,14 @@ public class Bindings {
     }
 
     public static Matrix4fBinding translate(ObservableValue<Vector4f> translation) {
-        return binding(() -> Matrix4f.cols(vX, vY, vZ, translation.getValue().point(1)), translation);
+        return binding(() -> Matrix4f.cols(X, Y, Z, translation.getValue().w(1)), translation);
     }
 
     public static Matrix4fBinding scale(ObservableValue<Vector4f> scale) {
         return new Matrix4fBinding() {{
             bind(() -> {
                 final Vector4f s = scale.getValue();
-                return Matrix4f.rows(vX.multiply(s.x), vY.multiply(s.y), vZ.multiply(s.z), 1);
+                return Matrix4f.rows(X.multiply(s.x), Y.multiply(s.y), Z.multiply(s.z), W);
             }, scale);
         }};
     }
@@ -144,16 +144,18 @@ public class Bindings {
                 double C = Math.cos(a);
                 double S = Math.sin(a);
                 double iC = 1 - C;
-                double iS = 1 - S;
                 double x2 = Math.sqrt(x);
                 double y2 = Math.sqrt(y);
                 double z2 = Math.sqrt(z);
-                return transform(
+                return matr(
                         (float) (x2 + (1 - x2) * C), (float) (iC * x * y - z * S), (float) (iC * x * z + y * S),
                         (float) (iC * x * y + z * S), (float) (y2 + (1 - y2) * C), (float) (iC * y * z - x * S),
-                        (float) (iC * x * z - y * S), (float) (iC * y * z + x * S), (float) (z2 + (1 - z2) * C),
-                        1);
+                        (float) (iC * x * z - y * S), (float) (iC * y * z + x * S), (float) (z2 + (1 - z2) * C));
             }, quaternion);
         }};
+    }
+
+    public static Matrix4fBinding rotate(Vector4f quaterion) {
+        return rotate(new Vector4fConstant(quaterion));
     }
 }

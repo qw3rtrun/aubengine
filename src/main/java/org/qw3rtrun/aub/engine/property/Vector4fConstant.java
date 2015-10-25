@@ -12,9 +12,9 @@ import static org.qw3rtrun.aub.engine.vectmath.Vector4f.*;
  */
 public class Vector4fConstant implements ObservableValue<Vector4f> {
 
-    public static Vector4fConstant CONST_X = new Vector4fConstant(vX);
-    public static Vector4fConstant CONST_Y = new Vector4fConstant(vY);
-    public static Vector4fConstant CONST_Z = new Vector4fConstant(vZ);
+    public static Vector4fConstant CONST_X = new Vector4fConstant(X);
+    public static Vector4fConstant CONST_Y = new Vector4fConstant(Y);
+    public static Vector4fConstant CONST_Z = new Vector4fConstant(Z);
 
     private final Vector4f v;
 

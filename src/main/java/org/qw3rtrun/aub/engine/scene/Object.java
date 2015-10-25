@@ -10,8 +10,8 @@ import org.qw3rtrun.aub.engine.property.Vector4fProperty;
 import java.util.ArrayList;
 
 import static javafx.collections.FXCollections.observableList;
-import static org.qw3rtrun.aub.engine.vectmath.Vector4f.vXYZ;
-import static org.qw3rtrun.aub.engine.vectmath.Vector4f.vZERO;
+import static org.qw3rtrun.aub.engine.vectmath.Vector4f.XYZ;
+import static org.qw3rtrun.aub.engine.vectmath.Vector4f.ZERO;
 
 public class Object implements Node, Shaped, Tangible {
 
@@ -20,7 +20,7 @@ public class Object implements Node, Shaped, Tangible {
     private final ObjectProperty<Object> parent = new SimpleObjectProperty<>();
     private final ListProperty<Object> childs = new SimpleListProperty<>(observableList(new ArrayList<>()));
     private StringProperty name = new SimpleStringProperty(super.toString());
-    private final Vector4fProperty scale = new Vector4fProperty(vXYZ) {
+    private final Vector4fProperty scale = new Vector4fProperty(XYZ) {
         @Override
         public java.lang.Object getBean() {
             return Object.this;
@@ -31,7 +31,7 @@ public class Object implements Node, Shaped, Tangible {
             return "Scale of " + name.get();
         }
     };
-    private final Vector4fProperty rotation = new Vector4fProperty(vZERO) {
+    private final Vector4fProperty rotation = new Vector4fProperty(ZERO) {
         @Override
         public java.lang.Object getBean() {
             return Object.this;
@@ -42,7 +42,7 @@ public class Object implements Node, Shaped, Tangible {
             return "Rotation of " + name.get();
         }
     };
-    private final Vector4fProperty translation = new Vector4fProperty(vZERO) {
+    private final Vector4fProperty translation = new Vector4fProperty(ZERO) {
         @Override
         public String getName() {
             return "Translation of " + name.get();

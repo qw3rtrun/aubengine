@@ -24,79 +24,77 @@ public class Vector4fTest {
 
     @Test
     public void testBound() {
-        assertEquals(0, vZERO.bound(), EPSILON);
-        assertEquals(1, vX.bound(), EPSILON);
-        assertEquals(1, vY.bound(), EPSILON);
-        assertEquals(1, vZ.bound(), EPSILON);
-        assertEquals(1, vXY.bound(), EPSILON);
-        assertEquals(1, vXZ.bound(), EPSILON);
-        assertEquals(1, vYZ.bound(), EPSILON);
-        assertEquals(1, vXYZ.bound(), EPSILON);
+        assertEquals(0, ZERO.bound(), EPSILON);
+        assertEquals(1, X.bound(), EPSILON);
+        assertEquals(1, Y.bound(), EPSILON);
+        assertEquals(1, Z.bound(), EPSILON);
+        assertEquals(1, XY.bound(), EPSILON);
+        assertEquals(1, XZ.bound(), EPSILON);
+        assertEquals(1, YZ.bound(), EPSILON);
+        assertEquals(1, XYZ.bound(), EPSILON);
         assertEquals(3, vect(3, -3, 3).bound(), EPSILON);
         assertEquals(3, vect(-1, -3, -3).bound(), EPSILON);
-        assertEquals(3, point(-1, -3, -3, 100).bound(), EPSILON);
-        assertEquals(3, point(-1, -3, -3, 1).bound(), EPSILON);
-        assertEquals(3, vect(-1, -3, -3).point().bound(), EPSILON);
+        assertEquals(100, vect(-1, -3, -3, 100).bound(), EPSILON);
+        assertEquals(3, vect(-1, -3, -3, 1).bound(), EPSILON);
     }
 
     @Test
     public void testDistanceBound() {
-        assertEquals(0, vZERO.distanceBound(vZERO), EPSILON);
-        assertEquals(0, vY.distanceBound(vY), EPSILON);
-        assertEquals(0, vXZ.distanceBound(vXZ), EPSILON);
+        assertEquals(0, ZERO.distanceBound(ZERO), EPSILON);
+        assertEquals(0, Y.distanceBound(Y), EPSILON);
+        assertEquals(0, XZ.distanceBound(XZ), EPSILON);
         assertEquals(0, vect(5, -3, 4).distanceBound(vect(5, -3, 4)), EPSILON);
     }
 
 
     @Test
     public void testDotProduct() {
-        assertEquals(0, vZERO.dotProduct(vect(5, 0, 1)), EPSILON);
-        assertEquals(0, vZERO.dotProduct(vZERO), EPSILON);
-        assertEquals(1, vX.length(), EPSILON);
-        assertEquals(1, vY.length(), EPSILON);
-        assertEquals(1, vZ.length(), EPSILON);
-        assertEquals(Math.sqrt(1 + 1), vXY.length(), EPSILON);
-        assertEquals(Math.sqrt(1 + 1), vXZ.length(), EPSILON);
-        assertEquals(Math.sqrt(1 + 1), vYZ.length(), EPSILON);
-        assertEquals(Math.sqrt(1 + 1 + 1), vXYZ.length(), EPSILON);
+        assertEquals(0, ZERO.dotProduct(vect(5, 0, 1)), EPSILON);
+        assertEquals(0, ZERO.dotProduct(ZERO), EPSILON);
+        assertEquals(1, X.length(), EPSILON);
+        assertEquals(1, Y.length(), EPSILON);
+        assertEquals(1, Z.length(), EPSILON);
+        assertEquals(Math.sqrt(1 + 1), XY.length(), EPSILON);
+        assertEquals(Math.sqrt(1 + 1), XZ.length(), EPSILON);
+        assertEquals(Math.sqrt(1 + 1), YZ.length(), EPSILON);
+        assertEquals(Math.sqrt(1 + 1 + 1), XYZ.length(), EPSILON);
     }
 
     @Test
     public void testLength() {
-        assertEquals(0, vZERO.length(), EPSILON);
-        assertEquals(1, vX.length(), EPSILON);
-        assertEquals(1, vY.length(), EPSILON);
-        assertEquals(1, vZ.length(), EPSILON);
-        assertEquals(Math.sqrt(1 + 1), vXY.length(), EPSILON);
-        assertEquals(Math.sqrt(1 + 1), vXZ.length(), EPSILON);
-        assertEquals(Math.sqrt(1 + 1), vYZ.length(), EPSILON);
-        assertEquals(Math.sqrt(1 + 1 + 1), vXYZ.length(), EPSILON);
+        assertEquals(0, ZERO.length(), EPSILON);
+        assertEquals(1, X.length(), EPSILON);
+        assertEquals(1, Y.length(), EPSILON);
+        assertEquals(1, Z.length(), EPSILON);
+        assertEquals(Math.sqrt(1 + 1), XY.length(), EPSILON);
+        assertEquals(Math.sqrt(1 + 1), XZ.length(), EPSILON);
+        assertEquals(Math.sqrt(1 + 1), YZ.length(), EPSILON);
+        assertEquals(Math.sqrt(1 + 1 + 1), XYZ.length(), EPSILON);
         assertEquals(Math.sqrt(9 + 9 + 9), vect(3, -3, 3).length(), EPSILON);
         assertEquals(Math.sqrt(1 + 9 + 9), vect(-1, -3, -3).length(), EPSILON);
 
-        assertEquals(Math.sqrt(1 + 9 + 9), point(-1, -3, -3, 100).length(), EPSILON);
-        assertEquals(Math.sqrt(1 + 9 + 9), point(-1, -3, -3, 1).length(), EPSILON);
-        assertEquals(Math.sqrt(1 + 9 + 9), point(-1, -3, -3, -1).length(), EPSILON);
+        assertEquals(Math.sqrt(1 + 9 + 9 + 1), vect(-1, -3, -3, 1).length(), EPSILON);
+        assertEquals(Math.sqrt(1 + 9 + 9 + 1), vect(-1, -3, -3, -1).length(), EPSILON);
     }
 
     @Test
     public void testEqual() {
-        assertNotNear(vZERO, vX);
-        assertNotNear(vX, vY);
-        assertNotNear(vX, vXY);
-        assertNotNear(vZERO, vYZ);
+        assertNotNear(ZERO, X);
+        assertNotNear(X, Y);
+        assertNotNear(X, XY);
+        assertNotNear(ZERO, YZ);
 
-        assertSame(vZERO, vect(0, 0, 0));
-        assertSame(vX, vect(1, 0, 0));
-        assertSame(vX, vect(1, 0, -0));
+        assertSame(ZERO, vect(0, 0, 0));
+        assertSame(X, vect(1, 0, 0));
+        assertSame(X, vect(1, 0, -0));
 
-        assertSame(pX, point(1, 0, 0, 1));
+        assertSame(XW, vect(1, 0, 0, 1));
     }
 
     @Test
     public void testInverse() {
-        assertEquals(vX.inverse(), vect(-1, -0f, -0f));
-        assertNear(vX.inverse(), vect(-1, 0, 0));
+        assertEquals(X.inverse(), vect(-1, -0f, -0f));
+        assertNear(X.inverse(), vect(-1, 0, 0));
         assertNear(vect(-5, -4, -3).inverse(), vect(5, 4, 3));
     }
 
@@ -105,9 +103,17 @@ public class Vector4fTest {
     public void testSimpleScale() {
         Vector4f v = vect(1, 0, -2);
         assertNear(v, v.multiply(1));
-        assertNear(vZERO, v.multiply(0));
+        assertNear(ZERO, v.multiply(0));
         assertNear(vect(2.5f, 0, -5), v.multiply(2.5f));
         assertNear(vect(-3, 0, 6), v.multiply(-3f));
+    }
+
+    @Test
+    public void testAddAll(){
+        Vector4f v = vect(1, 0, -2);
+        assertNear(v, v.addAll());
+        assertNear(v.add(1, 2, 3), v.addAll(vect(1, 2, 3)));
+        assertNear(v.add(1, 2, 3).add(4, 2, 0), v.addAll(vect(1, 2, 3), vect(4, 2, 0)));
     }
 
 

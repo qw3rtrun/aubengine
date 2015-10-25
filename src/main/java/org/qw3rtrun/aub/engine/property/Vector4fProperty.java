@@ -15,7 +15,7 @@ import java.lang.ref.WeakReference;
  */
 public class Vector4fProperty extends ObservableValueBase<Vector4f> implements Property<Vector4f> {
 
-    private Vector4f value = Vector4f.vZERO;
+    private Vector4f value = Vector4f.ZERO;
     private ObservableValue<? extends Vector4f> observable;
     private InvalidationListener listener = null;
 
