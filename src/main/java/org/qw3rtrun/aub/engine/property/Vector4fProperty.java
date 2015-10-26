@@ -5,15 +5,16 @@ import javafx.beans.Observable;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.Property;
 import javafx.beans.value.ObservableValue;
-import javafx.beans.value.ObservableValueBase;
 import org.qw3rtrun.aub.engine.vectmath.Vector4f;
 
 import java.lang.ref.WeakReference;
 
+import static org.qw3rtrun.aub.engine.vectmath.Vector4f.vect;
+
 /**
  * Created by strunov on 9/8/2015.
  */
-public class Vector4fProperty extends ObservableValueBase<Vector4f> implements Property<Vector4f> {
+public class Vector4fProperty extends ObservableVectorBase implements Property<Vector4f>, VectorExpression {
 
     private Vector4f value = Vector4f.ZERO;
     private ObservableValue<? extends Vector4f> observable;
@@ -22,10 +23,27 @@ public class Vector4fProperty extends ObservableValueBase<Vector4f> implements P
     private boolean valid = true;
 
     public Vector4fProperty() {
+        this(vect());
     }
 
     public Vector4fProperty(Vector4f value) {
         this.value = value;
+    }
+
+    public static Vector4fProperty vectProp(Vector4f init) {
+        return new Vector4fProperty(init);
+    }
+
+    public static Vector4fProperty vectProp(float x, float y, float z, float w) {
+        return new Vector4fProperty(vect(x, y, z, w));
+    }
+
+    public static Vector4fProperty vectProp(float x, float y, float z) {
+        return new Vector4fProperty(vect(x, y, z));
+    }
+
+    public static Vector4fProperty vectProp() {
+        return new Vector4fProperty(vect());
     }
 
     private void markInvalid() {
@@ -102,6 +120,26 @@ public class Vector4fProperty extends ObservableValueBase<Vector4f> implements P
             this.value = value;
             markInvalid();
         }
+    }
+
+    public void setValue(float x, float y, float z, float w) {
+        setValue(vect(x, y, z, w));
+    }
+
+    public void setX(float x) {
+        setValue(getValue().x(x));
+    }
+
+    public void setY(float y) {
+        setValue(getValue().y(y));
+    }
+
+    public void setZ(float z) {
+        setValue(getValue().z(z));
+    }
+
+    public void setW(float w) {
+        setValue(getValue().w(w));
     }
 
     @Override

@@ -8,6 +8,7 @@ import org.junit.Test;
 import org.qw3rtrun.aub.engine.property.Matrix4fBinding;
 import org.qw3rtrun.aub.engine.property.Vector4fProperty;
 
+import static java.lang.Math.PI;
 import static org.qw3rtrun.aub.engine.property.Bindings.*;
 import static org.qw3rtrun.aub.engine.vectmath.Vector4f.*;
 import static org.qw3rtrun.aub.engine.vectmath.Vector4fTest.assertNear;
@@ -83,24 +84,29 @@ public class BindingsTest {
 
     @Test
     public void testRotate() {
-        Vector4fProperty q = new Vector4fProperty(X);
+        Vector4fProperty q = new Vector4fProperty(X.w((float) PI));
         Matrix4fBinding rotation = rotate(q);
-        ObservableValue<Vector4f> rX = product(rotation, X.multiply(1000000));
-        ObservableValue<Vector4f> rY = product(rotation, Y.multiply(1000000));
-        ObservableValue<Vector4f> rZ = product(rotation, Z.multiply(1000000));
+        ObservableValue<Vector4f> rX = product(rotation, X);
+        ObservableValue<Vector4f> rY = product(rotation, Y);
+        ObservableValue<Vector4f> rZ = product(rotation, Z);
 
         System.out.println(rX.getValue());
         System.out.println(rY.getValue());
         System.out.println(rZ.getValue());
-        System.out.println(Math.sin(2 * Math.PI));
-        System.out.println(Math.cos(2 * Math.PI));
-        System.out.println(Math.sin(Math.PI/2));
-        System.out.println(Math.cos(Math.PI/2));
+        System.out.println();
 
-        q.setValue(X.w((float) (100*Math.PI)));
+        q.setValue(X.w((float) (1)));
 
         System.out.println(rX.getValue());
         System.out.println(rY.getValue());
         System.out.println(rZ.getValue());
+        System.out.println();
+
+        q.setValue(X.w((float) (PI)));
+
+        System.out.println(rX.getValue());
+        System.out.println(rY.getValue());
+        System.out.println(rZ.getValue());
+        System.out.println();
     }
 }

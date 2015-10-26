@@ -147,6 +147,19 @@ public class Matrix4f implements Serializable {
                 wx*m.xx+wy*m.yx+wz*m.zx+ww*m.wx, wx*m.xy+wy*m.yy+wz*m.zy+ww*m.wy, wx*m.xz+wy*m.yz+wz*m.zz+ww*m.wz, wx*m.xw+wy*m.yw+wz*m.zw+ww*m.ww);
     }
 
+    public float determinant() {
+        return (float) (xx * determinant(yy, yz, yw, zy, zz, zw, wy, wz, ww)
+                - xy * determinant(yx, yz, yw, zx, zz, zw, wx, wz, ww)
+                + xz * determinant(yx, yy, yw, zx, zy, zw, wx, wy, ww)
+                - xw * determinant(yx, yy, yz, zx, zy, zz, wx, wy, wz));
+    }
+
+    private double determinant(float xx, float xy, float xz,
+                               float yx, float yy, float yz,
+                               float zx, float zy, float zz) {
+        return xx * yy * zz + xy * yz * zx + xz * yx * zy - xz * yy * xz - xy * yx * zz - xx * yz;
+    }
+
 
     @Override
     public boolean equals(Object o) {

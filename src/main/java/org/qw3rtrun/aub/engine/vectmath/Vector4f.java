@@ -61,7 +61,7 @@ public class Vector4f implements Serializable {
                     if (z == 1) return XYZ;
                 }
             }
-        } else {
+        } else if (w == 1) {
             if (x == 0) {
                 if (y == 0) {
                     if (z == 0) return W;

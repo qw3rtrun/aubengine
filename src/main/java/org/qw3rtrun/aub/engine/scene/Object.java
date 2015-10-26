@@ -4,21 +4,26 @@ import javafx.beans.property.*;
 import org.qw3rtrun.aub.engine.mixin.Node;
 import org.qw3rtrun.aub.engine.mixin.Shaped;
 import org.qw3rtrun.aub.engine.mixin.Tangible;
+import org.qw3rtrun.aub.engine.property.Bindings;
 import org.qw3rtrun.aub.engine.property.Matrix4fBinding;
 import org.qw3rtrun.aub.engine.property.Vector4fProperty;
 
 import java.util.ArrayList;
 
 import static javafx.collections.FXCollections.observableList;
+import static org.qw3rtrun.aub.engine.property.Bindings.rotate;
+import static org.qw3rtrun.aub.engine.property.Bindings.translate;
 import static org.qw3rtrun.aub.engine.vectmath.Vector4f.XYZ;
 import static org.qw3rtrun.aub.engine.vectmath.Vector4f.ZERO;
 
 public class Object implements Node, Shaped, Tangible {
 
-    private final Matrix4fBinding localToAbsolute = null;
-    private final Matrix4fBinding absoluteToLocal = null;
     private final ObjectProperty<Object> parent = new SimpleObjectProperty<>();
     private final ListProperty<Object> childs = new SimpleListProperty<>(observableList(new ArrayList<>()));
+    private final Matrix4fBinding localToAbsolute = translate(translation)
+            .concat(rotate(rotation))
+            .concat(Bindings.scale(scale));
+    private final Matrix4fBinding absoluteToLocal = localToAbsolute.inversion();
     private StringProperty name = new SimpleStringProperty(super.toString());
     private final Vector4fProperty scale = new Vector4fProperty(XYZ) {
         @Override

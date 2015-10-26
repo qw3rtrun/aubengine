@@ -3,6 +3,7 @@ package org.qw3rtrun.aub.engine.property;
 import javafx.beans.Observable;
 import javafx.beans.binding.FloatBinding;
 import javafx.beans.value.ObservableFloatValue;
+import javafx.beans.value.ObservableNumberValue;
 import javafx.beans.value.ObservableValue;
 import org.qw3rtrun.aub.engine.vectmath.Matrix4f;
 import org.qw3rtrun.aub.engine.vectmath.Vector4f;
@@ -20,9 +21,9 @@ import static org.qw3rtrun.aub.engine.vectmath.Vector4f.*;
  */
 public class Bindings {
 
-    private static Vector4fBinding multiply0(ObservableFloatValue k, ObservableValue<Vector4f> v, Observable... dependencies) {
+    private static Vector4fBinding multiply0(ObservableNumberValue k, ObservableValue<Vector4f> v, Observable... dependencies) {
         return new Vector4fBinding() {{
-            bind(() -> v.getValue().multiply(k.get()), dependencies);
+            bind(() -> v.getValue().multiply(k.floatValue()), dependencies);
         }};
     }
 
@@ -45,7 +46,7 @@ public class Bindings {
         };
     }
 
-    public static Vector4fBinding multiply(ObservableFloatValue k, ObservableValue<Vector4f> v) {
+    public static Vector4fBinding multiply(ObservableNumberValue k, ObservableValue<Vector4f> v) {
         return multiply0(k, v, k, v);
     }
 
@@ -121,6 +122,10 @@ public class Bindings {
         }};
     }
 
+    public static Matrix4fBinding multiply(ObservableMatrix m1, ObservableMatrix m2) {
+        return binding(() -> m1.getValue().multiply(m2.getValue()), m1, m2);
+    }
+
     public static Matrix4fBinding translate(ObservableValue<Vector4f> translation) {
         return binding(() -> Matrix4f.cols(X, Y, Z, translation.getValue().w(1)), translation);
     }
@@ -144,9 +149,9 @@ public class Bindings {
                 double C = Math.cos(a);
                 double S = Math.sin(a);
                 double iC = 1 - C;
-                double x2 = Math.sqrt(x);
-                double y2 = Math.sqrt(y);
-                double z2 = Math.sqrt(z);
+                double x2 = x * x;
+                double y2 = y * y;
+                double z2 = z * z;
                 return matr(
                         (float) (x2 + (1 - x2) * C), (float) (iC * x * y - z * S), (float) (iC * x * z + y * S),
                         (float) (iC * x * y + z * S), (float) (y2 + (1 - y2) * C), (float) (iC * y * z - x * S),

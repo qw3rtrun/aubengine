@@ -5,15 +5,11 @@ import javafx.beans.Observable;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.Property;
 import javafx.beans.value.ObservableValue;
-import javafx.beans.value.ObservableValueBase;
 import org.qw3rtrun.aub.engine.vectmath.Matrix4f;
 
 import java.lang.ref.WeakReference;
 
-/**
- * Created by strunov on 9/23/2015.
- */
-public class Matrix4fProperty extends ObservableValueBase<Matrix4f> implements Property<Matrix4f> {
+public class Matrix4fProperty extends ObservableMatrixBase implements Property<Matrix4f>, MatrixExpression {
 
     private Matrix4f value = Matrix4f.E;
     private ObservableValue<? extends Matrix4f> observable;

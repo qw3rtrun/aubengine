@@ -6,7 +6,6 @@ import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
 import javafx.beans.binding.Binding;
 import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValueBase;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import org.qw3rtrun.aub.engine.vectmath.Vector4f;
@@ -16,7 +15,7 @@ import java.util.function.Supplier;
 /**
  * Created by strunov on 9/8/2015.
  */
-public class Vector4fBinding extends ObservableValueBase<Vector4f> implements Binding<Vector4f> {
+public class Vector4fBinding extends ObservableVectorBase implements Binding<Vector4f>, VectorExpression {
 
     private Supplier<Vector4f> func;
     private Vector4f value;

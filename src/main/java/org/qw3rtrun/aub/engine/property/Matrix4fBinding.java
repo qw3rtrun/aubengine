@@ -6,7 +6,6 @@ import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
 import javafx.beans.binding.Binding;
 import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValueBase;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import org.qw3rtrun.aub.engine.vectmath.Matrix4f;
@@ -16,7 +15,7 @@ import java.util.function.Supplier;
 /**
  * Created by strunov on 9/23/2015.
  */
-public class Matrix4fBinding extends ObservableValueBase<Matrix4f> implements Binding<Matrix4f> {
+public class Matrix4fBinding extends ObservableMatrixBase implements Binding<Matrix4f>, MatrixExpression {
 
     private Supplier<Matrix4f> func;
     private Matrix4f value;
