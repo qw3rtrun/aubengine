@@ -126,22 +126,20 @@ public class Bindings {
         return binding(() -> m1.getValue().multiply(m2.getValue()), m1, m2);
     }
 
-    public static Matrix4fBinding translate(ObservableValue<Vector4f> translation) {
+    public static Matrix4fBinding translationMatrix(ObservableValue<Vector4f> translation) {
         return binding(() -> Matrix4f.cols(X, Y, Z, translation.getValue().w(1)), translation);
     }
 
-    public static Matrix4fBinding scale(ObservableValue<Vector4f> scale) {
-        return new Matrix4fBinding() {{
-            bind(() -> {
+    public static Matrix4fBinding scaleMatrix(ObservableValue<Vector4f> scale) {
+        return binding(() -> {
                 final Vector4f s = scale.getValue();
                 return Matrix4f.rows(X.multiply(s.x), Y.multiply(s.y), Z.multiply(s.z), W);
             }, scale);
-        }};
     }
 
-    public static Matrix4fBinding rotate(ObservableValue<Vector4f> quaternion) {
-        return new Matrix4fBinding() {{
-            bind(() -> {
+    public static Matrix4fBinding rotationMatrix(ObservableValue<Vector4f> quaternion) {
+        return new Matrix4fBinding(
+            () -> {
                 double x = quaternion.getValue().x;
                 double y = quaternion.getValue().y;
                 double z = quaternion.getValue().z;
@@ -157,10 +155,10 @@ public class Bindings {
                         (float) (iC * x * y + z * S), (float) (y2 + (1 - y2) * C), (float) (iC * y * z - x * S),
                         (float) (iC * x * z - y * S), (float) (iC * y * z + x * S), (float) (z2 + (1 - z2) * C));
             }, quaternion);
-        }};
     }
 
-    public static Matrix4fBinding rotate(Vector4f quaterion) {
-        return rotate(new Vector4fConstant(quaterion));
+    public static Matrix4fBinding rotationMatrix(Vector4f quaterion) {
+        return rotationMatrix(new Vector4fConstant(quaterion));
     }
+
 }

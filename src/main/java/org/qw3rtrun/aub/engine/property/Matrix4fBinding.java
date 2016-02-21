@@ -23,8 +23,12 @@ public class Matrix4fBinding extends ObservableMatrixBase implements Binding<Mat
     private BindingHelperObserver observer;
     private ExpressionHelper<Matrix4f> helper = null;
 
-    public static Matrix4fBinding binding(Supplier<Matrix4f> f, Observable... dependencies){
-        return new Matrix4fBinding() {{bind(f, dependencies);}};
+    public static Matrix4fBinding binding(Supplier<Matrix4f> f, Observable... dependencies) {
+        return new Matrix4fBinding(f, dependencies);
+    }
+
+    public Matrix4fBinding(Supplier<Matrix4f> f, Observable... dependencies) {
+        bind(f, dependencies);
     }
 
     @Override

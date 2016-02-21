@@ -28,7 +28,7 @@ public class BindingsTest {
 
     @Test
     public void testScale() {
-        ObservableValue<Matrix4f> m = scale(vector(x, y, z));
+        ObservableValue<Matrix4f> m = scaleMatrix(vector(x, y, z));
 
         assertNear(X, m.getValue().multiply(X));
         assertNear(YZ, m.getValue().multiply(YZ));
@@ -56,7 +56,7 @@ public class BindingsTest {
 
     @Test
     public void testTranslate() {
-        ObservableValue<Matrix4f> m = translate(vector(x, y, z));
+        ObservableValue<Matrix4f> m = translationMatrix(vector(x, y, z));
 
         assertNear(vect(2, 1, 1, 1), m.getValue().multiply(XW));
         assertNear(vect(1, 2, 2, 1), m.getValue().multiply(YZW));
@@ -85,7 +85,7 @@ public class BindingsTest {
     @Test
     public void testRotate() {
         Vector4fProperty q = new Vector4fProperty(X.w((float) PI));
-        Matrix4fBinding rotation = rotate(q);
+        Matrix4fBinding rotation = rotationMatrix(q);
         ObservableValue<Vector4f> rX = product(rotation, X);
         ObservableValue<Vector4f> rY = product(rotation, Y);
         ObservableValue<Vector4f> rZ = product(rotation, Z);
