@@ -7,7 +7,7 @@ import java.util.Optional;
  */
 public interface Shaped {
 
-    public default Optional<Object> mesh() {
+    public default Optional<Mesh> mesh() {
         return Optional.empty();
     }
 

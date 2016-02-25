@@ -1,9 +1,7 @@
 package org.qw3rtrun.aub.engine.scene;
 
 import javafx.beans.property.*;
-import org.qw3rtrun.aub.engine.mixin.Node;
-import org.qw3rtrun.aub.engine.mixin.Shaped;
-import org.qw3rtrun.aub.engine.mixin.Tangible;
+import org.qw3rtrun.aub.engine.mixin.*;
 import org.qw3rtrun.aub.engine.property.Bindings;
 import org.qw3rtrun.aub.engine.property.Matrix4fBinding;
 import org.qw3rtrun.aub.engine.property.Vector4fProperty;
@@ -98,6 +96,19 @@ public class Object implements Node, Shaped, Tangible {
     @Override
     public Matrix4fBinding absoluteToLocal() {
         return absoluteToLocal;
+    }
+
+    void pushToContext() {
+        mesh().ifPresent(Mesh::push);
+        material().ifPresent(Material::push);
+    }
+
+    void popFromContext() {
+        mesh().ifPresent(Mesh::pop);
+        material().ifPresent(Material::pop);
+    }
+
+    public void render() {
     }
 }
 

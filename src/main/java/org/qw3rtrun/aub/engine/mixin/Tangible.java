@@ -4,7 +4,7 @@ import java.util.Optional;
 
 public interface Tangible {
 
-    default Optional<Object> material() {
+    default Optional<Material> material() {
         return Optional.empty();
     }
 }
