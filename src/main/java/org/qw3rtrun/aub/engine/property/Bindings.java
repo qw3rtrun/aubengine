@@ -16,9 +16,6 @@ import static org.qw3rtrun.aub.engine.property.Matrix4fBinding.binding;
 import static org.qw3rtrun.aub.engine.vectmath.Matrix4f.matr;
 import static org.qw3rtrun.aub.engine.vectmath.Vector4f.*;
 
-/**
- * Created by strunov on 9/8/2015.
- */
 public class Bindings {
 
     private static Vector4fBinding multiply0(ObservableNumberValue k, ObservableValue<Vector4f> v, Observable... dependencies) {
@@ -157,8 +154,8 @@ public class Bindings {
             }, quaternion);
     }
 
-    public static Matrix4fBinding rotationMatrix(Vector4f quaterion) {
-        return rotationMatrix(new Vector4fConstant(quaterion));
+    public static Matrix4fBinding rotationMatrix(Vector4f quaternion) {
+        return rotationMatrix(new Vector4fConstant(quaternion));
     }
 
 }

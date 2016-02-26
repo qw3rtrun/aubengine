@@ -3,7 +3,6 @@ package org.qw3rtrun.aub.engine.scene;
 import javafx.beans.property.FloatProperty;
 import javafx.beans.property.SimpleFloatProperty;
 import org.qw3rtrun.aub.engine.property.Matrix4fBinding;
-import org.qw3rtrun.aub.engine.vectmath.Matrix4f;
 
 import static org.qw3rtrun.aub.engine.property.Matrix4fBinding.binding;
 import static org.qw3rtrun.aub.engine.vectmath.Matrix4f.matr;
@@ -40,7 +39,7 @@ public class Camera extends Object {
 
     }
 
-    public void use() {
+    public void use(int pipeline) {
 
     }
 }
