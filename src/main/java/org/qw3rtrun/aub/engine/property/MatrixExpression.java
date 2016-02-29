@@ -8,6 +8,6 @@ public interface MatrixExpression extends ObservableMatrix {
 
     default Matrix4fBinding inversion() {
         //TODO
-        return null;
+        return concat(Matrix4fConstant.CONST_E);
     }
 }

@@ -5,6 +5,7 @@ import javafx.beans.property.SimpleFloatProperty;
 import javafx.beans.value.ObservableValue;
 import org.junit.Before;
 import org.junit.Test;
+import org.qw3rtrun.aub.engine.property.Bindings;
 import org.qw3rtrun.aub.engine.property.Matrix4fBinding;
 import org.qw3rtrun.aub.engine.property.Vector4fProperty;
 
@@ -108,5 +109,21 @@ public class BindingsTest {
         System.out.println(rY.getValue());
         System.out.println(rZ.getValue());
         System.out.println();
+    }
+
+    @Test
+    public void inverse() {
+        for (int i = 0; i < 100; i++) {
+            (rotationMatrix(X.w((float) PI / 3)).concat(rotationMatrix(Y.w((float) PI)))).getValue();
+        }
+
+        System.out.println(System.currentTimeMillis());
+        Matrix4fBinding rotation = rotationMatrix(X.w((float) PI / 3)).concat(rotationMatrix(Y.w((float) PI)));
+        Matrix4fBinding irotation = rotationMatrix(Y.w(-1 * (float) PI)).concat(rotationMatrix(X.w(-1 * (float) PI / 3)));
+
+//        System.out.println(rotation.getValue());
+
+        Bindings.multiply(rotation, irotation).getValue();
+        System.out.print(System.currentTimeMillis());
     }
 }

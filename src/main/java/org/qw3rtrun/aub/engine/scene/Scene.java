@@ -37,7 +37,7 @@ public class Scene {
         }
     }
 
-    public void render(){
+    public void render() throws InterruptedException {
         GL41.glBindProgramPipeline(pipeline);
         objects.forEach(Object::render);
     }
