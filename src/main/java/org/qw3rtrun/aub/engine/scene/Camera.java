@@ -2,6 +2,9 @@ package org.qw3rtrun.aub.engine.scene;
 
 import javafx.beans.property.FloatProperty;
 import javafx.beans.property.SimpleFloatProperty;
+import org.lwjgl.opengl.GL41;
+import org.qw3rtrun.aub.engine.opengl.Pipeline;
+import org.qw3rtrun.aub.engine.opengl.VertexShaderProgram;
 import org.qw3rtrun.aub.engine.property.Matrix4fBinding;
 
 import static org.qw3rtrun.aub.engine.property.Matrix4fBinding.binding;
@@ -15,7 +18,7 @@ public class Camera extends Object {
 
     private final FloatProperty zFar = new SimpleFloatProperty(this, "z far", 3f);
 
-    private final FloatProperty frustumScale = new SimpleFloatProperty(this, "frustrum scale", 1f);
+    private final FloatProperty frustumScale = new SimpleFloatProperty(this, "frustum scale", 1f);
 
     private final Matrix4fBinding cameraToClip = binding(
             () -> {
@@ -35,11 +38,9 @@ public class Camera extends Object {
 
     private final Matrix4fBinding absoluteToClip = cameraToClip.concat(absoluteToLocal());
 
-    void makeMain() {
+    private final VertexShaderProgram shader = new VertexShaderProgram("");
 
-    }
-
-    public void use(int pipeline) {
-
+    public void useWith(Pipeline pipeline) {
+        GL41.glUseProgramStages(pipeline.pointer(), shader.getType().getCode(), shader.pointer());
     }
 }

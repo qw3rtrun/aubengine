@@ -11,19 +11,24 @@ public abstract class GLObject {
     protected abstract int glGen();
 
     public final void delete() {
-        if (isBind()) {
-            glDelete(pointer);
-        }
+        assertAttached();
+        glDelete(pointer);
     }
 
     protected abstract void glDelete(int pointer);
 
-    public final boolean isBind() {
+    public final boolean isAttached() {
         return pointer > 0;
     }
 
     public int pointer() {
         return pointer;
+    }
+
+    public void assertAttached() throws IllegalStateException {
+        if (pointer < 1) {
+            throw new IllegalStateException("GL Object isn't attached");
+        }
     }
 
     @Override

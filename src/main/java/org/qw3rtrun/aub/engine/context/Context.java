@@ -1,6 +1,7 @@
 package org.qw3rtrun.aub.engine.context;
 
 import org.lwjgl.Sys;
+import org.lwjgl.opengl.GL;
 import org.lwjgl.opengl.GLContext;
 import org.qw3rtrun.aub.engine.scene.Scene;
 
@@ -18,16 +19,9 @@ public class Context extends Thread {
         this.scene = scene;
     }
 
-    public static void main(String[] args) {
-        Context context = new Context(new Window(), new Scene());
-        context.start();
-    }
 
     @Override
     public void run() {
-
-        System.out.println("Hello LWJGL " + Sys.getVersion() + "!");
-
         try {
             window.init();
             init();
@@ -46,6 +40,12 @@ public class Context extends Thread {
         }
     }
 
+    public void logVersion(){
+        System.out.println("LWJGL " + Sys.getVersion() + "!");
+        System.out.println("OpenGL 2.0 - "+GL.getCapabilities().OpenGL21);
+        System.out.println("OpenGL 4.1 - "+GL.getCapabilities().OpenGL41);
+    }
+
     private void loop() throws InterruptedException {
         while (!isInterrupted()) {
             if (window.isClosing()) {
@@ -58,9 +58,15 @@ public class Context extends Thread {
 
     private void init() {
         GLContext.createFromCurrent();
+        logVersion();
         glClearColor(1.0f, 1.0f, 1.0f, 0.0f);
         glEnable(GL_CULL_FACE);
         glCullFace(GL_BACK);
         glFrontFace(GL_CW);
+    }
+
+    public static void main(String[] args) {
+        Context context = new Context(new Window(), new Scene());
+        context.start();
     }
 }
