@@ -5,9 +5,9 @@ import javafx.beans.property.SimpleFloatProperty;
 import org.lwjgl.opengl.GL41;
 import org.qw3rtrun.aub.engine.opengl.Pipeline;
 import org.qw3rtrun.aub.engine.opengl.VertexShaderProgram;
-import org.qw3rtrun.aub.engine.property.Matrix4fBinding;
+import org.qw3rtrun.aub.engine.property.matrix.Matrix4fBinding;
 
-import static org.qw3rtrun.aub.engine.property.Matrix4fBinding.binding;
+import static org.qw3rtrun.aub.engine.property.matrix.Matrix4fBinding.binding;
 import static org.qw3rtrun.aub.engine.vectmath.Matrix4f.matr;
 
 public class Camera extends Object {

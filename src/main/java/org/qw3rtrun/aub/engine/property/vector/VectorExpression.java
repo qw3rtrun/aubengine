@@ -1,7 +1,8 @@
-package org.qw3rtrun.aub.engine.property;
+package org.qw3rtrun.aub.engine.property.vector;
 
 import javafx.beans.binding.FloatBinding;
 import javafx.beans.value.ObservableNumberValue;
+import org.qw3rtrun.aub.engine.property.Bindings;
 
 import static org.qw3rtrun.aub.engine.vectmath.Vector4f.vect;
 

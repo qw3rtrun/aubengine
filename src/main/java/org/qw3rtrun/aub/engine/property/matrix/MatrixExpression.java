@@ -1,4 +1,6 @@
-package org.qw3rtrun.aub.engine.property;
+package org.qw3rtrun.aub.engine.property.matrix;
+
+import org.qw3rtrun.aub.engine.property.Bindings;
 
 public interface MatrixExpression extends ObservableMatrix {
 

@@ -1,4 +1,4 @@
-package org.qw3rtrun.aub.engine.property;
+package org.qw3rtrun.aub.engine.property.matrix;
 
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
@@ -59,7 +59,7 @@ public class Matrix4fProperty extends ObservableMatrixBase implements Property<M
 
     @Override
     public boolean isBound() {
-        return false;
+        return observable != null;
     }
 
     @Override

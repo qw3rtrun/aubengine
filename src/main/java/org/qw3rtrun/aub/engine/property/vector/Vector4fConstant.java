@@ -1,4 +1,4 @@
-package org.qw3rtrun.aub.engine.property;
+package org.qw3rtrun.aub.engine.property.vector;
 
 import javafx.beans.InvalidationListener;
 import javafx.beans.value.ChangeListener;

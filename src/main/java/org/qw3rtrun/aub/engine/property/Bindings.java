@@ -5,6 +5,10 @@ import javafx.beans.binding.FloatBinding;
 import javafx.beans.value.ObservableFloatValue;
 import javafx.beans.value.ObservableNumberValue;
 import javafx.beans.value.ObservableValue;
+import org.qw3rtrun.aub.engine.property.matrix.Matrix4fBinding;
+import org.qw3rtrun.aub.engine.property.matrix.ObservableMatrix;
+import org.qw3rtrun.aub.engine.property.vector.Vector4fBinding;
+import org.qw3rtrun.aub.engine.property.vector.Vector4fConstant;
 import org.qw3rtrun.aub.engine.vectmath.Matrix4f;
 import org.qw3rtrun.aub.engine.vectmath.Vector4f;
 
@@ -12,7 +16,7 @@ import java.util.function.Function;
 
 import static com.sun.javafx.binding.FloatConstant.valueOf;
 import static java.util.Arrays.asList;
-import static org.qw3rtrun.aub.engine.property.Matrix4fBinding.binding;
+import static org.qw3rtrun.aub.engine.property.matrix.Matrix4fBinding.binding;
 import static org.qw3rtrun.aub.engine.vectmath.Matrix4f.matr;
 import static org.qw3rtrun.aub.engine.vectmath.Vector4f.*;
 

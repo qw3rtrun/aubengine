@@ -3,8 +3,12 @@ package org.qw3rtrun.aub.engine.vectmath;
 import java.io.Serializable;
 
 import static java.util.Arrays.asList;
+import static org.qw3rtrun.aub.engine.vectmath.Vector4f.vect;
 
 public class Quaternion implements Serializable {
+
+    public static final Quaternion O1 = new Quaternion(0, 0, 0, 1);
+
     public final float x;
     public final float y;
     public final float z;
@@ -25,8 +29,12 @@ public class Quaternion implements Serializable {
         return new Quaternion(v.x, v.y, v.z, v.w);
     }
 
-    public static Quaternion quaternion(Vector4f v, float rad){
-        return new Quaternion(v.x, v.y, v.z, rad);
+    public static Quaternion quaternion() {
+        return O1;
+    }
+
+    public static Quaternion quaternion(Vector4f v, float a) {
+        return new Quaternion(v.x, v.y, v.z, a);
     }
 
     public static Quaternion productAll(Quaternion... vectors) {
@@ -51,6 +59,26 @@ public class Quaternion implements Serializable {
 
     public float getA() {
         return a;
+    }
+
+    public Quaternion withX(float x) {
+        return quaternion(x, this.y, this.z, this.a);
+    }
+
+    public Quaternion withY(float y) {
+        return quaternion(this.x, y, this.z, this.a);
+    }
+
+    public Quaternion withZ(float z) {
+        return quaternion(this.x, this.y, z, this.a);
+    }
+
+    public Quaternion withA(float a) {
+        return quaternion(this.x, this.y, this.z, a);
+    }
+
+    public Quaternion withVector(Vector4f v) {
+        return quaternion(v.x, v.y, v.z, a);
     }
 
     public Quaternion conjugate() {
@@ -102,7 +130,6 @@ public class Quaternion implements Serializable {
         Quaternion vector4f = (Quaternion) o;
 
         return Float.compare(vector4f.a, a) == 0 && Float.compare(vector4f.x, x) == 0 && Float.compare(vector4f.y, y) == 0 && Float.compare(vector4f.z, z) == 0;
-
     }
 
     @Override
@@ -119,4 +146,7 @@ public class Quaternion implements Serializable {
         return "q(" + x + ", " + y + ", " + z + ", " + a + ")";
     }
 
+    public Vector4f asVector() {
+        return vect(x, y, z, a);
+    }
 }

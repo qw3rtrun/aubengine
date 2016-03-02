@@ -1,4 +1,4 @@
-package org.qw3rtrun.aub.engine.property;
+package org.qw3rtrun.aub.engine.property.matrix;
 
 import com.sun.javafx.binding.BindingHelperObserver;
 import com.sun.javafx.binding.ExpressionHelper;
@@ -8,20 +8,28 @@ import javafx.beans.binding.Binding;
 import javafx.beans.value.ChangeListener;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import org.qw3rtrun.aub.engine.vectmath.Vector4f;
+import org.qw3rtrun.aub.engine.vectmath.Matrix4f;
 
 import java.util.function.Supplier;
 
 /**
- * Created by strunov on 9/8/2015.
+ * Created by strunov on 9/23/2015.
  */
-public class Vector4fBinding extends ObservableVectorBase implements Binding<Vector4f>, VectorExpression {
+public class Matrix4fBinding extends ObservableMatrixBase implements Binding<Matrix4f>, MatrixExpression {
 
-    private Supplier<Vector4f> func;
-    private Vector4f value;
+    private Supplier<Matrix4f> func;
+    private Matrix4f value;
     private boolean valid = false;
     private BindingHelperObserver observer;
-    private ExpressionHelper<Vector4f> helper = null;
+    private ExpressionHelper<Matrix4f> helper = null;
+
+    public Matrix4fBinding(Supplier<Matrix4f> f, Observable... dependencies) {
+        bind(f, dependencies);
+    }
+
+    public static Matrix4fBinding binding(Supplier<Matrix4f> f, Observable... dependencies) {
+        return new Matrix4fBinding(f, dependencies);
+    }
 
     @Override
     public void addListener(InvalidationListener listener) {
@@ -34,16 +42,16 @@ public class Vector4fBinding extends ObservableVectorBase implements Binding<Vec
     }
 
     @Override
-    public void addListener(ChangeListener<? super Vector4f> listener) {
+    public void addListener(ChangeListener<? super Matrix4f> listener) {
         helper = ExpressionHelper.addListener(helper, this, listener);
     }
 
     @Override
-    public void removeListener(ChangeListener<? super Vector4f> listener) {
+    public void removeListener(ChangeListener<? super Matrix4f> listener) {
         helper = ExpressionHelper.removeListener(helper, listener);
     }
 
-    protected final void bind(Supplier<Vector4f> func, Observable... dependencies) {
+    protected final void bind(Supplier<Matrix4f> func, Observable... dependencies) {
         if (func != null && dependencies != null && dependencies.length > 0) {
             this.func = func;
             if (observer == null) {
@@ -74,7 +82,7 @@ public class Vector4fBinding extends ObservableVectorBase implements Binding<Vec
     }
 
     @Override
-    public final Vector4f getValue() {
+    public final Matrix4f getValue() {
         if (!valid) {
             value = func != null ? func.get() : null;
             valid = true;
@@ -101,7 +109,8 @@ public class Vector4fBinding extends ObservableVectorBase implements Binding<Vec
 
     @Override
     public String toString() {
-        return valid ? "Vector4fBinding [value: " + getValue() + "]"
-                : "Vector4fBinding [invalid]";
+        return valid ? "Matrix4fBinding [value: " + getValue() + "]"
+                : "Matrix4fBinding [invalid]";
     }
 }
+

@@ -2,16 +2,13 @@ package org.qw3rtrun.aub.engine.scene;
 
 import javafx.beans.property.*;
 import org.qw3rtrun.aub.engine.mixin.*;
-import org.qw3rtrun.aub.engine.property.Bindings;
-import org.qw3rtrun.aub.engine.property.Matrix4fBinding;
-import org.qw3rtrun.aub.engine.property.Vector4fProperty;
+import org.qw3rtrun.aub.engine.property.matrix.Matrix4fBinding;
+import org.qw3rtrun.aub.engine.property.vector.Vector4fProperty;
 
 import java.util.ArrayList;
 
 import static javafx.collections.FXCollections.observableList;
-import static org.qw3rtrun.aub.engine.property.Bindings.rotationMatrix;
-import static org.qw3rtrun.aub.engine.property.Bindings.scaleMatrix;
-import static org.qw3rtrun.aub.engine.property.Bindings.translationMatrix;
+import static org.qw3rtrun.aub.engine.property.Bindings.*;
 import static org.qw3rtrun.aub.engine.vectmath.Vector4f.XYZ;
 import static org.qw3rtrun.aub.engine.vectmath.Vector4f.ZERO;
 
@@ -19,6 +16,8 @@ public class Object implements Node, Shaped, Tangible {
 
     private final ObjectProperty<Object> parent = new SimpleObjectProperty<>();
     private final ListProperty<Object> childs = new SimpleListProperty<>(observableList(new ArrayList<>()));
+    private final Matrix4fBinding absoluteToLocal = localToAbsolute.inversion();
+    private StringProperty name = new SimpleStringProperty(super.toString());
     private final Vector4fProperty scale = new Vector4fProperty(XYZ) {
         @Override
         public java.lang.Object getBean() {
@@ -52,12 +51,9 @@ public class Object implements Node, Shaped, Tangible {
             return Object.this;
         }
     };
-
     private final Matrix4fBinding localToAbsolute = translationMatrix(translation)
             .concat(rotationMatrix(rotation))
             .concat(scaleMatrix(scale));
-    private final Matrix4fBinding absoluteToLocal = localToAbsolute.inversion();
-    private StringProperty name = new SimpleStringProperty(super.toString());
 
     public StringProperty name() {
         return name;

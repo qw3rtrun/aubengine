@@ -6,8 +6,8 @@ import javafx.beans.value.ObservableValue;
 import org.junit.Before;
 import org.junit.Test;
 import org.qw3rtrun.aub.engine.property.Bindings;
-import org.qw3rtrun.aub.engine.property.Matrix4fBinding;
-import org.qw3rtrun.aub.engine.property.Vector4fProperty;
+import org.qw3rtrun.aub.engine.property.matrix.Matrix4fBinding;
+import org.qw3rtrun.aub.engine.property.vector.Vector4fProperty;
 
 import static java.lang.Math.PI;
 import static org.qw3rtrun.aub.engine.property.Bindings.*;

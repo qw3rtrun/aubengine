@@ -1,11 +1,13 @@
 package org.qw3rtrun.aub.engine.property;
 
 import org.junit.Test;
+import org.qw3rtrun.aub.engine.property.vector.Vector4fBinding;
+import org.qw3rtrun.aub.engine.property.vector.Vector4fProperty;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
-import static org.qw3rtrun.aub.engine.property.Vector4fConstant.*;
-import static org.qw3rtrun.aub.engine.property.Vector4fProperty.vectProp;
+import static org.qw3rtrun.aub.engine.property.vector.Vector4fConstant.*;
+import static org.qw3rtrun.aub.engine.property.vector.Vector4fProperty.vectProp;
 import static org.qw3rtrun.aub.engine.vectmath.Vector4f.XYZ;
 import static org.qw3rtrun.aub.engine.vectmath.Vector4f.vect;
 

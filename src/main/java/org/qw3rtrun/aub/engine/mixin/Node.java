@@ -2,8 +2,8 @@ package org.qw3rtrun.aub.engine.mixin;
 
 import javafx.beans.property.ListProperty;
 import javafx.beans.property.ObjectProperty;
-import org.qw3rtrun.aub.engine.property.Matrix4fBinding;
-import org.qw3rtrun.aub.engine.property.Vector4fProperty;
+import org.qw3rtrun.aub.engine.property.matrix.Matrix4fBinding;
+import org.qw3rtrun.aub.engine.property.vector.Vector4fProperty;
 import org.qw3rtrun.aub.engine.vectmath.Vector4f;
 
 /**
