@@ -1,5 +1,6 @@
 package org.qw3rtrun.aub.engine.property;
 
+import com.sun.javafx.binding.FloatConstant;
 import javafx.beans.Observable;
 import javafx.beans.binding.FloatBinding;
 import javafx.beans.value.ObservableFloatValue;
@@ -7,6 +8,8 @@ import javafx.beans.value.ObservableNumberValue;
 import javafx.beans.value.ObservableValue;
 import org.qw3rtrun.aub.engine.property.matrix.Matrix4fBinding;
 import org.qw3rtrun.aub.engine.property.matrix.ObservableMatrix;
+import org.qw3rtrun.aub.engine.property.quaternion.QuaternionBinding;
+import org.qw3rtrun.aub.engine.property.vector.ObservableVector;
 import org.qw3rtrun.aub.engine.property.vector.Vector4fBinding;
 import org.qw3rtrun.aub.engine.property.vector.Vector4fConstant;
 import org.qw3rtrun.aub.engine.vectmath.Matrix4f;
@@ -17,7 +20,8 @@ import java.util.function.Function;
 import static com.sun.javafx.binding.FloatConstant.valueOf;
 import static java.util.Arrays.asList;
 import static org.qw3rtrun.aub.engine.property.matrix.Matrix4fBinding.binding;
-import static org.qw3rtrun.aub.engine.vectmath.Matrix4f.matr;
+import static org.qw3rtrun.aub.engine.property.vector.Vector4fConstant.*;
+import static org.qw3rtrun.aub.engine.vectmath.Quaternion.quaternion;
 import static org.qw3rtrun.aub.engine.vectmath.Vector4f.*;
 
 public class Bindings {
@@ -133,33 +137,29 @@ public class Bindings {
 
     public static Matrix4fBinding scaleMatrix(ObservableValue<Vector4f> scale) {
         return binding(() -> {
-                final Vector4f s = scale.getValue();
-                return Matrix4f.rows(X.multiply(s.x), Y.multiply(s.y), Z.multiply(s.z), W);
-            }, scale);
+            final Vector4f s = scale.getValue();
+            return Matrix4f.rows(X.multiply(s.x), Y.multiply(s.y), Z.multiply(s.z), W);
+        }, scale);
     }
 
-    public static Matrix4fBinding rotationMatrix(ObservableValue<Vector4f> quaternion) {
-        return new Matrix4fBinding(
-            () -> {
-                double x = quaternion.getValue().x;
-                double y = quaternion.getValue().y;
-                double z = quaternion.getValue().z;
-                double a = quaternion.getValue().w;
-                double C = Math.cos(a);
-                double S = Math.sin(a);
-                double iC = 1 - C;
-                double x2 = x * x;
-                double y2 = y * y;
-                double z2 = z * z;
-                return matr(
-                        (float) (x2 + (1 - x2) * C), (float) (iC * x * y - z * S), (float) (iC * x * z + y * S),
-                        (float) (iC * x * y + z * S), (float) (y2 + (1 - y2) * C), (float) (iC * y * z - x * S),
-                        (float) (iC * x * z - y * S), (float) (iC * y * z + x * S), (float) (z2 + (1 - z2) * C));
-            }, quaternion);
-    }
 
     public static Matrix4fBinding rotationMatrix(Vector4f quaternion) {
         return rotationMatrix(new Vector4fConstant(quaternion));
+    }
+
+    public static QuaternionBinding axisRotation(ObservableVector axis, ObservableFloatValue radian) {
+        return new QuaternionBinding(() -> {
+            double a2 = radian.doubleValue() / 2;
+            float sin = (float) Math.sin(a2);
+            float cos = (float) Math.cos(a2);
+            return quaternion(axis.getX() * sin, axis.getY() * sin, axis.getZ() * sin, cos);
+        }, axis, radian);
+    }
+
+    public static QuaternionBinding orientation(ObservableVector rotation) {
+        return axisRotation(CONST_X, FloatConstant.valueOf(rotation.getX()))
+                .product(axisRotation(CONST_Y, FloatConstant.valueOf(rotation.getY()))
+                        .product(axisRotation(CONST_Z, FloatConstant.valueOf(rotation.getZ()))));
     }
 
 }
