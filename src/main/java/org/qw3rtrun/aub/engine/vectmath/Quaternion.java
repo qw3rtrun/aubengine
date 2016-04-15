@@ -3,11 +3,22 @@ package org.qw3rtrun.aub.engine.vectmath;
 import java.io.Serializable;
 
 import static java.util.Arrays.asList;
+import static org.qw3rtrun.aub.engine.vectmath.Matrix4f.matr;
 import static org.qw3rtrun.aub.engine.vectmath.Vector4f.vect;
 
 public class Quaternion implements Serializable {
 
-    public static final Quaternion O1 = new Quaternion(0, 0, 0, 1);
+    public static final Quaternion Q1 = new Quaternion(0, 0, 0, 1);
+
+    public static final Quaternion QX0 = new Quaternion(1, 0, 0, 0);
+    public static final Quaternion QX1 = new Quaternion(1, 0, 0, 1);
+    public static final Quaternion QY0 = new Quaternion(0, 1, 0, 0);
+    public static final Quaternion QY1 = new Quaternion(0, 1, 0, 1);
+    public static final Quaternion QZ0 = new Quaternion(0, 0, 1, 0);
+    public static final Quaternion QZ1 = new Quaternion(0, 0, 1, 1);
+
+    public static final Quaternion QXYZ0 = new Quaternion(1, 1, 1, 0);
+    public static final Quaternion QXYZ1 = new Quaternion(1, 1, 1, 1);
 
     public final float x;
     public final float y;
@@ -30,7 +41,7 @@ public class Quaternion implements Serializable {
     }
 
     public static Quaternion quaternion() {
-        return O1;
+        return Q1;
     }
 
     public static Quaternion quaternion(Vector4f v, float a) {
@@ -116,6 +127,26 @@ public class Quaternion implements Serializable {
 
     public float norm() {
         return (float) Math.sqrt(x*x + y*y + z*z + a*a);
+    }
+
+    public Matrix4f rotateMatrix() {
+        double C = Math.cos(a);
+        double S = Math.sin(a);
+        double iC = 1 - C;
+        double x2 = x * x;
+        double y2 = y * y;
+        double z2 = z * z;
+        return matr(
+                (float) (x2 + (1 - x2) * C), (float) (iC * x * y - z * S), (float) (iC * x * z + y * S),
+                (float) (iC * x * y + z * S), (float) (y2 + (1 - y2) * C), (float) (iC * y * z - x * S),
+                (float) (iC * x * z - y * S), (float) (iC * y * z + x * S), (float) (z2 + (1 - z2) * C));
+    }
+
+    public Matrix4f rotateNormMatrix() {
+        return matr(
+                1 - 2 * y * y - 2 * z * z, 2 * (x * y - z * a), 2 * (x * z + y * a),
+                2 * (x * y + z * a), 1 - 2 * x * x - 2 * z * z, 2 * (y * z - x * a),
+                2 * (x * z - y * a), 2 * (y * z + x * a), 1 - 2 * x * x - 2 * y * y);
     }
 
     public boolean isUnit() {

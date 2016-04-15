@@ -5,11 +5,7 @@ import javafx.beans.property.SimpleFloatProperty;
 import javafx.beans.value.ObservableValue;
 import org.junit.Before;
 import org.junit.Test;
-import org.qw3rtrun.aub.engine.property.Bindings;
-import org.qw3rtrun.aub.engine.property.matrix.Matrix4fBinding;
-import org.qw3rtrun.aub.engine.property.vector.Vector4fProperty;
 
-import static java.lang.Math.PI;
 import static org.qw3rtrun.aub.engine.property.Bindings.*;
 import static org.qw3rtrun.aub.engine.vectmath.Vector4f.*;
 import static org.qw3rtrun.aub.engine.vectmath.Vector4fTest.assertNear;
@@ -81,49 +77,5 @@ public class BindingsTest {
         y.setValue(1);
         z.setValue(100);
         assertNear(vect(101, 3, 103, 1), v.getValue());
-    }
-
-    @Test
-    public void testRotate() {
-        Vector4fProperty q = new Vector4fProperty(X.w((float) PI));
-        Matrix4fBinding rotation = rotationMatrix(q);
-        ObservableValue<Vector4f> rX = product(rotation, X);
-        ObservableValue<Vector4f> rY = product(rotation, Y);
-        ObservableValue<Vector4f> rZ = product(rotation, Z);
-
-        System.out.println(rX.getValue());
-        System.out.println(rY.getValue());
-        System.out.println(rZ.getValue());
-        System.out.println();
-
-        q.setValue(X.w((float) (1)));
-
-        System.out.println(rX.getValue());
-        System.out.println(rY.getValue());
-        System.out.println(rZ.getValue());
-        System.out.println();
-
-        q.setValue(X.w((float) (PI)));
-
-        System.out.println(rX.getValue());
-        System.out.println(rY.getValue());
-        System.out.println(rZ.getValue());
-        System.out.println();
-    }
-
-    @Test
-    public void inverse() {
-        for (int i = 0; i < 100; i++) {
-            (rotationMatrix(X.w((float) PI / 3)).concat(rotationMatrix(Y.w((float) PI)))).getValue();
-        }
-
-        System.out.println(System.currentTimeMillis());
-        Matrix4fBinding rotation = rotationMatrix(X.w((float) PI / 3)).concat(rotationMatrix(Y.w((float) PI)));
-        Matrix4fBinding irotation = rotationMatrix(Y.w(-1 * (float) PI)).concat(rotationMatrix(X.w(-1 * (float) PI / 3)));
-
-//        System.out.println(rotation.getValue());
-
-        Bindings.multiply(rotation, irotation).getValue();
-        System.out.print(System.currentTimeMillis());
     }
 }

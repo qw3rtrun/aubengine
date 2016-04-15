@@ -9,7 +9,7 @@ import org.qw3rtrun.aub.engine.vectmath.Quaternion;
 
 import java.lang.ref.WeakReference;
 
-import static org.qw3rtrun.aub.engine.vectmath.Quaternion.O1;
+import static org.qw3rtrun.aub.engine.vectmath.Quaternion.Q1;
 import static org.qw3rtrun.aub.engine.vectmath.Quaternion.quaternion;
 
 /**
@@ -17,14 +17,14 @@ import static org.qw3rtrun.aub.engine.vectmath.Quaternion.quaternion;
  */
 public class Quaternion4fProperty extends ObservableQuaternionBase implements Property<Quaternion>, QuaternionExpression {
 
-    private Quaternion value = O1;
+    private Quaternion value = Q1;
     private ObservableValue<? extends Quaternion> observable;
     private InvalidationListener listener = null;
 
     private boolean valid = true;
 
     public Quaternion4fProperty() {
-        this(O1);
+        this(Q1);
     }
 
     public Quaternion4fProperty(Quaternion value) {

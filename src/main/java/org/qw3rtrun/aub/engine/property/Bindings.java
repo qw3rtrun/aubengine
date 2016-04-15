@@ -8,6 +8,7 @@ import javafx.beans.value.ObservableNumberValue;
 import javafx.beans.value.ObservableValue;
 import org.qw3rtrun.aub.engine.property.matrix.Matrix4fBinding;
 import org.qw3rtrun.aub.engine.property.matrix.ObservableMatrix;
+import org.qw3rtrun.aub.engine.property.quaternion.ObservableQuaternion;
 import org.qw3rtrun.aub.engine.property.quaternion.QuaternionBinding;
 import org.qw3rtrun.aub.engine.property.vector.ObservableVector;
 import org.qw3rtrun.aub.engine.property.vector.Vector4fBinding;
@@ -21,21 +22,18 @@ import static com.sun.javafx.binding.FloatConstant.valueOf;
 import static java.util.Arrays.asList;
 import static org.qw3rtrun.aub.engine.property.matrix.Matrix4fBinding.binding;
 import static org.qw3rtrun.aub.engine.property.vector.Vector4fConstant.*;
+import static org.qw3rtrun.aub.engine.vectmath.Quaternion.QXYZ0;
 import static org.qw3rtrun.aub.engine.vectmath.Quaternion.quaternion;
 import static org.qw3rtrun.aub.engine.vectmath.Vector4f.*;
 
 public class Bindings {
 
     private static Vector4fBinding multiply0(ObservableNumberValue k, ObservableValue<Vector4f> v, Observable... dependencies) {
-        return new Vector4fBinding() {{
-            bind(() -> v.getValue().multiply(k.floatValue()), dependencies);
-        }};
+        return new Vector4fBinding(() -> v.getValue().multiply(k.floatValue()), dependencies);
     }
 
     private static Vector4fBinding add0(ObservableValue<Vector4f> v1, ObservableValue<Vector4f> v2, Observable... dependencies) {
-        return new Vector4fBinding() {{
-            bind(() -> v1.getValue().add(v2.getValue()), dependencies);
-        }};
+        return new Vector4fBinding(() -> v1.getValue().add(v2.getValue()), dependencies);
     }
 
     public static <P, T extends Number> FloatBinding func(Function<P, T> f, ObservableValue<P> p) {
@@ -71,30 +69,21 @@ public class Bindings {
         return add0(v1, new Vector4fConstant(v2), v1);
     }
 
-    @SafeVarargs
-    public static Vector4fBinding add(ObservableValue<Vector4f>... vectors) {
+    public static Vector4fBinding add(ObservableVector... vectors) {
         switch (vectors.length) {
             case 0:
-                return new Vector4fBinding() {{
-                    bind(() -> ZERO);
-                }};
+                return new Vector4fBinding(() -> ZERO);
             case 1:
-                return new Vector4fBinding() {{
-                    bind(vectors[0]::getValue, vectors[0]);
-                }};
+                return new Vector4fBinding(vectors[0]::getValue, vectors[0]);
             case 2:
-                return add0(vectors[0], vectors[1], vectors);
+                return add0(vectors[0], vectors[1], vectors[0], vectors[1]);
             default:
-                return new Vector4fBinding() {{
-                    bind(() -> vect().addAll(asList(vectors).stream().map(ObservableValue::getValue).toArray(Vector4f[]::new)), vectors);
-                }};
+                return new Vector4fBinding(() -> vect().addAll(asList(vectors).stream().map(ObservableValue::getValue).toArray(Vector4f[]::new)), vectors);
         }
     }
 
     public static Vector4fBinding vector(ObservableFloatValue x, ObservableFloatValue y, ObservableFloatValue z) {
-        return new Vector4fBinding() {{
-            bind(() -> vect(x.get(), y.get(), z.get()), x, y, z);
-        }};
+        return new Vector4fBinding(() -> vect(x.get(), y.get(), z.get()), x, y, z);
     }
 
     public static ObservableFloatValue x(ObservableValue<Vector4f> vector) {
@@ -110,21 +99,15 @@ public class Bindings {
     }
 
     public static Vector4fBinding product(ObservableValue<Matrix4f> matrix, ObservableValue<Vector4f> vector) {
-        return new Vector4fBinding() {{
-            bind(() -> matrix.getValue().multiply(vector.getValue()), matrix, vector);
-        }};
+        return new Vector4fBinding(() -> matrix.getValue().multiply(vector.getValue()), matrix, vector);
     }
 
     public static Vector4fBinding product(ObservableValue<Matrix4f> matrix, Vector4f vector) {
-        return new Vector4fBinding() {{
-            bind(() -> matrix.getValue().multiply(vector), matrix);
-        }};
+        return new Vector4fBinding(() -> matrix.getValue().multiply(vector), matrix);
     }
 
     public static Vector4fBinding product(Matrix4f matrix, ObservableValue<Vector4f> vector) {
-        return new Vector4fBinding() {{
-            bind(() -> matrix.multiply(vector.getValue()), vector);
-        }};
+        return new Vector4fBinding(() -> matrix.multiply(vector.getValue()), vector);
     }
 
     public static Matrix4fBinding multiply(ObservableMatrix m1, ObservableMatrix m2) {
@@ -142,24 +125,36 @@ public class Bindings {
         }, scale);
     }
 
-
-    public static Matrix4fBinding rotationMatrix(Vector4f quaternion) {
-        return rotationMatrix(new Vector4fConstant(quaternion));
-    }
-
-    public static QuaternionBinding axisRotation(ObservableVector axis, ObservableFloatValue radian) {
+    public static QuaternionBinding axisRotation(ObservableVector axis, ObservableNumberValue radian) {
         return new QuaternionBinding(() -> {
             double a2 = radian.doubleValue() / 2;
-            float sin = (float) Math.sin(a2);
-            float cos = (float) Math.cos(a2);
-            return quaternion(axis.getX() * sin, axis.getY() * sin, axis.getZ() * sin, cos);
+            double sin = (float) Math.sin(a2);
+            double cos = (float) Math.cos(a2);
+            return quaternion((float) (axis.getX() * sin), (float) (axis.getY() * sin), (float) (axis.getZ() * sin), (float) cos);
         }, axis, radian);
     }
 
     public static QuaternionBinding orientation(ObservableVector rotation) {
-        return axisRotation(CONST_X, FloatConstant.valueOf(rotation.getX()))
-                .product(axisRotation(CONST_Y, FloatConstant.valueOf(rotation.getY()))
-                        .product(axisRotation(CONST_Z, FloatConstant.valueOf(rotation.getZ()))));
+        return concatRotations(
+                axisRotation(CONST_X, FloatConstant.valueOf(rotation.getX())),
+                axisRotation(CONST_Y, FloatConstant.valueOf(rotation.getY())),
+                axisRotation(CONST_Z, FloatConstant.valueOf(rotation.getZ()))
+        );
     }
 
+    public static QuaternionBinding concatRotation(ObservableQuaternion quaternion1, ObservableQuaternion orientation2) {
+        return new QuaternionBinding(() -> orientation2.get().product(quaternion1.get()).normalize());
+    }
+
+    public static QuaternionBinding concatRotations(ObservableQuaternion... quaternions) {
+        switch (quaternions.length) {
+            case 0:
+                return new QuaternionBinding(() -> QXYZ0);
+            case 1:
+                return new QuaternionBinding(quaternions[0]::get, quaternions[0]);
+            default:
+                //noinspection OptionalGetWithoutIsPresent
+                return (QuaternionBinding) asList(quaternions).stream().<QuaternionBinding>reduce(Bindings::concatRotation).get();
+        }
+    }
 }
