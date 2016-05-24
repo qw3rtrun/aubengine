@@ -39,47 +39,47 @@ public class Vector4f implements Serializable {
     }
 
     public static Vector4f vect(float x, float y, float z) {
-        return  vect(x, y, z, 0);
+        return vect(x, y, z, 0);
     }
 
     public static Vector4f vect(float x, float y, float z, float w) {
-        if (w == 0) {
-            if (x == 0) {
-                if (y == 0) {
-                    if (z == 0) return ZERO;
-                    if (z == 1) return Z;
-                } else if (y == 1) {
-                    if (z == 0) return Y;
-                    if (z == 1) return YZ;
-                }
-            } else if (x == 1) {
-                if (y == 0) {
-                    if (z == 0) return X;
-                    if (z == 1) return XZ;
-                } else if (y == 1) {
-                    if (z == 0) return XY;
-                    if (z == 1) return XYZ;
-                }
-            }
-        } else if (w == 1) {
-            if (x == 0) {
-                if (y == 0) {
-                    if (z == 0) return W;
-                    if (z == 1) return ZW;
-                } else if (y == 1) {
-                    if (z == 0) return YW;
-                    if (z == 1) return YZW;
-                }
-            } else if (x == 1) {
-                if (y == 0) {
-                    if (z == 0) return XW;
-                    if (z == 1) return XZW;
-                } else if (y == 1) {
-                    if (z == 0) return XYW;
-                    if (z == 1) return XYZW;
-                }
-            }
-        }
+//        if (w == 0) {
+//            if (x == 0) {
+//                if (y == 0) {
+//                    if (z == 0) return ZERO;
+//                    if (z == 1) return Z;
+//                } else if (y == 1) {
+//                    if (z == 0) return Y;
+//                    if (z == 1) return YZ;
+//                }
+//            } else if (x == 1) {
+//                if (y == 0) {
+//                    if (z == 0) return X;
+//                    if (z == 1) return XZ;
+//                } else if (y == 1) {
+//                    if (z == 0) return XY;
+//                    if (z == 1) return XYZ;
+//                }
+//            }
+//        } else if (w == 1) {
+//            if (x == 0) {
+//                if (y == 0) {
+//                    if (z == 0) return W;
+//                    if (z == 1) return ZW;
+//                } else if (y == 1) {
+//                    if (z == 0) return YW;
+//                    if (z == 1) return YZW;
+//                }
+//            } else if (x == 1) {
+//                if (y == 0) {
+//                    if (z == 0) return XW;
+//                    if (z == 1) return XZW;
+//                } else if (y == 1) {
+//                    if (z == 0) return XYW;
+//                    if (z == 1) return XYZW;
+//                }
+//            }
+//        }
 
         return new Vector4f(x, y, z, w);
     }

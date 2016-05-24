@@ -6,7 +6,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertSame;
 import static org.qw3rtrun.aub.engine.vectmath.Vector4f.*;
 
 @RunWith(JMockit.class)
@@ -20,6 +19,14 @@ public class Vector4fTest {
 
     public static void assertNotNear(Vector4f exp, Vector4f act) {
         if (exp.distanceBound(act) <= EPSILON) throw new AssertionFailedError(exp + " == " + act);
+    }
+
+    @Test
+    public void testComponent() {
+        assertNear(vect(1, 3, -5, 5), vect().x(1).y(3).z(-5).w(5));
+        assertNear(vect(1, 3, -5), vect(1, 1, 1).add(0, 2, -6));
+        assertNear(vect(1, 3, -5), vect(1, 1, 1).addX(0).addY(2).addZ(-6));
+        assertNear(vect(1, 3, -5, 5), vect(1, 1, 1).addX(0).addY(2).addZ(-6).addW(5));
     }
 
     @Test
@@ -84,11 +91,11 @@ public class Vector4fTest {
         assertNotNear(X, XY);
         assertNotNear(ZERO, YZ);
 
-        assertSame(ZERO, vect(0, 0, 0));
-        assertSame(X, vect(1, 0, 0));
-        assertSame(X, vect(1, 0, -0));
+        assertEquals(ZERO, vect(0, 0, 0));
+        assertEquals(X, vect(1, 0, 0));
+        assertEquals(X, vect(1, 0, -0));
 
-        assertSame(XW, vect(1, 0, 0, 1));
+        assertEquals(XW, vect(1, 0, 0, 1));
     }
 
     @Test
@@ -116,5 +123,18 @@ public class Vector4fTest {
         assertNear(v.add(1, 2, 3).add(4, 2, 0), v.addAll(vect(1, 2, 3), vect(4, 2, 0)));
     }
 
+    @Test
+    public void normalize() throws Exception {
+        float norm = (float) (1 / Math.sqrt(3));
+        assertNear(vect(norm, norm, norm), vect(3, 3, 3).normalize());
+        assertNear(vect(norm, -norm, norm), vect(3, -3, 3).normalize());
+    }
+
+    @Test
+    public void multiply() throws Exception {
+        //TODO
+    }
+
 
 }
+
