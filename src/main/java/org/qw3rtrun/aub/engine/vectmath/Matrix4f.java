@@ -1,54 +1,54 @@
 package org.qw3rtrun.aub.engine.vectmath;
 
 import java.io.Serializable;
+import java.util.List;
 
+import static java.util.Arrays.asList;
 import static org.qw3rtrun.aub.engine.vectmath.Vector4f.*;
 
 /**
- *
  * Enter the Matrix...
- *
+ * <p>
  * M = M.xx M.xy M.xz M.xw
- *     M.yx M.yy M.yz M.yw
- *     M.zx M.zy M.zz M.zw
- *     M.wx M.wy M.wz M.ww
- *
+ * M.yx M.yy M.yz M.yw
+ * M.zx M.zy M.zz M.zw
+ * M.wx M.wy M.wz M.ww
+ * <p>
  * Matrix can be construct from rows ...
- *
+ * <p>
  * rows (X, Y, Z, a) = X.x X.y X.z 0
- *                     Y.x Y.y Y.z 0
- *                     Z.x Z.y Z.z 0
- *                     0   0   0   a
- *
+ * Y.x Y.y Y.z 0
+ * Z.x Z.y Z.z 0
+ * 0   0   0   a
+ * <p>
  * ... or from cols ...
- *
+ * <p>
  * cols(X, Y, Z, a) = X.x Y.x Z.x 0
- *                    X.y Y.y Z.y 0
- *                    X.z Y.z Z.z 0
- *                    0   0   0   a
- *
+ * X.y Y.y Z.y 0
+ * X.z Y.z Z.z 0
+ * 0   0   0   a
+ * <p>
  * The matrix can be multiply by the matrix ...
- *
+ * <p>
  * M.multiply(V) = M.xx M.xy M.xz M.xw * V.x = M.xx*V.x + M.xy*V.y + M.xz*V.z + M.xw*V.a
- *                 M.yx M.yy M.yz M.yw   V.y   M.yx*V.x + M.yy*V.y + M.yz*V.z + M.yw*V.a
- *                 M.zx M.zy M.zz M.zw   V.z   M.zx*V.x + M.zy*V.y + M.zz*V.z + M.zw*V.a
- *                 M.wx M.wy M.wz M.ww   V.a   M.wx*V.x + M.wy*V.y + M.wz*V.z + M.ww*V.a
- *
- *... also the matrix can be multiply by another matrix ...
- *
+ * M.yx M.yy M.yz M.yw   V.y   M.yx*V.x + M.yy*V.y + M.yz*V.z + M.yw*V.a
+ * M.zx M.zy M.zz M.zw   V.z   M.zx*V.x + M.zy*V.y + M.zz*V.z + M.zw*V.a
+ * M.wx M.wy M.wz M.ww   V.a   M.wx*V.x + M.wy*V.y + M.wz*V.z + M.ww*V.a
+ * <p>
+ * ... also the matrix can be multiply by another matrix ...
+ * <p>
  * M.multiply(A) = M.xx M.xy M.xz M.xw * A.xx A.xy A.xz A.xw =
- *                 M.yx M.yy M.yz M.yw   A.yx A.yy A.yz A.yw
- *                 M.zx M.zy M.zz M.zw   A.zx A.zy A.zz A.zw
- *                 M.wx M.wy M.wz M.ww   A.wx A.wy A.wz A.ww
- *
+ * M.yx M.yy M.yz M.yw   A.yx A.yy A.yz A.yw
+ * M.zx M.zy M.zz M.zw   A.zx A.zy A.zz A.zw
+ * M.wx M.wy M.wz M.ww   A.wx A.wy A.wz A.ww
+ * <p>
  * = M.x_*A._x M.x_*A._y M.x_*A._z M.x_*A._w
- *   M.y_*A._x M.y_*A._y M.y_*A._z M.y_*A._w
- *   M.z_*A._x M.z_*A._y M.z_*A._z M.z_*A._w
- *   M.w_*A._x M.w_*A._y M.w_*A._z M.w_*A._w
- *
+ * M.y_*A._x M.y_*A._y M.y_*A._z M.y_*A._w
+ * M.z_*A._x M.z_*A._y M.z_*A._z M.z_*A._w
+ * M.w_*A._x M.w_*A._y M.w_*A._z M.w_*A._w
  */
 
-public class Matrix4f implements Serializable {
+public class Matrix4f implements Near<Matrix4f>, Serializable {
     public static final Matrix4f O0 = rows(ZERO, ZERO, ZERO, ZERO);
     public static final Matrix4f O1 = rows(ZERO, ZERO, ZERO, W);
     public static final Matrix4f E = rows(X, Y, Z, W);
@@ -88,14 +88,14 @@ public class Matrix4f implements Serializable {
         this.ww = ww;
     }
 
-    public static  Matrix4f matr(float xx, float xy, float xz, float xw, float yx, float yy, float yz, float yw, float zx, float zy, float zz, float zw, float wx, float wy, float wz, float ww) {
-        return new  Matrix4f(xx, xy, xz, xw, yx, yy, yz, yw, zx, zy, zz, zw, wx, wy, wz, ww);
+    public static Matrix4f matr(float xx, float xy, float xz, float xw, float yx, float yy, float yz, float yw, float zx, float zy, float zz, float zw, float wx, float wy, float wz, float ww) {
+        return new Matrix4f(xx, xy, xz, xw, yx, yy, yz, yw, zx, zy, zz, zw, wx, wy, wz, ww);
     }
 
     public static Matrix4f matr(float xx, float xy, float xz,
-                                     float yx, float yy, float yz,
-                                     float zx, float zy, float zz,
-                                     float ww) {
+                                float yx, float yy, float yz,
+                                float zx, float zy, float zz,
+                                float ww) {
         return new Matrix4f(xx, xy, xz, 0, yx, yy, yz, 0, zx, zy, zz, 0, 0, 0, 0, ww);
     }
 
@@ -112,6 +112,47 @@ public class Matrix4f implements Serializable {
 
     public static Matrix4f cols(Vector4f x, Vector4f y, Vector4f z, Vector4f w) {
         return new Matrix4f(x.x, y.x, z.x, w.x, x.y, y.y, z.y, w.y, x.z, y.z, z.z, w.z, x.w, y.w, z.w, w.w);
+    }
+
+    public Vector4f columnX() {
+        return vect(xx, yx, zx, wx);
+    }
+
+    public Vector4f columnY() {
+        return vect(xy, yy, zy, wy);
+    }
+
+    public Vector4f columnZ() {
+        return vect(xz, yz, zz, wz);
+    }
+
+    public Vector4f columnW() {
+        return vect(xw, yw, zw, ww);
+    }
+
+    public List<Vector4f> columns() {
+        return asList(columnX(), columnY(),
+                columnZ(), columnW());
+    }
+
+    public List<Vector4f> rows() {
+        return asList(rowX(), rowY(), rowZ(), rowW());
+    }
+
+    private Vector4f rowW() {
+        return vect(wx, wy, ww, wz);
+    }
+
+    private Vector4f rowZ() {
+        return vect(zx, zy, zz, zw);
+    }
+
+    private Vector4f rowY() {
+        return vect(yx, yy, yz, yw);
+    }
+
+    private Vector4f rowX() {
+        return vect(xx, xy, xz, xw);
     }
 
     public Matrix4f add(Matrix4f m) {
@@ -135,16 +176,16 @@ public class Matrix4f implements Serializable {
     public Vector4f multiply(Vector4f v) {
         return vect(xx * v.x + xy * v.y + xz * v.z + xw * v.w,
                 yx * v.x + yy * v.y + yz * v.z + yw * v.w,
-                    zx * v.x + zy * v.y + zz * v.z + zw * v.w,
-                    wx * v.x + wy * v.y + wz * v.z + ww * v.w);
+                zx * v.x + zy * v.y + zz * v.z + zw * v.w,
+                wx * v.x + wy * v.y + wz * v.z + ww * v.w);
     }
 
-    public Matrix4f multiply(Matrix4f m){
+    public Matrix4f multiply(Matrix4f m) {
         return new Matrix4f(
-                xx*m.xx+xy*m.yx+xz*m.zx+xw*m.wx, xx*m.xy+xy*m.yy+xz*m.zy+xw*m.wy, xx*m.xz+xy*m.yz+xz*m.zz+xw*m.wz, xx*m.xw+xy*m.yw+xz*m.zw+xw*m.ww,
-                yx*m.xx+yy*m.yx+yz*m.zx+yw*m.wx, yx*m.xy+yy*m.yy+yz*m.zy+yw*m.wy, yx*m.xz+yy*m.yz+yz*m.zz+yw*m.wz, yx*m.xw+yy*m.yw+yz*m.zw+yw*m.ww,
-                zx*m.xx+zy*m.yx+zz*m.zx+zw*m.wx, zx*m.xy+zy*m.yy+zz*m.zy+zw*m.wy, zx*m.xz+zy*m.yz+zz*m.zz+zw*m.wz, zx*m.xw+zy*m.yw+zz*m.zw+zw*m.ww,
-                wx*m.xx+wy*m.yx+wz*m.zx+ww*m.wx, wx*m.xy+wy*m.yy+wz*m.zy+ww*m.wy, wx*m.xz+wy*m.yz+wz*m.zz+ww*m.wz, wx*m.xw+wy*m.yw+wz*m.zw+ww*m.ww);
+                xx * m.xx + xy * m.yx + xz * m.zx + xw * m.wx, xx * m.xy + xy * m.yy + xz * m.zy + xw * m.wy, xx * m.xz + xy * m.yz + xz * m.zz + xw * m.wz, xx * m.xw + xy * m.yw + xz * m.zw + xw * m.ww,
+                yx * m.xx + yy * m.yx + yz * m.zx + yw * m.wx, yx * m.xy + yy * m.yy + yz * m.zy + yw * m.wy, yx * m.xz + yy * m.yz + yz * m.zz + yw * m.wz, yx * m.xw + yy * m.yw + yz * m.zw + yw * m.ww,
+                zx * m.xx + zy * m.yx + zz * m.zx + zw * m.wx, zx * m.xy + zy * m.yy + zz * m.zy + zw * m.wy, zx * m.xz + zy * m.yz + zz * m.zz + zw * m.wz, zx * m.xw + zy * m.yw + zz * m.zw + zw * m.ww,
+                wx * m.xx + wy * m.yx + wz * m.zx + ww * m.wx, wx * m.xy + wy * m.yy + wz * m.zy + ww * m.wy, wx * m.xz + wy * m.yz + wz * m.zz + ww * m.wz, wx * m.xw + wy * m.yw + wz * m.zw + ww * m.ww);
     }
 
     public float determinant() {
@@ -160,6 +201,13 @@ public class Matrix4f implements Serializable {
         return xx * yy * zz + xy * yz * zx + xz * yx * zy - xz * yy * xz - xy * yx * zz - xx * yz;
     }
 
+    @Override
+    public boolean isNearTo(Matrix4f o, float epsilon) {
+        return vect(rowX().distanceBound(o.rowX()),
+                rowY().distanceBound(rowY()),
+                rowZ().distanceBound(rowZ()))
+                .bound() < epsilon;
+    }
 
     @Override
     public boolean equals(Object o) {

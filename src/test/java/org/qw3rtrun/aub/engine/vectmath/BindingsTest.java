@@ -6,9 +6,10 @@ import javafx.beans.value.ObservableValue;
 import org.junit.Before;
 import org.junit.Test;
 
+import static org.junit.Assert.assertThat;
+import static org.qw3rtrun.aub.engine.Matchers.nearTo;
 import static org.qw3rtrun.aub.engine.property.Bindings.*;
 import static org.qw3rtrun.aub.engine.vectmath.Vector4f.*;
-import static org.qw3rtrun.aub.engine.vectmath.Vector4fTest.assertNear;
 
 public class BindingsTest {
 
@@ -27,55 +28,57 @@ public class BindingsTest {
     public void testScale() {
         ObservableValue<Matrix4f> m = scaleMatrix(vector(x, y, z));
 
-        assertNear(X, m.getValue().multiply(X));
-        assertNear(YZ, m.getValue().multiply(YZ));
-        assertNear(YW, m.getValue().multiply(YW));
-        assertNear(XZW, m.getValue().multiply(XZW));
+        assertThat(m.getValue().multiply(X), nearTo(X));
+        assertThat(m.getValue().multiply(YZ), nearTo(YZ));
+        assertThat(m.getValue().multiply(YW), nearTo(YW));
+        assertThat(m.getValue().multiply(XZW), nearTo(XZW));
 
         x.set(2);
         y.set(-1);
         z.set(0);
-        assertNear(vect(4, -4, 0), m.getValue().multiply(vect(2, 4, 100)));
+        assertThat(m.getValue().multiply(vect(2, 4, 100)), nearTo(vect(4, -4, 0)));
 
         ObservableValue<Vector4f> v = product(m, vect(1, 2, 3));
-        assertNear(vect(2, -2, 0), v.getValue());
+        assertThat(v.getValue(), nearTo(vect(2, -2, 0)));
 
         z.setValue(-1);
-        assertNear(vect(2, -2, -3), v.getValue());
+        assertThat(v.getValue(), nearTo(vect(2, -2, -3)));
 
         x.setValue(100);
-        assertNear(vect(100, -2, -3), v.getValue());
+        assertThat(v.getValue(), nearTo(vect(100, -2, -3)));
 
         y.setValue(1);
         z.setValue(100);
-        assertNear(vect(100, 2, 300), v.getValue());
+        assertThat(v.getValue(), nearTo(vect(100, 2, 300)));
     }
 
     @Test
     public void testTranslate() {
         ObservableValue<Matrix4f> m = translationMatrix(vector(x, y, z));
 
-        assertNear(vect(2, 1, 1, 1), m.getValue().multiply(XW));
-        assertNear(vect(1, 2, 2, 1), m.getValue().multiply(YZW));
-        assertNear(vect(1, 2, 1, 1), m.getValue().multiply(YW));
-        assertNear(vect(2, 1, 2, 1), m.getValue().multiply(XZW));
+        assertThat(m.getValue().multiply(XW), nearTo(vect(2, 1, 1, 1)));
+        assertThat(m.getValue().multiply(YZW), nearTo(vect(1, 2, 2, 1)));
+        assertThat(m.getValue().multiply(YW), nearTo(vect(1, 2, 1, 1)));
+        assertThat(m.getValue().multiply(XZW), nearTo(vect(2, 1, 2, 1)));
 
         x.set(2);
         y.set(-1);
         z.set(0);
-        assertNear(vect(4, -4, 0, 1), m.getValue().multiply(vect(2, -3, 0, 1)));
+        assertThat(
+                m.getValue().multiply(vect(2, -3, 0, 1)),
+                nearTo(vect(4, -4, 0, 1)));
 
         ObservableValue<Vector4f> v = product(m, vect(1, 2, 3, 1));
-        assertNear(vect(3, 1, 3, 1), v.getValue());
+        assertThat(v.getValue(), nearTo(vect(3, 1, 3, 1)));
 
         z.setValue(-1);
-        assertNear(vect(3, 1, 2, 1), v.getValue());
+        assertThat(v.getValue(), nearTo(vect(3, 1, 2, 1)));
 
         x.setValue(100);
-        assertNear(vect(101, 1, 2, 1), v.getValue());
+        assertThat(v.getValue(), nearTo(vect(101, 1, 2, 1)));
 
         y.setValue(1);
         z.setValue(100);
-        assertNear(vect(101, 3, 103, 1), v.getValue());
+        assertThat(v.getValue(), nearTo(vect(101, 3, 103, 1)));
     }
 }

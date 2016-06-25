@@ -1,11 +1,12 @@
 package org.qw3rtrun.aub.engine.vectmath;
 
 import java.io.Serializable;
+import java.util.Comparator;
 
 import static java.util.Arrays.asList;
 import static org.qw3rtrun.aub.engine.vectmath.Matrix4f.matr;
 
-public class Vector4f implements Serializable {
+public class Vector4f implements Serializable, Near<Vector4f> {
     public static Vector4f ZERO = new Vector4f(0, 0, 0, 0);
     public static Vector4f W = new Vector4f(0, 0, 0, 1);
     public static Vector4f X = new Vector4f(1, 0, 0, 0);
@@ -225,6 +226,11 @@ public class Vector4f implements Serializable {
 
         return Float.compare(vector4f.w, w) == 0 && Float.compare(vector4f.x, x) == 0 && Float.compare(vector4f.y, y) == 0 && Float.compare(vector4f.z, z) == 0;
 
+    }
+
+    @Override
+    public boolean isNearTo(Vector4f vect, float epsilon) {
+        return distanceBound(vect) < epsilon;
     }
 
     @Override

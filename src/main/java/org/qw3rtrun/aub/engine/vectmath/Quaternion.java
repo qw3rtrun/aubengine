@@ -6,7 +6,7 @@ import static java.util.Arrays.asList;
 import static org.qw3rtrun.aub.engine.vectmath.Matrix4f.matr;
 import static org.qw3rtrun.aub.engine.vectmath.Vector4f.vect;
 
-public class Quaternion implements Serializable {
+public class Quaternion implements Serializable, Near<Quaternion> {
 
     public static final Quaternion Q1 = new Quaternion(0, 0, 0, 1);
 
@@ -93,7 +93,7 @@ public class Quaternion implements Serializable {
     }
 
     public Quaternion conjugate() {
-        return new Quaternion (-x, -y, -z, a);
+        return new Quaternion (-1 * x, -1 * y, -1 * z, -1 * a);
     }
 
     public Quaternion reciprocal() {
@@ -161,6 +161,11 @@ public class Quaternion implements Serializable {
         Quaternion vector4f = (Quaternion) o;
 
         return Float.compare(vector4f.a, a) == 0 && Float.compare(vector4f.x, x) == 0 && Float.compare(vector4f.y, y) == 0 && Float.compare(vector4f.z, z) == 0;
+    }
+
+    @Override
+    public boolean isNearTo(Quaternion o, float epsilon) {
+        return asVector().isNearTo(o.asVector(), epsilon);
     }
 
     @Override
