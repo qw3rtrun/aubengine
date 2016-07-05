@@ -1,7 +1,6 @@
 package org.qw3rtrun.aub.engine.vectmath;
 
 import java.io.Serializable;
-import java.util.Comparator;
 
 import static java.util.Arrays.asList;
 import static org.qw3rtrun.aub.engine.vectmath.Matrix4f.matr;
@@ -198,7 +197,7 @@ public class Vector4f implements Serializable, Near<Vector4f> {
     }
 
     public Vector4f product(Vector4f v) {
-        return vect(z * v.y - y * v.z, x * v.z - z * v.x, y * v.x - x * v.y, 0);
+        return vect(y * v.z - z * v.y, z * v.x - x * v.z, x * v.y - y * v.x, 0);
     }
 
     public float length() {
@@ -218,17 +217,6 @@ public class Vector4f implements Serializable, Near<Vector4f> {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        Vector4f vector4f = (Vector4f) o;
-
-        return Float.compare(vector4f.w, w) == 0 && Float.compare(vector4f.x, x) == 0 && Float.compare(vector4f.y, y) == 0 && Float.compare(vector4f.z, z) == 0;
-
-    }
-
-    @Override
     public boolean isNearTo(Vector4f vect, float epsilon) {
         return distanceBound(vect) < epsilon;
     }
@@ -240,6 +228,16 @@ public class Vector4f implements Serializable, Near<Vector4f> {
         result = 31 * result + (z != +0.0f ? Float.floatToIntBits(z) : 0);
         result = 31 * result + (w != +0.0f ? Float.floatToIntBits(w) : 0);
         return result;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Vector4f vector4f = (Vector4f) o;
+
+        return Float.compare(vector4f.w, w) == 0 && Float.compare(vector4f.x, x) == 0 && Float.compare(vector4f.y, y) == 0 && Float.compare(vector4f.z, z) == 0;
     }
 
     @Override

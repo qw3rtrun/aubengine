@@ -1,18 +1,28 @@
 package org.qw3rtrun.aub.engine.vectmath;
 
+import org.junit.BeforeClass;
 import org.junit.Test;
+import org.qw3rtrun.aub.engine.Matchers;
+
+import java.util.Random;
 
 import static org.hamcrest.core.IsNot.not;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 import static org.qw3rtrun.aub.engine.Matchers.EPSILON;
 import static org.qw3rtrun.aub.engine.Matchers.nearTo;
-import static org.qw3rtrun.aub.engine.vectmath.Matrix4f.E;
 import static org.qw3rtrun.aub.engine.vectmath.Matrix4f.matr;
 import static org.qw3rtrun.aub.engine.vectmath.Matrix4f.rows;
 import static org.qw3rtrun.aub.engine.vectmath.Vector4f.*;
 
 public class Vector4fTest {
+
+    private static Random random;
+
+    @BeforeClass
+    public static void init() throws Exception {
+        random = new Random();
+    }
 
     @Test
     public void testComponent() {
@@ -137,5 +147,40 @@ public class Vector4fTest {
                         0, 0, 0, 0)));
     }
 
+    @Test
+    public void product() {
+        // Base right-hand coordinate system rule
+        assertThat(X.product(Y), nearTo(Z));
+        assertThat(Y.product(Z), nearTo(X));
+        assertThat(Z.product(X), nearTo(Y));
+
+        //Algebra
+        checkProductionAlgebra(random(), random(), random(), random.nextFloat());
+        checkProductionAlgebra(random(), random(), random(), random.nextFloat());
+        checkProductionAlgebra(random(), random(), random(), random.nextFloat());
+        checkProductionAlgebra(random(), random(), random(), random.nextFloat());
+        checkProductionAlgebra(random(), random(), random(), random.nextFloat());
+    }
+
+    private void checkProductionAlgebra(Vector4f a, Vector4f b, Vector4f c, float k) {
+        //[A, B] = -[B, A]
+        assertThat(a.product(b), nearTo(b.product(a).inverse()));
+        //[kA, b] = [A, kB] = k[B, B]
+        assertThat(a.multiply(k).product(b), nearTo(a.product(b.multiply(k))));
+        //[a+b, c] = [a, c] + [b, c];
+        assertThat(a.add(b).product(c), nearTo(a.product(c).add(b.product(c))));
+        //[a, a] = 0
+        assertThat(a.product(a), nearTo(ZERO));
+        assertThat(b.product(b), nearTo(ZERO));
+        assertThat(c.product(c), nearTo(ZERO));
+        //[a, [b, c]] = b(a, c) - c(a, b)
+        assertThat(a.product(b.product(c)), nearTo(b.multiply(a.dotProduct(c)).subtract(c.multiply(a.dotProduct(b)))));
+        // ([a, b], c) = (a, [b, c])
+        assertEquals(a.product(b).dotProduct(c), a.dotProduct(b.product(c)), Matchers.EPSILON);
+    }
+
+    private Vector4f random() {
+        return vect(random.nextFloat(), random.nextFloat(), random.nextFloat(), 0);
+    }
 }
 
