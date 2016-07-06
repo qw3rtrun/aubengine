@@ -6,9 +6,12 @@ import org.hamcrest.Factory;
 import org.hamcrest.Matcher;
 import org.qw3rtrun.aub.engine.vectmath.Near;
 
+import static java.lang.Float.max;
+import static java.lang.Math.abs;
+
 public class Matchers {
 
-    public static final float EPSILON = .000001f;
+    public static final float EPSILON = .00001f;
 
     @Factory
     public static <T extends Near<T>> Matcher<T> nearTo(T actual, float epsilon) {
@@ -26,8 +29,24 @@ public class Matchers {
     }
 
     public static <T extends Near<T>> Matcher<T> nearTo(T t) {
-        return nearTo(t, EPSILON);
+        return nearTo(t, EPSILON * max(t.bound(), EPSILON));
     }
 
+    public static Matcher<Float> nearTo(Float f, float epsilon) {
+        return new BaseMatcher<Float>() {
+            @Override
+            public boolean matches(Object o) {
+                return abs(f - (Float) o) < epsilon;
+            }
 
+            @Override
+            public void describeTo(Description description) {
+                description.appendValue(f);
+            }
+        };
+    }
+
+    public static Matcher<Float> nearTo(Float f) {
+        return nearTo(f, EPSILON * max(f, EPSILON));
+    }
 }

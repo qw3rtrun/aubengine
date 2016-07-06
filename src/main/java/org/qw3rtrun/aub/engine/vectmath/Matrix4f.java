@@ -155,6 +155,11 @@ public class Matrix4f implements Near<Matrix4f>, Serializable {
         return vect(xx, xy, xz, xw);
     }
 
+    @Override
+    public float bound() {
+        return MathUtils.max(rowX().bound(), rowY().bound(), rowZ().bound(), rowW().bound());
+    }
+
     public Matrix4f add(Matrix4f m) {
         return new Matrix4f(m.xx + xx, m.xy + xy, m.xz + xz, m.xw + xw,
                 m.yx + yx, m.yy + yy, m.yz + yz, m.yw + yw,

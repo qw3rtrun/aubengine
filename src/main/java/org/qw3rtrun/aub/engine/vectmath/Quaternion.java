@@ -9,6 +9,7 @@ import static org.qw3rtrun.aub.engine.vectmath.Vector4f.vect;
 public class Quaternion implements Serializable, Near<Quaternion> {
 
     public static final Quaternion Q1 = new Quaternion(0, 0, 0, 1);
+    public static final Quaternion Q0 = new Quaternion(0, 0, 0, 0);
 
     public static final Quaternion QX0 = new Quaternion(1, 0, 0, 0);
     public static final Quaternion QX1 = new Quaternion(1, 0, 0, 1);
@@ -49,11 +50,11 @@ public class Quaternion implements Serializable, Near<Quaternion> {
     }
 
     public static Quaternion productAll(Quaternion... vectors) {
-        return asList(vectors).stream().reduce(new Quaternion(1, 0, 0, 0), Quaternion::product);
+        return asList(vectors).stream().reduce(new Quaternion(0, 0, 0, 1), Quaternion::product);
     }
 
     public static Quaternion addAll(Quaternion... vectors) {
-        return asList(vectors).stream().reduce(new Quaternion(1, 0, 0, 0), Quaternion::add);
+        return asList(vectors).stream().reduce(new Quaternion(0, 0, 0, 0), Quaternion::add);
     }
 
     public float getX() {
@@ -93,12 +94,11 @@ public class Quaternion implements Serializable, Near<Quaternion> {
     }
 
     public Quaternion conjugate() {
-        return new Quaternion (-1 * x, -1 * y, -1 * z, -1 * a);
+        return new Quaternion(-1 * x, -1 * y, -1 * z, a);
     }
 
     public Quaternion reciprocal() {
-        float norm = norm();
-        return conjugate().multiply(1/(norm*norm));
+        return conjugate().multiply(1 / (norm2()));
     }
 
     public Quaternion normalize() {
@@ -126,7 +126,19 @@ public class Quaternion implements Serializable, Near<Quaternion> {
     }
 
     public float norm() {
-        return (float) Math.sqrt(x*x + y*y + z*z + a*a);
+        return (float) Math.sqrt(norm2());
+    }
+
+    public float norm2() {
+        return x * x + y * y + z * z + a * a;
+    }
+
+    public float distance(Quaternion q) {
+        return this.subtract(q).norm();
+    }
+
+    public float distance2(Quaternion q) {
+        return this.subtract(q).norm();
     }
 
     public Matrix4f rotateMatrix() {
@@ -161,6 +173,11 @@ public class Quaternion implements Serializable, Near<Quaternion> {
         Quaternion vector4f = (Quaternion) o;
 
         return Float.compare(vector4f.a, a) == 0 && Float.compare(vector4f.x, x) == 0 && Float.compare(vector4f.y, y) == 0 && Float.compare(vector4f.z, z) == 0;
+    }
+
+    @Override
+    public float bound() {
+        return MathUtils.max(x, y, z, a);
     }
 
     @Override
