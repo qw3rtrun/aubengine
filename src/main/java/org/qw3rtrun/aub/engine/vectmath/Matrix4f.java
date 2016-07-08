@@ -167,15 +167,15 @@ public class Matrix4f implements Near<Matrix4f>, Serializable {
                 m.wx + wx, m.wy + wy, m.wz + wz, m.ww + ww);
     }
 
+    public Matrix4f transpose() {
+        return new Matrix4f(xx, yx, zx, wx, xy, yy, zy, wy, xz, yz, zz, wz, xw, yw, zw, ww);
+    }
+
     public Matrix4f multiply(double a) {
         return new Matrix4f((float) a * xx, (float) (a * xy), (float) a * xz, (float) a * xw,
                 (float) a * yx, (float) a * yy, (float) a * yz, (float) a * yw,
                 (float) a * zx, (float) a * zy, (float) a * zz, (float) a * zw,
                 (float) a * wx, (float) a * wy, (float) a * wz, (float) a * ww);
-    }
-
-    public Matrix4f transpose() {
-        return new Matrix4f(xx, yx, zx, wx, xy, yy, zy, wy, xz, yz, zz, wz, xw, yw, zw, ww);
     }
 
     public Vector4f multiply(Vector4f v) {

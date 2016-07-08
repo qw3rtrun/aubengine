@@ -35,7 +35,8 @@ public class QuaternionTest {
 
     @Test
     public void normalize() throws Exception {
-
+        assertThat(Q1.normalize(), nearTo(Q1));
+        assertThat(quaternion(5, 5, 5, 5).normalize(), nearTo(QXYZ1.multiply(0.5f)));
     }
 
     @Test
