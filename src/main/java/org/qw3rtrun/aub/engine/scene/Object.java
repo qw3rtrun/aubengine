@@ -15,6 +15,22 @@ import static org.qw3rtrun.aub.engine.vectmath.Vector4f.*;
 
 public class Object implements Node, Shaped, Tangible {
 
+    private final QuaternionBinding orientation = orientation(rotation);
+    private final ObjectProperty<Object> parent = new SimpleObjectProperty<>();
+    private final ListProperty<Object> childs = new SimpleListProperty<>(observableList(new ArrayList<>()));
+    private final Matrix4fBinding localToAbsolute = translationMatrix(translation)
+            .concat(orientation.rotationNormMatrix())
+            .concat(scaleMatrix(scale));
+    //.concat(ori)
+    private final QuaternionBinding invertOrientation = new QuaternionBinding(
+            () -> orientation.get().withA(-orientation.getA()),
+            orientation
+    );
+    private final Vector4fBinding invertTranslation = new Vector4fBinding(
+            () -> translation.getValue().inverse(),
+            translation
+    );
+    private StringProperty name = new SimpleStringProperty(super.toString());
     private final Vector4fProperty scale = new Vector4fProperty(XYZ) {
         @Override
         public java.lang.Object getBean() {
@@ -23,7 +39,7 @@ public class Object implements Node, Shaped, Tangible {
 
         @Override
         public String getName() {
-            return "Scale of " + name.get();
+            return "ScaleBinding of " + name.get();
         }
     };
     private final Vector4fProperty rotation = new Vector4fProperty(ZERO) {
@@ -48,23 +64,6 @@ public class Object implements Node, Shaped, Tangible {
             return Object.this;
         }
     };
-
-    private final QuaternionBinding orientation = orientation(rotation);
-    private final ObjectProperty<Object> parent = new SimpleObjectProperty<>();
-    private final ListProperty<Object> childs = new SimpleListProperty<>(observableList(new ArrayList<>()));
-    private final Matrix4fBinding localToAbsolute = translationMatrix(translation)
-            .concat(orientation.rotationNormMatrix())
-            .concat(scaleMatrix(scale));
-    //.concat(ori)
-    private final QuaternionBinding invertOrientation = new QuaternionBinding(
-            () -> orientation.get().withA(-orientation.getA()),
-            orientation
-    );
-    private final Vector4fBinding invertTranslation = new Vector4fBinding(
-            () -> translation.getValue().inverse(),
-            translation
-    );
-    private StringProperty name = new SimpleStringProperty(super.toString());
     private Vector4fBinding inverseScale = new Vector4fBinding(
             () -> vect(1 / scale.getValue().x, 1 / scale.getValue().y, 1 / scale.getValue().z, 2),
             scale

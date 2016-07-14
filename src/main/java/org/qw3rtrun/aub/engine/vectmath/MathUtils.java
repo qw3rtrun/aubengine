@@ -26,4 +26,12 @@ public class MathUtils {
             }
         }
     }
+
+    public static float sin(double x) {
+        return (float) Math.sin(x);
+    }
+
+    public static float cos(double x) {
+        return (float) Math.cos(x);
+    }
 }

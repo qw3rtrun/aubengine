@@ -2,6 +2,7 @@ package org.qw3rtrun.aub.engine.vectmath;
 
 import java.io.Serializable;
 
+import static java.lang.Math.abs;
 import static java.util.Arrays.asList;
 import static org.qw3rtrun.aub.engine.vectmath.Matrix4f.matr;
 
@@ -205,11 +206,11 @@ public class Vector4f implements Serializable, Near<Vector4f> {
     }
 
     public float bound() {
-        return Math.max(Math.max(Math.abs(x), Math.abs(y)), Math.max(Math.abs(z), Math.abs(w)));
+        return Math.max(Math.max(abs(x), abs(y)), Math.max(abs(z), abs(w)));
     }
 
     public float distanceBound(Vector4f v) {
-        return Math.max(Math.max(Math.abs(x - v.x), Math.abs(y - v.y)), Math.max(Math.abs(z - v.z), Math.abs(w - v.w)));
+        return Math.max(Math.max(abs(x - v.x), abs(y - v.y)), Math.max(abs(z - v.z), abs(w - v.w)));
     }
 
     public float distance(Vector4f v) {
@@ -217,8 +218,8 @@ public class Vector4f implements Serializable, Near<Vector4f> {
     }
 
     @Override
-    public boolean isNearTo(Vector4f vect, float epsilon) {
-        return distanceBound(vect) < epsilon;
+    public boolean isNearTo(Vector4f vect, double epsilon) {
+        return distanceBound(vect) < abs(epsilon);
     }
 
     @Override

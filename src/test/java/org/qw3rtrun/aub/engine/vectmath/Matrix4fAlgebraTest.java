@@ -7,6 +7,8 @@ import org.junit.runners.Parameterized;
 import java.util.Collection;
 import java.util.Random;
 
+import static java.lang.Double.max;
+import static java.lang.Math.abs;
 import static java.util.Arrays.asList;
 import static org.junit.Assert.assertThat;
 import static org.qw3rtrun.aub.engine.Matchers.nearTo;
@@ -27,7 +29,7 @@ public class Matrix4fAlgebraTest {
     public Float k;
 
     private static Vector4f randomV() {
-        return vect(random.nextFloat() * 100, random.nextFloat() * 100, random.nextFloat() * 100, random.nextFloat() * 100);
+        return vect(random.nextInt(100) / 10f, random.nextInt(100) / 10f, random.nextInt(100) / 10f, random.nextInt(100) / 10f);
     }
 
     private static Matrix4f randomM() {
@@ -77,6 +79,7 @@ public class Matrix4fAlgebraTest {
      * det(A*B) = det(A) * det(B)
      */
     public void checkDeterminant() {
-        assertThat(a.multiply(b).determinant(), nearTo(a.determinant() * b.determinant()));
+        double determinant = a.multiply(b).determinant();
+        assertThat(determinant, nearTo(a.determinant() * b.determinant(), max(abs(determinant) * 0.001, 0.000001)));
     }
 }

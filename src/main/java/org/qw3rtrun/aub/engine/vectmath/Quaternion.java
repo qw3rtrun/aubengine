@@ -181,7 +181,7 @@ public class Quaternion implements Serializable, Near<Quaternion> {
     }
 
     @Override
-    public boolean isNearTo(Quaternion o, float epsilon) {
+    public boolean isNearTo(Quaternion o, double epsilon) {
         return asVector().isNearTo(o.asVector(), epsilon);
     }
 
