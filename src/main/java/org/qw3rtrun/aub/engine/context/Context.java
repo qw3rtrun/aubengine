@@ -1,8 +1,7 @@
 package org.qw3rtrun.aub.engine.context;
 
-import org.lwjgl.Sys;
+import org.lwjgl.Version;
 import org.lwjgl.opengl.GL;
-import org.lwjgl.opengl.GLContext;
 import org.qw3rtrun.aub.engine.scene.Scene;
 
 import static org.lwjgl.glfw.GLFW.glfwPollEvents;
@@ -19,6 +18,10 @@ public class Context extends Thread {
         this.scene = scene;
     }
 
+    public static void main(String[] args) {
+        Context context = new Context(new Window(), new Scene());
+        context.start();
+    }
 
     @Override
     public void run() {
@@ -40,10 +43,10 @@ public class Context extends Thread {
         }
     }
 
-    public void logVersion(){
-        System.out.println("LWJGL " + Sys.getVersion() + "!");
-        System.out.println("OpenGL 2.0 - "+GL.getCapabilities().OpenGL21);
-        System.out.println("OpenGL 4.1 - "+GL.getCapabilities().OpenGL41);
+    public void logVersion() {
+        System.out.println("LWJGL " + Version.getVersion() + "!");
+        System.out.println("OpenGL 2.0 - " + GL.getCapabilities().OpenGL21);
+        System.out.println("OpenGL 4.1 - " + GL.getCapabilities().OpenGL41);
     }
 
     private void loop() throws InterruptedException {
@@ -57,16 +60,11 @@ public class Context extends Thread {
     }
 
     private void init() {
-        GLContext.createFromCurrent();
+        GL.createCapabilities();
         logVersion();
         glClearColor(1.0f, 1.0f, 1.0f, 0.0f);
         glEnable(GL_CULL_FACE);
         glCullFace(GL_BACK);
         glFrontFace(GL_CW);
-    }
-
-    public static void main(String[] args) {
-        Context context = new Context(new Window(), new Scene());
-        context.start();
     }
 }

@@ -2,23 +2,19 @@ package org.qw3rtrun.aub.engine.context;
 
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.glfw.GLFWKeyCallback;
-import org.lwjgl.glfw.GLFWvidmode;
+import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.system.MemoryUtil;
 
-import java.nio.ByteBuffer;
-
-import static org.lwjgl.glfw.Callbacks.errorCallbackPrint;
+import static org.lwjgl.glfw.Callbacks.glfwFreeCallbacks;
 import static org.lwjgl.glfw.GLFW.*;
-import static org.lwjgl.opengl.GL11.GL_TRUE;
 
 public class Window {
-    private final GLFWErrorCallback errorCallback = errorCallbackPrint(System.err);
     private final GLFWKeyCallback keyCallback = new GLFWKeyCallback() {
         @Override
         public void invoke(long window, int key, int scancode, int action, int mods) {
             if (key == GLFW_KEY_ESCAPE && action == GLFW_RELEASE)
-                glfwSetWindowShouldClose(window, GL11.GL_TRUE); // We will detect this in our rendering loop
+                glfwSetWindowShouldClose(window, true); // We will detect this in our rendering loop
         }
     };
 
@@ -58,10 +54,10 @@ public class Window {
     public void init() {
         // Setup an error callback. The default implementation
         // will print the error message in System.err.
-        glfwSetErrorCallback(errorCallback);
+        GLFWErrorCallback.createPrint(System.err).set();
 
         // Initialize GLFW. Most GLFW functions will not work before doing this.
-        if (glfwInit() != GL11.GL_TRUE)
+        if (glfwInit())
             throw new IllegalStateException("Unable to initialize GLFW");
 
         // Configure our window
@@ -78,12 +74,13 @@ public class Window {
         glfwSetKeyCallback(pointer, keyCallback);
 
         // Get the resolution of the primary monitor
-        ByteBuffer vidmode = glfwGetVideoMode(glfwGetPrimaryMonitor());
+        GLFWVidMode vidmode = glfwGetVideoMode(glfwGetPrimaryMonitor());
         // Center our window
         glfwSetWindowPos(
                 pointer,
-                (GLFWvidmode.width(vidmode) - width) / 2,
-                (GLFWvidmode.height(vidmode) - heigth) / 2
+
+                (vidmode.width() - width) / 2,
+                (vidmode.height() - heigth) / 2
         );
 
         // Make the OpenGL context current
@@ -99,8 +96,8 @@ public class Window {
 
     public void destroy() {
         if (isInit()) {
+            glfwFreeCallbacks(pointer);
             glfwDestroyWindow(pointer);
-            errorCallback.release();
         }
         glfwTerminate();
     }
@@ -112,6 +109,6 @@ public class Window {
     }
 
     public boolean isClosing() {
-        return !isInit() || glfwWindowShouldClose(pointer) == GL_TRUE;
+        return !isInit() || glfwWindowShouldClose(pointer);
     }
 }
