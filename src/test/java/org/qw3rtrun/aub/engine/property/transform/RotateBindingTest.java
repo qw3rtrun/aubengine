@@ -1,24 +1,36 @@
 package org.qw3rtrun.aub.engine.property.transform;
 
+import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.SimpleDoubleProperty;
+import org.junit.Assert;
 import org.junit.Test;
-import org.qw3rtrun.aub.engine.property.quaternion.Quaternion4fProperty;
+import org.qw3rtrun.aub.engine.Matchers;
 import org.qw3rtrun.aub.engine.property.vector.Vector4fProperty;
-import org.qw3rtrun.aub.engine.vectmath.Quaternion;
 import org.qw3rtrun.aub.engine.vectmath.Vector4f;
-
-import static org.qw3rtrun.aub.engine.vectmath.MathUtils.cos;
-import static org.qw3rtrun.aub.engine.vectmath.MathUtils.sin;
 
 public class RotateBindingTest {
 
     @Test
     public void testRotate() throws Exception {
-        Vector4fProperty a = new Vector4fProperty(Vector4f.XYZW);
+        Vector4fProperty a = new Vector4fProperty(Vector4f.X);
+        Vector4fProperty axis = new Vector4fProperty(Vector4f.Y);
+        DoubleProperty rad = new SimpleDoubleProperty(Math.PI / -2);
+        RotateBinding rotation = RotateBinding.rotateBy(rad, axis).apply(a);
+        Assert.assertThat(rotation.getValue(), Matchers.nearTo(Vector4f.Z));
 
-        double rad = Math.PI / 2;
-        Quaternion4fProperty b = new Quaternion4fProperty(Quaternion.quaternion(sin(rad / 2), 0, 0, cos(rad / 2)));
+        rad.set(Math.PI);
+        Assert.assertThat(rotation.getValue(), Matchers.nearTo(a.get().inverse()));
 
-        RotateBinding.rotate(a).apply(b);
+        rad.set(Math.PI * 2);
+
+        Assert.assertThat(rotation.getValue(), Matchers.nearTo(a.get()));
+
+        rad.set(Math.PI * 2000);
+        Assert.assertThat(rotation.getValue(), Matchers.nearTo(a.get()));
+
+        rad.setValue(Math.PI / 2);
+        axis.setValue(Vector4f.YZ);
+        Assert.assertThat(rotation.getValue(), Matchers.nearTo(Vector4f.vect(0, 1, -1).normalize()));
     }
 
 }

@@ -13,6 +13,7 @@ import static org.junit.Assert.assertThat;
 import static org.qw3rtrun.aub.engine.Matchers.nearTo;
 import static org.qw3rtrun.aub.engine.vectmath.Quaternion.*;
 
+@SuppressWarnings("WeakerAccess")
 @RunWith(Parameterized.class)
 public class QuaternionAlgebraTest {
 

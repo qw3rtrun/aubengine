@@ -1,6 +1,8 @@
 package org.qw3rtrun.aub.engine.property.transform;
 
+import javafx.beans.value.ObservableNumberValue;
 import org.qw3rtrun.aub.engine.property.quaternion.ObservableQuaternion;
+import org.qw3rtrun.aub.engine.property.quaternion.QuaternionBinding;
 import org.qw3rtrun.aub.engine.property.vector.ObservableVector;
 import org.qw3rtrun.aub.engine.property.vector.Vector4fBinding;
 import org.qw3rtrun.aub.engine.vectmath.Quaternion;
@@ -23,6 +25,10 @@ public class RotateBinding extends Vector4fBinding {
 
     public static Function<ObservableVector, RotateBinding> rotateBy(ObservableQuaternion quaternion) {
         return (src) -> new RotateBinding(src, quaternion);
+    }
+
+    public static Function<ObservableVector, RotateBinding> rotateBy(ObservableNumberValue rad, ObservableVector axis) {
+        return rotateBy(QuaternionBinding.axisRotation(axis, rad));
     }
 
     public static Function<ObservableQuaternion, RotateBinding> rotate(ObservableVector source) {

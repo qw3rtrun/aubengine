@@ -1,29 +1,15 @@
 package org.qw3rtrun.aub.engine.property.transform;
 
-import org.qw3rtrun.aub.engine.property.quaternion.ObservableQuaternion;
+import org.qw3rtrun.aub.engine.property.matrix.Matrix4fBinding;
 import org.qw3rtrun.aub.engine.property.vector.ObservableVector;
+import org.qw3rtrun.aub.engine.property.vector.Vector4fBinding;
 
-public class Transformation {
+public interface Transformation {
 
-    private final ObservableVector v;
+    Vector4fBinding apply(ObservableVector source);
 
-    public Transformation(ObservableVector v) {
-        this.v = v;
-    }
+    Matrix4fBinding asMatrix();
 
-    public ObservableVector get() {
-        return v;
-    }
+    Transformation invert();
 
-    public Transformation scale(ObservableVector scale) {
-        return new Transformation(new ScaleBinding(get(), scale));
-    }
-
-    public Transformation rotate(ObservableQuaternion rotation) {
-        return new Transformation(new RotateBinding(get(), rotation));
-    }
-
-    public Transformation translate(ObservableVector translate) {
-        return new Transformation(new TranslateBinding(get(), translate));
-    }
 }

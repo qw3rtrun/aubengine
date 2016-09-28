@@ -46,4 +46,8 @@ public class TranslateBinding extends Vector4fBinding {
     public ObservableVector sourceProperty() {
         return source;
     }
+
+    public TranslateBinding inverse() {
+        return new TranslateBinding(source, Vector4fBinding.inverse(translate));
+    }
 }

@@ -1,6 +1,5 @@
 package org.qw3rtrun.aub.engine.property.quaternion;
 
-import org.qw3rtrun.aub.engine.property.Bindings;
 import org.qw3rtrun.aub.engine.property.matrix.Matrix4fBinding;
 import org.qw3rtrun.aub.engine.property.vector.ObservableVector;
 import org.qw3rtrun.aub.engine.property.vector.Vector4fBinding;
@@ -25,11 +24,4 @@ interface QuaternionExpression extends ObservableQuaternion {
         return new Matrix4fBinding(() -> this.get().rotateMatrix(), this);
     }
 
-    default QuaternionBinding thenRotate(ObservableQuaternion nextRotation) {
-        return Bindings.concatRotation(this, nextRotation);
-    }
-
-    default QuaternionBinding preRotate(ObservableQuaternion preRotation) {
-        return Bindings.concatRotation(preRotation, this);
-    }
 }

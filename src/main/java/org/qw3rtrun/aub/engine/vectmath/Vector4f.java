@@ -139,7 +139,7 @@ public class Vector4f implements Serializable, Near<Vector4f> {
     public Vector4f multiply(float k) {
         if (k == 0) return ZERO;
         if (k == 1) return this;
-        return vect(k * x, k * y, k * z);
+        return vect(k * x, k * y, k * z, k * w);
     }
 
     public Matrix4f multiply(Vector4f v) {

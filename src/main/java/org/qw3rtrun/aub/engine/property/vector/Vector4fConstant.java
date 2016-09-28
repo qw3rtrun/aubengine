@@ -84,4 +84,11 @@ public class Vector4fConstant implements ObservableVector, VectorExpression {
     @Override
     public void removeListener(InvalidationListener listener) {
     }
+
+    @Override
+    public String toString() {
+        return "Vector4fConstant{" +
+                "v=" + v +
+                '}';
+    }
 }
