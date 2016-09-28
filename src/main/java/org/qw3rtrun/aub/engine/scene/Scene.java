@@ -11,14 +11,14 @@ public class Scene {
 
     final private ObjectProperty<Camera> camera = new SimpleObjectProperty<>(new Camera());
 
-    final private ObservableList<Object> objects = FXCollections.observableArrayList();
+    final private ObservableList<SceneObject> objects = FXCollections.observableArrayList();
 
     private final Pipeline pipeline = new Pipeline();
 
     {
-        objects.addListener((ListChangeListener<Object>) c -> {
-            c.getAddedSubList().forEach(Object::pushToContext);
-            c.getRemoved().forEach(Object::popFromContext);
+        objects.addListener((ListChangeListener<SceneObject>) c -> {
+            c.getAddedSubList().forEach(SceneObject::pushToContext);
+            c.getRemoved().forEach(SceneObject::popFromContext);
         });
 
         camera.addListener((observable, oldValue, newValue) -> {
@@ -40,7 +40,7 @@ public class Scene {
 
     public void render() throws InterruptedException {
         pipeline.bind();
-        objects.forEach(Object::render);
+        objects.forEach(SceneObject::render);
     }
 
 }

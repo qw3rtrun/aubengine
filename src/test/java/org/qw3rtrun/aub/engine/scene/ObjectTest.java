@@ -10,7 +10,7 @@ public class ObjectTest {
 
     @Test
     public void test() {
-        Object obj = new Object();
+        SceneObject obj = new SceneObject();
 
         System.out.println(obj.toAbsolute(Vector4f.XYZW));
 

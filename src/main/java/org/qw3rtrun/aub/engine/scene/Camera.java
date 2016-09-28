@@ -10,7 +10,7 @@ import org.qw3rtrun.aub.engine.property.matrix.Matrix4fBinding;
 import static org.qw3rtrun.aub.engine.property.matrix.Matrix4fBinding.binding;
 import static org.qw3rtrun.aub.engine.vectmath.Matrix4f.matr;
 
-public class Camera extends Object {
+public class Camera extends SceneObject {
 
     private final FloatProperty aspectRatio = new SimpleFloatProperty(this, "aspect ratio", 1f);
 

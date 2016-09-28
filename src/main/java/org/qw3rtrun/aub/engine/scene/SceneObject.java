@@ -14,11 +14,46 @@ import java.util.ArrayList;
 import static javafx.collections.FXCollections.observableList;
 import static org.qw3rtrun.aub.engine.vectmath.Vector4f.*;
 
-public class Object implements Node, Shaped, Tangible {
+public class SceneObject implements Node, Shaped, Tangible {
+
+    private final Vector4fProperty scale = new Vector4fProperty(XYZ) {
+        @Override
+        public java.lang.Object getBean() {
+            return SceneObject.this;
+        }
+
+        @Override
+        public String getName() {
+            return "ScaleBinding of " + name.get();
+        }
+    };
+    private final Vector4fProperty rotation = new Vector4fProperty(ZERO) {
+        @Override
+        public java.lang.Object getBean() {
+            return SceneObject.this;
+        }
+
+        @Override
+        public String getName() {
+            return "Rotation of " + name.get();
+        }
+    };
+    private final Vector4fProperty translation = new Vector4fProperty(ZERO) {
+        @Override
+        public String getName() {
+            return "Translation of " + name.get();
+        }
+
+        @Override
+        public java.lang.Object getBean() {
+            return SceneObject.this;
+        }
+    };
+
 
     private final QuaternionBinding orientation = QuaternionBinding.orientation(rotation);
-    private final ObjectProperty<Object> parent = new SimpleObjectProperty<>();
-    private final ListProperty<Object> childs = new SimpleListProperty<>(observableList(new ArrayList<>()));
+    private final ObjectProperty<SceneObject> parent = new SimpleObjectProperty<>();
+    private final ListProperty<SceneObject> childs = new SimpleListProperty<>(observableList(new ArrayList<>()));
     private final Matrix4fBinding localToAbsolute = new Translate(translation).asMatrix()
             .concat(orientation.rotationNormMatrix())
             .concat(new Scale(scale).asMatrix());
@@ -35,39 +70,7 @@ public class Object implements Node, Shaped, Tangible {
             .concat(invertOrientation.rotationNormMatrix())
             .concat(new Translate(translation).invert().asMatrix());
     private StringProperty name = new SimpleStringProperty(super.toString());
-    private final Vector4fProperty scale = new Vector4fProperty(XYZ) {
-        @Override
-        public java.lang.Object getBean() {
-            return Object.this;
-        }
 
-        @Override
-        public String getName() {
-            return "ScaleBinding of " + name.get();
-        }
-    };
-    private final Vector4fProperty rotation = new Vector4fProperty(ZERO) {
-        @Override
-        public java.lang.Object getBean() {
-            return Object.this;
-        }
-
-        @Override
-        public String getName() {
-            return "Rotation of " + name.get();
-        }
-    };
-    private final Vector4fProperty translation = new Vector4fProperty(ZERO) {
-        @Override
-        public String getName() {
-            return "Translation of " + name.get();
-        }
-
-        @Override
-        public java.lang.Object getBean() {
-            return Object.this;
-        }
-    };
     private Vector4fBinding inverseScale = new Vector4fBinding(
             () -> vect(1 / scale.getValue().x, 1 / scale.getValue().y, 1 / scale.getValue().z, 2),
             scale
@@ -78,12 +81,12 @@ public class Object implements Node, Shaped, Tangible {
     }
 
     @Override
-    public ObjectProperty<Object> parent() {
+    public ObjectProperty<SceneObject> parent() {
         return parent;
     }
 
     @Override
-    public ListProperty<Object> childs() {
+    public ListProperty<SceneObject> childs() {
         return childs;
     }
 
