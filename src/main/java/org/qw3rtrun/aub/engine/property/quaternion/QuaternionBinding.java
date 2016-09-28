@@ -9,9 +9,9 @@ import org.qw3rtrun.aub.engine.property.vector.ObservableVector;
 import org.qw3rtrun.aub.engine.property.vector.Vector4fBinding;
 import org.qw3rtrun.aub.engine.vectmath.Quaternion;
 
+import java.util.Arrays;
 import java.util.function.Supplier;
 
-import static java.util.Arrays.asList;
 import static org.qw3rtrun.aub.engine.property.vector.Vector4fConstant.*;
 import static org.qw3rtrun.aub.engine.vectmath.Quaternion.QXYZ0;
 import static org.qw3rtrun.aub.engine.vectmath.Quaternion.quaternion;
@@ -56,7 +56,7 @@ public class QuaternionBinding extends BaseBinding<Quaternion> implements Bindin
                 return new QuaternionBinding(quaternions[0]::get, quaternions[0]);
             default:
                 //noinspection OptionalGetWithoutIsPresent
-                return (QuaternionBinding) asList(quaternions).stream().<QuaternionBinding>reduce(QuaternionBinding::concatRotation).get();
+                return (QuaternionBinding) Arrays.stream(quaternions).<QuaternionBinding>reduce(QuaternionBinding::concatRotation).get();
         }
     }
 

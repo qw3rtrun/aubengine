@@ -7,11 +7,11 @@ import org.qw3rtrun.aub.engine.vectmath.Matrix4f;
 
 import static org.qw3rtrun.aub.engine.vectmath.Vector4f.*;
 
-public class Translate implements Transformation {
+public class Translation implements Transformation {
 
     private final ObservableVector translation;
 
-    public Translate(ObservableVector translation) {
+    public Translation(ObservableVector translation) {
         this.translation = translation;
     }
 
@@ -27,6 +27,6 @@ public class Translate implements Transformation {
 
     @Override
     public Transformation invert() {
-        return new Translate(Vector4fBinding.inverse(translation));
+        return new Translation(Vector4fBinding.inverse(translation));
     }
 }

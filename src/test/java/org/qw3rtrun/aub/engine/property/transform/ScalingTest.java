@@ -12,14 +12,14 @@ import static org.qw3rtrun.aub.engine.Matchers.nearTo;
 import static org.qw3rtrun.aub.engine.property.vector.Vector4fConstant.vectConst;
 import static org.qw3rtrun.aub.engine.vectmath.Vector4f.*;
 
-public class ScaleBindingTest {
+public class ScalingTest {
 
     @Test
     public void testScale() throws Exception {
         Vector4fProperty a = new Vector4fProperty(vect(1, 2, 3, -1));
         Vector4fProperty b = new Vector4fProperty(Vector4f.XYZW);
 
-        Vector4fBinding scaling = new Scale(a).apply(b);
+        Vector4fBinding scaling = new Scaling(a).apply(b);
 
         assertThat(scaling, nearTo(vectConst(1, 2, 3, -1)));
 
@@ -34,7 +34,7 @@ public class ScaleBindingTest {
     public void testInvertScale() throws Exception {
         Vector4fProperty a = new Vector4fProperty(vect(1, 1f / 2, 1f / 3, -1));
         Vector4fProperty b = new Vector4fProperty(Vector4f.XYZW);
-        Vector4fBinding scaling = new Scale(a).invert().apply(b);
+        Vector4fBinding scaling = new Scaling(a).invert().apply(b);
 
         assertThat(scaling, nearTo(vectConst(1, 2, 3, -1)));
 
@@ -47,7 +47,7 @@ public class ScaleBindingTest {
 
     @Test
     public void testMatrix() {
-        Matrix4fBinding matrix = new Scale(vectConst(1, 2, 3, -1)).asMatrix();
+        Matrix4fBinding matrix = new Scaling(vectConst(1, 2, 3, -1)).asMatrix();
         assertThat(matrix.get(), nearTo(Matrix4f.cols(X.multiply(1), Y.multiply(2), Z.multiply(3), W.multiply(-1))));
     }
 

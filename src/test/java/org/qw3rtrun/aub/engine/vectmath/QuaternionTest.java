@@ -81,16 +81,6 @@ public class QuaternionTest {
     }
 
     @Test
-    public void rotateMatrix() throws Exception {
-
-    }
-
-    @Test
-    public void rotateNormMatrix() throws Exception {
-
-    }
-
-    @Test
     public void isUnit() throws Exception {
 
     }

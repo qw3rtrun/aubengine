@@ -14,14 +14,14 @@ import static org.qw3rtrun.aub.engine.property.vector.Vector4fConstant.vectConst
 import static org.qw3rtrun.aub.engine.vectmath.Vector4f.*;
 
 
-public class TranslateTest {
+public class TranslationTest {
 
     @Test
     public void testTranslate() throws Exception {
         Vector4fProperty a = new Vector4fProperty(Vector4f.ZERO);
         Vector4fProperty b = new Vector4fProperty(vect(2, -3, 0, 1.5f));
-        Vector4fBinding byConst = new Translate(vectConst(2, -3, 0, 1.5f)).apply(a);
-        Vector4fBinding byProp = new Translate(b).apply(a);
+        Vector4fBinding byConst = new Translation(vectConst(2, -3, 0, 1.5f)).apply(a);
+        Vector4fBinding byProp = new Translation(b).apply(a);
 
         assertThat(byConst.getValue(), nearTo(vect(2, -3, 0, 1.5f)));
         assertThat(byProp.getValue(), nearTo(vect(2, -3, 0, 1.5f)));
@@ -38,8 +38,8 @@ public class TranslateTest {
     public void testInverse() throws Exception {
         Vector4fProperty a = new Vector4fProperty(Vector4f.ZERO);
         Vector4fProperty b = new Vector4fProperty(vect(2, -3, 0, 1.5f));
-        Vector4fBinding byConst = new Translate(vectConst(2, -3, 0, 1.5f)).invert().apply(a);
-        Vector4fBinding byProp = new Translate(b).invert().apply(a);
+        Vector4fBinding byConst = new Translation(vectConst(2, -3, 0, 1.5f)).invert().apply(a);
+        Vector4fBinding byProp = new Translation(b).invert().apply(a);
 
         assertThat(byConst.getValue(), nearTo(vect(-2, 3, 0, -1.5f)));
         assertThat(byProp.getValue(), nearTo(vect(-2, 3, 0, -1.5f)));
@@ -55,7 +55,7 @@ public class TranslateTest {
     @Test
     public void testMatrix() {
         Vector4fConstant translation = vectConst(2, -3, 0, 1.5f);
-        Matrix4fBinding matrix = new Translate(translation).asMatrix();
+        Matrix4fBinding matrix = new Translation(translation).asMatrix();
         assertThat(matrix.get(), nearTo(Matrix4f.cols(X, Y, Z, translation.get())));
     }
 }

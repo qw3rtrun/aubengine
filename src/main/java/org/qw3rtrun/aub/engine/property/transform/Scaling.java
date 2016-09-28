@@ -7,11 +7,11 @@ import org.qw3rtrun.aub.engine.vectmath.Matrix4f;
 
 import static org.qw3rtrun.aub.engine.vectmath.Vector4f.*;
 
-public class Scale implements Transformation {
+public class Scaling implements Transformation {
 
     private final ObservableVector scale;
 
-    public Scale(ObservableVector scale) {
+    public Scaling(ObservableVector scale) {
         this.scale = scale;
     }
 
@@ -37,7 +37,7 @@ public class Scale implements Transformation {
 
     @Override
     public Transformation invert() {
-        return new Scale(new Vector4fBinding(() -> vect(
+        return new Scaling(new Vector4fBinding(() -> vect(
                 scale.getX() != 0 ? 1 / scale.getX() : Float.POSITIVE_INFINITY,
                 scale.getY() != 0 ? 1 / scale.getY() : Float.POSITIVE_INFINITY,
                 scale.getZ() != 0 ? 1 / scale.getZ() : Float.POSITIVE_INFINITY,
