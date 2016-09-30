@@ -33,7 +33,7 @@ public class Vector4fBinding extends BaseBinding<Vector4f> implements Binding<Ve
     }
 
     public static Vector4fBinding identity(ObservableVector vector) {
-        return new Vector4fBinding(vector::get);
+        return new Vector4fBinding(vector::get, vector);
     }
 
     public static <P, T extends Number> FloatBinding func(Function<P, T> f, ObservableValue<P> p) {

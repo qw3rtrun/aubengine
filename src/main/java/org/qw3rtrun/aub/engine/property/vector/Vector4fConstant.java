@@ -8,10 +8,11 @@ import static org.qw3rtrun.aub.engine.vectmath.Vector4f.*;
 
 public class Vector4fConstant implements ObservableVector, VectorExpression {
 
-    public static Vector4fConstant CONST_X = new Vector4fConstant(X);
-    public static Vector4fConstant CONST_Y = new Vector4fConstant(Y);
-    public static Vector4fConstant CONST_Z = new Vector4fConstant(Z);
-    public static Vector4fConstant CONST_XY = new Vector4fConstant(XY);
+    public static final Vector4fConstant CONST_0 = new Vector4fConstant(ZERO);
+    public static final Vector4fConstant CONST_X = new Vector4fConstant(X);
+    public static final Vector4fConstant CONST_Y = new Vector4fConstant(Y);
+    public static final Vector4fConstant CONST_Z = new Vector4fConstant(Z);
+    public static final Vector4fConstant CONST_XY = new Vector4fConstant(XY);
 
     private final Vector4f v;
 

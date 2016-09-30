@@ -1,15 +1,120 @@
 package org.qw3rtrun.aub.engine.property.transform;
 
 import org.qw3rtrun.aub.engine.property.matrix.Matrix4fBinding;
+import org.qw3rtrun.aub.engine.property.matrix.Matrix4fConstant;
+import org.qw3rtrun.aub.engine.property.quaternion.ObservableQuaternion;
 import org.qw3rtrun.aub.engine.property.vector.ObservableVector;
 import org.qw3rtrun.aub.engine.property.vector.Vector4fBinding;
 
-public interface Transformation {
+public abstract class Transformation {
 
-    Vector4fBinding apply(ObservableVector source);
+    public abstract Rotation rotate(ObservableQuaternion rotation);
 
-    Matrix4fBinding asMatrix();
+    public abstract Scaling scale(ObservableVector scaling);
 
-    Transformation invert();
+    public abstract Translation translate(ObservableVector translation);
 
+    public abstract Vector4fBinding apply(ObservableVector source);
+
+    public abstract Matrix4fBinding asMatrix();
+
+    public abstract Transformation invert();
+
+    protected abstract Transformation invert(Transformation invertChain);
+
+    abstract static class AbstractTransformation extends Transformation {
+
+        private final Transformation chain;
+
+        AbstractTransformation() {
+            this(root);
+        }
+
+        AbstractTransformation(Transformation chain) {
+            this.chain = chain;
+        }
+
+        Transformation getChain() {
+            return chain;
+        }
+
+        public Vector4fBinding apply(ObservableVector source) {
+            return chain.apply(source);
+        }
+
+        public Matrix4fBinding asMatrix() {
+            return chain.asMatrix();
+        }
+
+        public Transformation invert() {
+            return this.invert(root);
+        }
+
+        protected abstract Transformation invert(Transformation chain);
+
+        public Rotation rotate(ObservableQuaternion rotation) {
+            return new Rotation(getChain(), rotation);
+        }
+
+        public Scaling scale(ObservableVector scaling) {
+            return new Scaling(getChain(), scaling);
+        }
+
+        public Translation translate(ObservableVector translation) {
+            return new Translation(getChain(), translation);
+        }
+
+        @Override
+        public int hashCode() {
+            return chain != null ? chain.hashCode() : 0;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (!(o instanceof AbstractTransformation)) return false;
+
+            AbstractTransformation that = (AbstractTransformation) o;
+
+            return chain != null ? chain.equals(that.chain) : that.chain == null;
+        }
+    }
+
+    protected static Transformation root = new Transformation() {
+
+        @Override
+        public Transformation invert() {
+            return this;
+        }
+
+        @Override
+        protected Transformation invert(Transformation invertChain) {
+            return invertChain;
+        }
+
+        public Matrix4fBinding asMatrix() {
+            return Matrix4fBinding.identity(Matrix4fConstant.CONST_E);
+        }
+
+        public Rotation rotate(ObservableQuaternion rotation) {
+            return new Rotation(rotation);
+        }
+
+        public Scaling scale(ObservableVector scaling) {
+            return new Scaling(scaling);
+        }
+
+        public Translation translate(ObservableVector translation) {
+            return new Translation(translation);
+        }
+
+        @Override
+        public Vector4fBinding apply(ObservableVector source) {
+            return Vector4fBinding.identity(source);
+        }
+    };
+
+    public static Transformation start() {
+        return root;
+    }
 }
