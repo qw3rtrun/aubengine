@@ -22,6 +22,17 @@ public class QuaternionBinding extends BaseBinding<Quaternion> implements Bindin
         super(func, dependencies);
     }
 
+    public static QuaternionBinding normalize(ObservableQuaternion quat) {
+        return new QuaternionBinding(() -> quat.get().normalize(), quat);
+    }
+
+    public static Vector4fBinding rotate(ObservableQuaternion rotation, ObservableVector vector) {
+        return new Vector4fBinding(() -> {
+            Quaternion normalized = rotation.get().normalize();
+            return normalized.product(quaternion(vector.getValue())).product(normalized.conjugate()).asVector();
+        }, rotation, vector);
+    }
+
     public static QuaternionBinding axisRotation(ObservableVector axis, ObservableNumberValue radian) {
         return new QuaternionBinding(() -> {
             Vector4fBinding normalizedAxis = Vector4fBinding.normalize(axis);

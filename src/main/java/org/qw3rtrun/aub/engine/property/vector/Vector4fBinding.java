@@ -7,7 +7,6 @@ import javafx.beans.value.ObservableFloatValue;
 import javafx.beans.value.ObservableNumberValue;
 import javafx.beans.value.ObservableValue;
 import org.qw3rtrun.aub.engine.property.BaseBinding;
-import org.qw3rtrun.aub.engine.vectmath.Matrix4f;
 import org.qw3rtrun.aub.engine.vectmath.Vector4f;
 
 import java.util.function.Function;
@@ -101,18 +100,6 @@ public class Vector4fBinding extends BaseBinding<Vector4f> implements Binding<Ve
 
     public static ObservableFloatValue z(ObservableValue<Vector4f> vector) {
         return func(Vector4f::getZ, vector);
-    }
-
-    public static Vector4fBinding product(ObservableValue<Matrix4f> matrix, ObservableValue<Vector4f> vector) {
-        return new Vector4fBinding(() -> matrix.getValue().multiply(vector.getValue()), matrix, vector);
-    }
-
-    public static Vector4fBinding product(ObservableValue<Matrix4f> matrix, Vector4f vector) {
-        return new Vector4fBinding(() -> matrix.getValue().multiply(vector), matrix);
-    }
-
-    public static Vector4fBinding product(Matrix4f matrix, ObservableValue<Vector4f> vector) {
-        return new Vector4fBinding(() -> matrix.multiply(vector.getValue()), vector);
     }
 
     public static Vector4fBinding normalize(ObservableVector vector) {

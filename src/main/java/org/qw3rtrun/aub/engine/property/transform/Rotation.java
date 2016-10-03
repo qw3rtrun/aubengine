@@ -5,9 +5,9 @@ import org.qw3rtrun.aub.engine.property.quaternion.ObservableQuaternion;
 import org.qw3rtrun.aub.engine.property.quaternion.QuaternionBinding;
 import org.qw3rtrun.aub.engine.property.vector.ObservableVector;
 import org.qw3rtrun.aub.engine.property.vector.Vector4fBinding;
+import org.qw3rtrun.aub.engine.vectmath.Quaternion;
 
 import static org.qw3rtrun.aub.engine.vectmath.Matrix4f.matr;
-import static org.qw3rtrun.aub.engine.vectmath.Quaternion.quaternion;
 
 public class Rotation extends Transformation.AbstractTransformation {
 
@@ -26,11 +26,7 @@ public class Rotation extends Transformation.AbstractTransformation {
     @Override
     public Vector4fBinding apply(ObservableVector source) {
         Vector4fBinding apply = super.apply(source);
-        return new Vector4fBinding(
-                () -> rotation.get()
-                        .product(quaternion(apply.get().w(0)))
-                        .product(rotation.get().conjugate()).asVector(),
-                apply, rotation);
+        return QuaternionBinding.rotate(QuaternionBinding.normalize(rotation), apply);
     }
 
     @Override
@@ -38,10 +34,11 @@ public class Rotation extends Transformation.AbstractTransformation {
         return Matrix4fBinding.multiply(
                 new Matrix4fBinding(
                         () -> {
-                            float x = rotation.getX();
-                            float y = rotation.getY();
-                            float z = rotation.getZ();
-                            float a = rotation.getA();
+                            Quaternion normalized = rotation.get().normalize();
+                            float x = normalized.getX();
+                            float y = normalized.getY();
+                            float z = normalized.getZ();
+                            float a = normalized.getA();
                             return matr(
                                     1 - 2 * y * y - 2 * z * z, 2 * (x * y - z * a), 2 * (x * z + y * a),
                                     2 * (x * y + z * a), 1 - 2 * x * x - 2 * z * z, 2 * (y * z - x * a),
