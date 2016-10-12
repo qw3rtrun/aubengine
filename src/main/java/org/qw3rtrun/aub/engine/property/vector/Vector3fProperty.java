@@ -5,45 +5,41 @@ import javafx.beans.Observable;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.Property;
 import javafx.beans.value.ObservableValue;
-import org.qw3rtrun.aub.engine.vectmath.Vector4f;
+import org.qw3rtrun.aub.engine.vectmath.Vector3f;
 
 import java.lang.ref.WeakReference;
 
-import static org.qw3rtrun.aub.engine.vectmath.Vector4f.vect4f;
+import static org.qw3rtrun.aub.engine.vectmath.Vector3f.vect3f;
 
 /**
  * Created by strunov on 9/8/2015.
  */
-public class Vector4fProperty extends ObservableVector4fBase implements Property<Vector4f>, Vector4fExpression {
+public class Vector3fProperty extends ObservableVector3fBase implements Property<Vector3f>, Vector3fExpression {
 
-    private Vector4f value = Vector4f.ZERO;
-    private ObservableValue<? extends Vector4f> observable;
+    private Vector3f value = Vector3f.ZERO;
+    private ObservableValue<? extends Vector3f> observable;
     private InvalidationListener listener = null;
 
     private boolean valid = true;
 
-    public Vector4fProperty() {
-        this(Vector4f.vect4f());
+    public Vector3fProperty() {
+        this(Vector3f.vect3f());
     }
 
-    public Vector4fProperty(Vector4f value) {
+    public Vector3fProperty(Vector3f value) {
         this.value = value;
     }
 
-    public static Vector4fProperty vectProp(Vector4f init) {
-        return new Vector4fProperty(init);
+    public static Vector3fProperty vectProp(Vector3f init) {
+        return new Vector3fProperty(init);
     }
 
-    public static Vector4fProperty vectProp(float x, float y, float z, float w) {
-        return new Vector4fProperty(vect4f(x, y, z, w));
+    public static Vector3fProperty vectProp(float x, float y, float z) {
+        return new Vector3fProperty(Vector3f.vect3f(x, y, z));
     }
 
-    public static Vector4fProperty vectProp(float x, float y, float z) {
-        return new Vector4fProperty(Vector4f.vect4f(x, y, z));
-    }
-
-    public static Vector4fProperty vectProp() {
-        return new Vector4fProperty(Vector4f.vect4f());
+    public static Vector3fProperty vectProp() {
+        return new Vector3fProperty(Vector3f.vect3f());
     }
 
     private void markInvalid() {
@@ -58,7 +54,7 @@ public class Vector4fProperty extends ObservableVector4fBase implements Property
     }
 
     @Override
-    public void bind(ObservableValue<? extends Vector4f> newObservable) {
+    public void bind(ObservableValue<? extends Vector3f> newObservable) {
         if (!newObservable.equals(observable)) {
             unbind();
             observable = newObservable;
@@ -85,12 +81,12 @@ public class Vector4fProperty extends ObservableVector4fBase implements Property
     }
 
     @Override
-    public void bindBidirectional(Property<Vector4f> other) {
+    public void bindBidirectional(Property<Vector3f> other) {
         Bindings.bindBidirectional(this, other);
     }
 
     @Override
-    public void unbindBidirectional(Property<Vector4f> other) {
+    public void unbindBidirectional(Property<Vector3f> other) {
         Bindings.unbindBidirectional(this, other);
     }
 
@@ -105,13 +101,13 @@ public class Vector4fProperty extends ObservableVector4fBase implements Property
     }
 
     @Override
-    public Vector4f getValue() {
+    public Vector3f getValue() {
         valid = true;
         return observable == null ? value : observable.getValue();
     }
 
     @Override
-    public void setValue(Vector4f value) {
+    public void setValue(Vector3f value) {
         if (isBound()) {
             throw new RuntimeException("A bound value cannot be set.");
         }
@@ -122,8 +118,8 @@ public class Vector4fProperty extends ObservableVector4fBase implements Property
         }
     }
 
-    public void setValue(float x, float y, float z, float w) {
-        setValue(vect4f(x, y, z, w));
+    public void setValue(float x, float y, float z) {
+        setValue(vect3f(x, y, z));
     }
 
     public void setX(float x) {
@@ -138,15 +134,11 @@ public class Vector4fProperty extends ObservableVector4fBase implements Property
         setValue(getValue().z(z));
     }
 
-    public void setW(float w) {
-        setValue(getValue().w(w));
-    }
-
     @Override
     public String toString() {
         final Object bean = getBean();
         final String name = getName();
-        final StringBuilder result = new StringBuilder("Vector4fProperty [");
+        final StringBuilder result = new StringBuilder("Vector3fProperty [");
         if (bean != null) {
             result.append("bean: ").append(bean).append(", ");
         }
@@ -169,15 +161,15 @@ public class Vector4fProperty extends ObservableVector4fBase implements Property
 
     private static class Listener implements InvalidationListener {
 
-        private final WeakReference<Vector4fProperty> wref;
+        private final WeakReference<Vector3fProperty> wref;
 
-        public Listener(Vector4fProperty ref) {
+        public Listener(Vector3fProperty ref) {
             this.wref = new WeakReference<>(ref);
         }
 
         @Override
         public void invalidated(Observable observable) {
-            Vector4fProperty ref = wref.get();
+            Vector3fProperty ref = wref.get();
             if (ref == null) {
                 observable.removeListener(this);
             } else {

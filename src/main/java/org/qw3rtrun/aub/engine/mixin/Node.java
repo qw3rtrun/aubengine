@@ -3,7 +3,7 @@ package org.qw3rtrun.aub.engine.mixin;
 import javafx.beans.property.ListProperty;
 import javafx.beans.property.ObjectProperty;
 import org.qw3rtrun.aub.engine.property.matrix.Matrix4fBinding;
-import org.qw3rtrun.aub.engine.property.vector.Vector4fProperty;
+import org.qw3rtrun.aub.engine.property.vector.Vector3fProperty;
 import org.qw3rtrun.aub.engine.vectmath.Vector4f;
 
 /**
@@ -15,11 +15,11 @@ public interface Node {
 
     public ListProperty<? extends Node> childs();
 
-    public Vector4fProperty translation();
+    public Vector3fProperty translation();
 
-    public Vector4fProperty rotation();
+    public Vector3fProperty orientation();
 
-    public Vector4fProperty scale();
+    public Vector3fProperty scale();
 
     public Matrix4fBinding localToAbsolute();
 

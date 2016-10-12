@@ -4,7 +4,8 @@ import java.io.Serializable;
 
 import static java.util.Arrays.asList;
 import static org.qw3rtrun.aub.engine.vectmath.Matrix4f.matr;
-import static org.qw3rtrun.aub.engine.vectmath.Vector4f.vect;
+import static org.qw3rtrun.aub.engine.vectmath.Vector3f.vect3f;
+import static org.qw3rtrun.aub.engine.vectmath.Vector4f.vect4f;
 
 public class Quaternion implements Serializable, Near<Quaternion> {
 
@@ -33,12 +34,16 @@ public class Quaternion implements Serializable, Near<Quaternion> {
         this.a = a;
     }
 
-    public static Quaternion quaternion(float x, float y, float z, float a){
+    public static Quaternion quaternion(float x, float y, float z, float a) {
         return new Quaternion(x, y, z, a);
     }
 
-    public static Quaternion quaternion(Vector4f v){
+    public static Quaternion quaternion(Vector4f v) {
         return new Quaternion(v.x, v.y, v.z, v.w);
+    }
+
+    public static Quaternion quaternion(Vector3f v) {
+        return new Quaternion(v.x, v.y, v.z, 0);
     }
 
     public static Quaternion quaternion() {
@@ -71,6 +76,10 @@ public class Quaternion implements Serializable, Near<Quaternion> {
 
     public float getA() {
         return a;
+    }
+
+    public Vector3f getVectorPart() {
+        return vect3f(x, y, z);
     }
 
     public Quaternion withX(float x) {
@@ -106,7 +115,7 @@ public class Quaternion implements Serializable, Near<Quaternion> {
     }
 
     public Quaternion multiply(float k) {
-        return new Quaternion(k * x, k * y, k * z, k* a);
+        return new Quaternion(k * x, k * y, k * z, k * a);
     }
 
     public Quaternion add(Quaternion v) {
@@ -182,7 +191,7 @@ public class Quaternion implements Serializable, Near<Quaternion> {
 
     @Override
     public boolean isNearTo(Quaternion o, double epsilon) {
-        return asVector().isNearTo(o.asVector(), epsilon);
+        return asVector4f().isNearTo(o.asVector4f(), epsilon);
     }
 
     @Override
@@ -199,7 +208,7 @@ public class Quaternion implements Serializable, Near<Quaternion> {
         return "q(" + x + ", " + y + ", " + z + ", " + a + ")";
     }
 
-    public Vector4f asVector() {
-        return vect(x, y, z, a);
+    public Vector4f asVector4f() {
+        return vect4f(x, y, z, a);
     }
 }

@@ -1,7 +1,7 @@
 package org.qw3rtrun.aub.engine.property.quaternion;
 
-import org.qw3rtrun.aub.engine.property.vector.ObservableVector;
-import org.qw3rtrun.aub.engine.property.vector.Vector4fBinding;
+import org.qw3rtrun.aub.engine.property.vector.ObservableVector3f;
+import org.qw3rtrun.aub.engine.property.vector.Vector3fBinding;
 
 interface QuaternionExpression extends ObservableQuaternion {
 
@@ -9,7 +9,7 @@ interface QuaternionExpression extends ObservableQuaternion {
         return new QuaternionBinding(() -> this.get().conjugate(), this);
     }
 
-    default Vector4fBinding rotate(ObservableVector vector) {
+    default Vector3fBinding rotate(ObservableVector3f vector) {
         return QuaternionBinding.rotate(this, vector);
     }
 

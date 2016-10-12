@@ -14,7 +14,7 @@ public class ObjectTest {
 
         System.out.println(obj.toAbsolute(Vector4f.XYZW));
 
-        obj.rotation().setValue(0, 1, 0, (float) Math.PI);
+        obj.orientation().setValue(0, 1, 0);
 
         System.out.println(obj.toAbsolute(Vector4f.XYZW));
 
@@ -23,7 +23,7 @@ public class ObjectTest {
 
         System.out.println(obj.toAbsolute(Vector4f.XYZW));
 
-        obj.translation().setValue(10, 10, 10, 1);
+        obj.translation().setValue(10, 10, 10);
 
         System.out.println(obj.toAbsolute(Vector4f.XYZW));
 

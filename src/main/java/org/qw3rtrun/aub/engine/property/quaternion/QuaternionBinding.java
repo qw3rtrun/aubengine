@@ -5,14 +5,14 @@ import javafx.beans.Observable;
 import javafx.beans.binding.Binding;
 import javafx.beans.value.ObservableNumberValue;
 import org.qw3rtrun.aub.engine.property.BaseBinding;
-import org.qw3rtrun.aub.engine.property.vector.ObservableVector;
-import org.qw3rtrun.aub.engine.property.vector.Vector4fBinding;
+import org.qw3rtrun.aub.engine.property.vector.ObservableVector3f;
+import org.qw3rtrun.aub.engine.property.vector.Vector3fBinding;
+import org.qw3rtrun.aub.engine.property.vector.Vector3fConstant;
 import org.qw3rtrun.aub.engine.vectmath.Quaternion;
 
 import java.util.Arrays;
 import java.util.function.Supplier;
 
-import static org.qw3rtrun.aub.engine.property.vector.Vector4fConstant.*;
 import static org.qw3rtrun.aub.engine.vectmath.Quaternion.QXYZ0;
 import static org.qw3rtrun.aub.engine.vectmath.Quaternion.quaternion;
 
@@ -26,16 +26,16 @@ public class QuaternionBinding extends BaseBinding<Quaternion> implements Bindin
         return new QuaternionBinding(() -> quat.get().normalize(), quat);
     }
 
-    public static Vector4fBinding rotate(ObservableQuaternion rotation, ObservableVector vector) {
-        return new Vector4fBinding(() -> {
+    public static Vector3fBinding rotate(ObservableQuaternion rotation, ObservableVector3f vector) {
+        return new Vector3fBinding(() -> {
             Quaternion normalized = rotation.get().normalize();
-            return normalized.product(quaternion(vector.getValue())).product(normalized.conjugate()).asVector();
+            return normalized.product(quaternion(vector.getValue())).product(normalized.conjugate()).getVectorPart();
         }, rotation, vector);
     }
 
-    public static QuaternionBinding axisRotation(ObservableVector axis, ObservableNumberValue radian) {
+    public static QuaternionBinding axisRotation(ObservableVector3f axis, ObservableNumberValue radian) {
         return new QuaternionBinding(() -> {
-            Vector4fBinding normalizedAxis = Vector4fBinding.normalize(axis);
+            Vector3fBinding normalizedAxis = Vector3fBinding.normalize(axis);
             double a2 = radian.doubleValue() / 2;
             double sin = (float) Math.sin(a2);
             double cos = (float) Math.cos(a2);
@@ -47,11 +47,11 @@ public class QuaternionBinding extends BaseBinding<Quaternion> implements Bindin
         }, axis, radian);
     }
 
-    public static QuaternionBinding orientation(ObservableVector rotation) {
+    public static QuaternionBinding orientation(ObservableVector3f rotation) {
         return concatRotations(
-                axisRotation(CONST_X, FloatConstant.valueOf(rotation.getX())),
-                axisRotation(CONST_Y, FloatConstant.valueOf(rotation.getY())),
-                axisRotation(CONST_Z, FloatConstant.valueOf(rotation.getZ()))
+                axisRotation(Vector3fConstant.CONST_X, FloatConstant.valueOf(rotation.getX())),
+                axisRotation(Vector3fConstant.CONST_Y, FloatConstant.valueOf(rotation.getY())),
+                axisRotation(Vector3fConstant.CONST_Z, FloatConstant.valueOf(rotation.getZ()))
         );
     }
 

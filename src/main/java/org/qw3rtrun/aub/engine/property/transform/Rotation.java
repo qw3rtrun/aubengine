@@ -3,8 +3,8 @@ package org.qw3rtrun.aub.engine.property.transform;
 import org.qw3rtrun.aub.engine.property.matrix.Matrix4fBinding;
 import org.qw3rtrun.aub.engine.property.quaternion.ObservableQuaternion;
 import org.qw3rtrun.aub.engine.property.quaternion.QuaternionBinding;
-import org.qw3rtrun.aub.engine.property.vector.ObservableVector;
-import org.qw3rtrun.aub.engine.property.vector.Vector4fBinding;
+import org.qw3rtrun.aub.engine.property.vector.ObservableVector3f;
+import org.qw3rtrun.aub.engine.property.vector.Vector3fBinding;
 import org.qw3rtrun.aub.engine.vectmath.Quaternion;
 
 import static org.qw3rtrun.aub.engine.vectmath.Matrix4f.matr;
@@ -24,8 +24,8 @@ public class Rotation extends Transformation.AbstractTransformation {
     }
 
     @Override
-    public Vector4fBinding apply(ObservableVector source) {
-        Vector4fBinding apply = super.apply(source);
+    public Vector3fBinding apply(ObservableVector3f source) {
+        Vector3fBinding apply = super.apply(source);
         return QuaternionBinding.rotate(QuaternionBinding.normalize(rotation), apply);
     }
 

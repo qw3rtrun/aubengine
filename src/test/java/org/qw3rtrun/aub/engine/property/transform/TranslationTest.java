@@ -2,60 +2,63 @@ package org.qw3rtrun.aub.engine.property.transform;
 
 import org.junit.Test;
 import org.qw3rtrun.aub.engine.property.matrix.Matrix4fBinding;
-import org.qw3rtrun.aub.engine.property.vector.Vector4fBinding;
-import org.qw3rtrun.aub.engine.property.vector.Vector4fConstant;
-import org.qw3rtrun.aub.engine.property.vector.Vector4fProperty;
+import org.qw3rtrun.aub.engine.property.vector.Vector3fBinding;
+import org.qw3rtrun.aub.engine.property.vector.Vector3fConstant;
+import org.qw3rtrun.aub.engine.property.vector.Vector3fProperty;
 import org.qw3rtrun.aub.engine.vectmath.Matrix4f;
+import org.qw3rtrun.aub.engine.vectmath.Vector3f;
 import org.qw3rtrun.aub.engine.vectmath.Vector4f;
 
 import static org.junit.Assert.assertThat;
 import static org.qw3rtrun.aub.engine.Matchers.nearTo;
-import static org.qw3rtrun.aub.engine.property.vector.Vector4fConstant.vectConst;
-import static org.qw3rtrun.aub.engine.vectmath.Vector4f.*;
+import static org.qw3rtrun.aub.engine.vectmath.Vector3f.*;
 
 
 public class TranslationTest {
 
     @Test
     public void testTranslate() throws Exception {
-        Vector4fProperty a = new Vector4fProperty(Vector4f.ZERO);
-        Vector4fProperty b = new Vector4fProperty(vect(2, -3, 0, 1.5f));
-        Vector4fBinding byConst = new Translation(vectConst(2, -3, 0, 1.5f)).apply(a);
-        Vector4fBinding byProp = new Translation(b).apply(a);
+        Vector3fProperty a = new Vector3fProperty(Vector3f.ZERO);
+        Vector3fProperty b = new Vector3fProperty(vect3f(2, -3, 0));
+        Vector3fBinding byConst = new Translation(Vector3fConstant.vect3fc(2, -3, 0)).apply(a);
+        Vector3fBinding byProp = new Translation(b).apply(a);
 
-        assertThat(byConst.getValue(), nearTo(vect(2, -3, 0, 1.5f)));
-        assertThat(byProp.getValue(), nearTo(vect(2, -3, 0, 1.5f)));
+        assertThat(byConst.getValue(), nearTo(vect3f(2, -3, 0)));
+        assertThat(byProp.getValue(), nearTo(vect3f(2, -3, 0)));
 
-        a.setValue(XYZW);
-        assertThat(byConst.getValue(), nearTo(vect(3, -2, 1, 2.5f)));
-        assertThat(byProp.getValue(), nearTo(vect(3, -2, 1, 2.5f)));
+        a.setValue(XYZ);
+        assertThat(byConst.getValue(), nearTo(vect3f(3, -2, 1)));
+        assertThat(byProp.getValue(), nearTo(vect3f(3, -2, 1)));
 
         b.setValue(ZERO);
-        assertThat(byProp.getValue(), nearTo(XYZW));
+        assertThat(byProp.getValue(), nearTo(XYZ));
     }
 
     @Test
     public void testInverse() throws Exception {
-        Vector4fProperty a = new Vector4fProperty(Vector4f.ZERO);
-        Vector4fProperty b = new Vector4fProperty(vect(2, -3, 0, 1.5f));
-        Vector4fBinding byConst = new Translation(vectConst(2, -3, 0, 1.5f)).invert().apply(a);
-        Vector4fBinding byProp = new Translation(b).invert().apply(a);
+        Vector3fProperty a = new Vector3fProperty(Vector3f.ZERO);
+        Vector3fProperty b = new Vector3fProperty(vect3f(2, -3, 0));
+        Vector3fBinding byConst = new Translation(Vector3fConstant.vect3fc(2, -3, 0)).invert().apply(a);
+        Vector3fBinding byProp = new Translation(b).invert().apply(a);
 
-        assertThat(byConst.getValue(), nearTo(vect(-2, 3, 0, -1.5f)));
-        assertThat(byProp.getValue(), nearTo(vect(-2, 3, 0, -1.5f)));
+        assertThat(byConst.getValue(), nearTo(vect3f(-2, 3, 0)));
+        assertThat(byProp.getValue(), nearTo(vect3f(-2, 3, 0)));
 
-        a.setValue(XYZW);
-        assertThat(byConst.getValue(), nearTo(vect(-1, 4, 1, -0.5f)));
-        assertThat(byProp.getValue(), nearTo(vect(-1, 4, 1, -0.5f)));
+        a.setValue(XYZ);
+        assertThat(byConst.getValue(), nearTo(vect3f(-1, 4, 1)));
+        assertThat(byProp.getValue(), nearTo(vect3f(-1, 4, 1)));
 
         b.setValue(ZERO);
-        assertThat(byProp.getValue(), nearTo(XYZW));
+        assertThat(byProp.getValue(), nearTo(XYZ));
     }
 
     @Test
     public void testMatrix() {
-        Vector4fConstant translation = vectConst(2, -3, 0, 1.5f);
-        Matrix4fBinding matrix = new Translation(translation).asMatrix();
-        assertThat(matrix.get(), nearTo(Matrix4f.cols(X, Y, Z, translation.get())));
+        Vector3fConstant v = Vector3fConstant.vect3fc(2, -3, 0);
+        Translation t = new Translation(v);
+        Matrix4fBinding m = t.asMatrix();
+        assertThat(m.get(), nearTo(Matrix4f.cols(Vector4f.X, Vector4f.Y, Vector4f.Z, v.get().w(1))));
+
+        //assertThat(m.product(X), nearTo(t.apply(CONST_X)));
     }
 }

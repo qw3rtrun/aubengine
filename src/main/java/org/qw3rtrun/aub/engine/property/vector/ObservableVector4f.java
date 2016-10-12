@@ -4,7 +4,7 @@ import javafx.beans.value.ObservableValue;
 import org.qw3rtrun.aub.engine.vectmath.Near;
 import org.qw3rtrun.aub.engine.vectmath.Vector4f;
 
-public interface ObservableVector extends ObservableValue<Vector4f>, Near<ObservableVector> {
+public interface ObservableVector4f extends ObservableValue<Vector4f>, Near<ObservableVector4f> {
 
     default Vector4f get() {
         return getValue();
@@ -31,7 +31,7 @@ public interface ObservableVector extends ObservableValue<Vector4f>, Near<Observ
     }
 
     @Override
-    default boolean isNearTo(ObservableVector o, double epsilon) {
+    default boolean isNearTo(ObservableVector4f o, double epsilon) {
         return get().isNearTo(o.get(), epsilon);
     }
 

@@ -3,18 +3,18 @@ package org.qw3rtrun.aub.engine.property.transform;
 import org.qw3rtrun.aub.engine.property.matrix.Matrix4fBinding;
 import org.qw3rtrun.aub.engine.property.matrix.Matrix4fConstant;
 import org.qw3rtrun.aub.engine.property.quaternion.ObservableQuaternion;
-import org.qw3rtrun.aub.engine.property.vector.ObservableVector;
-import org.qw3rtrun.aub.engine.property.vector.Vector4fBinding;
+import org.qw3rtrun.aub.engine.property.vector.ObservableVector3f;
+import org.qw3rtrun.aub.engine.property.vector.Vector3fBinding;
 
 public abstract class Transformation {
 
     public abstract Rotation rotate(ObservableQuaternion rotation);
 
-    public abstract Scaling scale(ObservableVector scaling);
+    public abstract Scaling scale(ObservableVector3f scaling);
 
-    public abstract Translation translate(ObservableVector translation);
+    public abstract Translation translate(ObservableVector3f translation);
 
-    public abstract Vector4fBinding apply(ObservableVector source);
+    public abstract Vector3fBinding apply(ObservableVector3f source);
 
     public abstract Matrix4fBinding asMatrix();
 
@@ -38,7 +38,7 @@ public abstract class Transformation {
             return chain;
         }
 
-        public Vector4fBinding apply(ObservableVector source) {
+        public Vector3fBinding apply(ObservableVector3f source) {
             return chain.apply(source);
         }
 
@@ -56,11 +56,11 @@ public abstract class Transformation {
             return new Rotation(getChain(), rotation);
         }
 
-        public Scaling scale(ObservableVector scaling) {
+        public Scaling scale(ObservableVector3f scaling) {
             return new Scaling(getChain(), scaling);
         }
 
-        public Translation translate(ObservableVector translation) {
+        public Translation translate(ObservableVector3f translation) {
             return new Translation(getChain(), translation);
         }
 
@@ -100,17 +100,17 @@ public abstract class Transformation {
             return new Rotation(rotation);
         }
 
-        public Scaling scale(ObservableVector scaling) {
+        public Scaling scale(ObservableVector3f scaling) {
             return new Scaling(scaling);
         }
 
-        public Translation translate(ObservableVector translation) {
+        public Translation translate(ObservableVector3f translation) {
             return new Translation(translation);
         }
 
         @Override
-        public Vector4fBinding apply(ObservableVector source) {
-            return Vector4fBinding.identity(source);
+        public Vector3fBinding apply(ObservableVector3f source) {
+            return Vector3fBinding.identity(source);
         }
     };
 

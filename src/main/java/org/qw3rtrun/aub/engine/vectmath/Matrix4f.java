@@ -116,19 +116,19 @@ public class Matrix4f implements Near<Matrix4f>, Serializable {
     }
 
     public Vector4f columnX() {
-        return vect(xx, yx, zx, wx);
+        return vect4f(xx, yx, zx, wx);
     }
 
     public Vector4f columnY() {
-        return vect(xy, yy, zy, wy);
+        return vect4f(xy, yy, zy, wy);
     }
 
     public Vector4f columnZ() {
-        return vect(xz, yz, zz, wz);
+        return vect4f(xz, yz, zz, wz);
     }
 
     public Vector4f columnW() {
-        return vect(xw, yw, zw, ww);
+        return vect4f(xw, yw, zw, ww);
     }
 
     public List<Vector4f> columns() {
@@ -141,19 +141,19 @@ public class Matrix4f implements Near<Matrix4f>, Serializable {
     }
 
     private Vector4f rowW() {
-        return vect(wx, wy, ww, wz);
+        return vect4f(wx, wy, ww, wz);
     }
 
     private Vector4f rowZ() {
-        return vect(zx, zy, zz, zw);
+        return vect4f(zx, zy, zz, zw);
     }
 
     private Vector4f rowY() {
-        return vect(yx, yy, yz, yw);
+        return vect4f(yx, yy, yz, yw);
     }
 
     private Vector4f rowX() {
-        return vect(xx, xy, xz, xw);
+        return vect4f(xx, xy, xz, xw);
     }
 
     @Override
@@ -180,10 +180,16 @@ public class Matrix4f implements Near<Matrix4f>, Serializable {
     }
 
     public Vector4f multiply(Vector4f v) {
-        return vect(xx * v.x + xy * v.y + xz * v.z + xw * v.w,
+        return vect4f(xx * v.x + xy * v.y + xz * v.z + xw * v.w,
                 yx * v.x + yy * v.y + yz * v.z + yw * v.w,
                 zx * v.x + zy * v.y + zz * v.z + zw * v.w,
                 wx * v.x + wy * v.y + wz * v.z + ww * v.w);
+    }
+
+    public Vector3f multiply(Vector3f v) {
+        return Vector3f.vect3f(xx * v.x + xy * v.y + xz * v.z + xw,
+                yx * v.x + yy * v.y + yz * v.z + yw,
+                zx * v.x + zy * v.y + zz * v.z + zw);
     }
 
     public Matrix4f multiply(Matrix4f m) {
@@ -209,7 +215,7 @@ public class Matrix4f implements Near<Matrix4f>, Serializable {
 
     @Override
     public boolean isNearTo(Matrix4f o, double epsilon) {
-        return vect(rowX().distanceBound(o.rowX()),
+        return vect4f(rowX().distanceBound(o.rowX()),
                 rowY().distanceBound(rowY()),
                 rowZ().distanceBound(rowZ()))
                 .bound() < abs(epsilon);

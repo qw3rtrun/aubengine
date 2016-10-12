@@ -6,7 +6,7 @@ import org.qw3rtrun.aub.engine.vectmath.Vector4f;
 
 import static org.qw3rtrun.aub.engine.vectmath.Vector4f.*;
 
-public class Vector4fConstant implements ObservableVector, VectorExpression {
+public class Vector4fConstant implements ObservableVector4f, Vector4fExpression {
 
     public static final Vector4fConstant CONST_0 = new Vector4fConstant(ZERO);
     public static final Vector4fConstant CONST_X = new Vector4fConstant(X);
@@ -17,26 +17,26 @@ public class Vector4fConstant implements ObservableVector, VectorExpression {
     private final Vector4f v;
 
     public Vector4fConstant() {
-        this(vect());
+        this(vect4f());
     }
 
     public Vector4fConstant(Vector4f v) {
         this.v = v;
     }
 
-    public static Vector4fConstant vectConst(float x, float y, float z, float w) {
-        return new Vector4fConstant(vect(x, y, z, w));
+    public static Vector4fConstant vect4fc(float x, float y, float z, float w) {
+        return new Vector4fConstant(vect4f(x, y, z, w));
     }
 
-    public static Vector4fConstant vectConst(float x, float y, float z) {
-        return new Vector4fConstant(vect(x, y, z));
+    public static Vector4fConstant vect4fc(float x, float y, float z) {
+        return new Vector4fConstant(vect4f(x, y, z));
     }
 
-    public static Vector4fConstant vectConst() {
-        return new Vector4fConstant(vect());
+    public static Vector4fConstant vect4fc() {
+        return new Vector4fConstant(vect4f());
     }
 
-    public static Vector4fConstant vectConst(Vector4f v) {
+    public static Vector4fConstant vect4fc(Vector4f v) {
         return new Vector4fConstant(v);
     }
 

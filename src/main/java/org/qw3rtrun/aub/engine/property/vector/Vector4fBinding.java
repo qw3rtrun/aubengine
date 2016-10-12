@@ -15,9 +15,8 @@ import java.util.function.Supplier;
 import static com.sun.javafx.binding.FloatConstant.valueOf;
 import static java.util.Arrays.stream;
 import static org.qw3rtrun.aub.engine.vectmath.Vector4f.ZERO;
-import static org.qw3rtrun.aub.engine.vectmath.Vector4f.vect;
 
-public class Vector4fBinding extends BaseBinding<Vector4f> implements Binding<Vector4f>, VectorExpression {
+public class Vector4fBinding extends BaseBinding<Vector4f> implements Binding<Vector4f>, Vector4fExpression {
 
     public Vector4fBinding(Supplier<Vector4f> func, Observable... dependencies) {
         super(func, dependencies);
@@ -31,7 +30,7 @@ public class Vector4fBinding extends BaseBinding<Vector4f> implements Binding<Ve
         return new Vector4fBinding(() -> v1.getValue().add(v2.getValue()), dependencies);
     }
 
-    public static Vector4fBinding identity(ObservableVector vector) {
+    public static Vector4fBinding identity(ObservableVector4f vector) {
         return new Vector4fBinding(vector::get, vector);
     }
 
@@ -48,7 +47,7 @@ public class Vector4fBinding extends BaseBinding<Vector4f> implements Binding<Ve
         };
     }
 
-    public static Vector4fBinding inverse(ObservableVector vector) {
+    public static Vector4fBinding inverse(ObservableVector4f vector) {
         return Vector4fBinding.multiply(-1, vector);
     }
 
@@ -72,7 +71,7 @@ public class Vector4fBinding extends BaseBinding<Vector4f> implements Binding<Ve
         return add0(v1, new Vector4fConstant(v2), v1);
     }
 
-    public static Vector4fBinding add(ObservableVector... vectors) {
+    public static Vector4fBinding add(ObservableVector4f... vectors) {
         switch (vectors.length) {
             case 0:
                 return new Vector4fBinding(() -> ZERO);
@@ -81,17 +80,21 @@ public class Vector4fBinding extends BaseBinding<Vector4f> implements Binding<Ve
             case 2:
                 return add0(vectors[0], vectors[1], vectors[0], vectors[1]);
             default:
-                return new Vector4fBinding(() -> vect().addAll(stream(vectors)
+                return new Vector4fBinding(() -> Vector4f.vect4f().addAll(stream(vectors)
                         .map(ObservableValue::getValue).toArray(Vector4f[]::new)), vectors);
         }
     }
 
     public static Vector4fBinding vector(ObservableFloatValue x, ObservableFloatValue y, ObservableFloatValue z) {
-        return new Vector4fBinding(() -> vect(x.get(), y.get(), z.get()), x, y, z);
+        return new Vector4fBinding(() -> Vector4f.vect4f(x.get(), y.get(), z.get()), x, y, z);
     }
 
     public static ObservableFloatValue x(ObservableValue<Vector4f> vector) {
         return func(Vector4f::getX, vector);
+    }
+
+    public static ObservableVector4f withX(ObservableFloatValue x) {
+        return null;//        new Vector4fBinding()
     }
 
     public static ObservableFloatValue y(ObservableValue<Vector4f> vector) {
@@ -102,7 +105,7 @@ public class Vector4fBinding extends BaseBinding<Vector4f> implements Binding<Ve
         return func(Vector4f::getZ, vector);
     }
 
-    public static Vector4fBinding normalize(ObservableVector vector) {
+    public static Vector4fBinding normalize(ObservableVector4f vector) {
         return new Vector4fBinding(() -> vector.getValue().normalize(), vector);
     }
 

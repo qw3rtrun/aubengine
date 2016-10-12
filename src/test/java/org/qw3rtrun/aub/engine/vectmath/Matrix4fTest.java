@@ -25,9 +25,9 @@ public class Matrix4fTest {
 
     @Test
     public void multiply() throws Exception {
-        assertThat(E.multiply(vect(1, 2, 3, 4)), nearTo(vect(1, 2, 3, 4)));
-        assertThat(rows(XY, YZW, Z, XZ).multiply(vect(1, 2, 3, 4)),
-                nearTo(vect(3, 9, 3, 4)));
+        assertThat(E.multiply(vect4f(1, 2, 3, 4)), nearTo(vect4f(1, 2, 3, 4)));
+        assertThat(rows(XY, YZW, Z, XZ).multiply(vect4f(1, 2, 3, 4)),
+                nearTo(vect4f(3, 9, 3, 4)));
     }
 
     @Test

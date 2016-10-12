@@ -5,8 +5,6 @@ import org.qw3rtrun.aub.engine.vectmath.Near;
 import org.qw3rtrun.aub.engine.vectmath.Quaternion;
 import org.qw3rtrun.aub.engine.vectmath.Vector4f;
 
-import static org.qw3rtrun.aub.engine.vectmath.Vector4f.vect;
-
 public interface ObservableQuaternion extends ObservableValue<Quaternion>, Near<ObservableQuaternion> {
 
     default Quaternion get() {
@@ -30,7 +28,7 @@ public interface ObservableQuaternion extends ObservableValue<Quaternion>, Near<
     }
 
     default Vector4f getVector() {
-        return vect(getValue().x, getValue().y, getValue().z);
+        return Vector4f.vect4f(getValue().x, getValue().y, getValue().z);
     }
 
     @Override

@@ -7,17 +7,16 @@ import org.qw3rtrun.aub.engine.property.quaternion.QuaternionBinding;
 import org.qw3rtrun.aub.engine.property.transform.Rotation;
 import org.qw3rtrun.aub.engine.property.transform.Scaling;
 import org.qw3rtrun.aub.engine.property.transform.Translation;
-import org.qw3rtrun.aub.engine.property.vector.Vector4fProperty;
+import org.qw3rtrun.aub.engine.property.vector.Vector3fProperty;
+import org.qw3rtrun.aub.engine.vectmath.Vector3f;
 
 import java.util.ArrayList;
 
 import static javafx.collections.FXCollections.observableList;
-import static org.qw3rtrun.aub.engine.vectmath.Vector4f.XYZ;
-import static org.qw3rtrun.aub.engine.vectmath.Vector4f.ZERO;
 
 public class SceneObject implements Node, Shaped, Tangible {
 
-    private final Vector4fProperty scale = new Vector4fProperty(XYZ) {
+    private final Vector3fProperty scale = new Vector3fProperty(Vector3f.XYZ) {
         @Override
         public java.lang.Object getBean() {
             return SceneObject.this;
@@ -28,7 +27,7 @@ public class SceneObject implements Node, Shaped, Tangible {
             return "ScaleBinding of " + name.get();
         }
     };
-    private final Vector4fProperty rotation = new Vector4fProperty(ZERO) {
+    private final Vector3fProperty rotation = new Vector3fProperty(Vector3f.ZERO) {
         @Override
         public java.lang.Object getBean() {
             return SceneObject.this;
@@ -39,7 +38,7 @@ public class SceneObject implements Node, Shaped, Tangible {
             return "Rotation of " + name.get();
         }
     };
-    private final Vector4fProperty translation = new Vector4fProperty(ZERO) {
+    private final Vector3fProperty translation = new Vector3fProperty(Vector3f.ZERO) {
         @Override
         public String getName() {
             return "Translation of " + name.get();
@@ -79,17 +78,17 @@ public class SceneObject implements Node, Shaped, Tangible {
     }
 
     @Override
-    public Vector4fProperty translation() {
+    public Vector3fProperty translation() {
         return translation;
     }
 
     @Override
-    public Vector4fProperty rotation() {
+    public Vector3fProperty orientation() {
         return rotation;
     }
 
     @Override
-    public Vector4fProperty scale() {
+    public Vector3fProperty scale() {
         return scale;
     }
 

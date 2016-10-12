@@ -35,53 +35,15 @@ public class Vector4f implements Serializable, Near<Vector4f> {
         this.w = w;
     }
 
-    public static Vector4f vect() {
+    public static Vector4f vect4f() {
         return ZERO;
     }
 
-    public static Vector4f vect(float x, float y, float z) {
-        return vect(x, y, z, 0);
+    public static Vector4f vect4f(float x, float y, float z) {
+        return vect4f(x, y, z, 0);
     }
 
-    public static Vector4f vect(float x, float y, float z, float w) {
-//        if (w == 0) {
-//            if (x == 0) {
-//                if (y == 0) {
-//                    if (z == 0) return ZERO;
-//                    if (z == 1) return Z;
-//                } else if (y == 1) {
-//                    if (z == 0) return Y;
-//                    if (z == 1) return YZ;
-//                }
-//            } else if (x == 1) {
-//                if (y == 0) {
-//                    if (z == 0) return X;
-//                    if (z == 1) return XZ;
-//                } else if (y == 1) {
-//                    if (z == 0) return XY;
-//                    if (z == 1) return XYZ;
-//                }
-//            }
-//        } else if (w == 1) {
-//            if (x == 0) {
-//                if (y == 0) {
-//                    if (z == 0) return W;
-//                    if (z == 1) return ZW;
-//                } else if (y == 1) {
-//                    if (z == 0) return YW;
-//                    if (z == 1) return YZW;
-//                }
-//            } else if (x == 1) {
-//                if (y == 0) {
-//                    if (z == 0) return XW;
-//                    if (z == 1) return XZW;
-//                } else if (y == 1) {
-//                    if (z == 0) return XYW;
-//                    if (z == 1) return XYZW;
-//                }
-//            }
-//        }
-
+    public static Vector4f vect4f(float x, float y, float z, float w) {
         return new Vector4f(x, y, z, w);
     }
 
@@ -113,23 +75,23 @@ public class Vector4f implements Serializable, Near<Vector4f> {
     }
 
     public Vector4f x(float x) {
-        return vect(x, this.y, this.z, this.w);
+        return vect4f(x, this.y, this.z, this.w);
     }
 
     public Vector4f y(float y) {
-        return vect(this.x, y, this.z, this.w);
+        return vect4f(this.x, y, this.z, this.w);
     }
 
     public Vector4f z(float z) {
-        return vect(this.x, this.y, z, this.w);
+        return vect4f(this.x, this.y, z, this.w);
     }
 
     public Vector4f w(float w) {
-        return vect(this.x, this.y, this.z, w);
+        return vect4f(this.x, this.y, this.z, w);
     }
 
     public Vector4f inverse() {
-        return vect(-x, -y, -z);
+        return vect4f(-x, -y, -z);
     }
 
     public Vector4f normalize() {
@@ -139,7 +101,7 @@ public class Vector4f implements Serializable, Near<Vector4f> {
     public Vector4f multiply(float k) {
         if (k == 0) return ZERO;
         if (k == 1) return this;
-        return vect(k * x, k * y, k * z, k * w);
+        return vect4f(k * x, k * y, k * z, k * w);
     }
 
     public Matrix4f multiply(Vector4f v) {
@@ -152,11 +114,11 @@ public class Vector4f implements Serializable, Near<Vector4f> {
     public Vector4f add(Vector4f v) {
         if (ZERO == v) return this;
         if (ZERO == this) return v;
-        return vect(x + v.x, y + v.y, z + v.z, w + v.w);
+        return vect4f(x + v.x, y + v.y, z + v.z, w + v.w);
     }
 
     public Vector4f add(float x, float y, float z, float w) {
-        return vect(this.x + x, this.y + y, this.z + z, this.w + w);
+        return vect4f(this.x + x, this.y + y, this.z + z, this.w + w);
     }
 
     public Vector4f add(float x, float y, float z) {
@@ -181,7 +143,7 @@ public class Vector4f implements Serializable, Near<Vector4f> {
 
     public Vector4f subtract(Vector4f v) {
         if (ZERO == v) return this;
-        return vect(x - v.x, y - v.y, z - v.z, w - v.w);
+        return vect4f(x - v.x, y - v.y, z - v.z, w - v.w);
     }
 
     public Vector4f subtract(float x, float y, float z, float w) {
@@ -198,7 +160,7 @@ public class Vector4f implements Serializable, Near<Vector4f> {
     }
 
     public Vector4f product(Vector4f v) {
-        return vect(y * v.z - z * v.y, z * v.x - x * v.z, x * v.y - y * v.x, 0);
+        return vect4f(y * v.z - z * v.y, z * v.x - x * v.z, x * v.y - y * v.x, 0);
     }
 
     public float length() {

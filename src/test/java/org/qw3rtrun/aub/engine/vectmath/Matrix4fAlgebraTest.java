@@ -29,7 +29,7 @@ public class Matrix4fAlgebraTest {
     public Float k;
 
     private static Vector4f randomV() {
-        return vect(random.nextInt(100) / 10f, random.nextInt(100) / 10f, random.nextInt(100) / 10f, random.nextInt(100) / 10f);
+        return vect4f(random.nextInt(100) / 10f, random.nextInt(100) / 10f, random.nextInt(100) / 10f, random.nextInt(100) / 10f);
     }
 
     private static Matrix4f randomM() {

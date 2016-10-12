@@ -15,7 +15,7 @@ import static org.qw3rtrun.aub.engine.Matchers.nearTo;
 import static org.qw3rtrun.aub.engine.vectmath.Vector4f.*;
 
 @RunWith(Parameterized.class)
-public class VectorAlgebraTest {
+public class Vector4fAlgebraTest {
 
     private static Random random;
     @Parameterized.Parameter(0)
@@ -28,7 +28,7 @@ public class VectorAlgebraTest {
     public Float k;
 
     private static Vector4f random() {
-        return vect(random.nextFloat(), random.nextFloat(), random.nextFloat(), 0);
+        return vect4f(random.nextFloat(), random.nextFloat(), random.nextFloat(), 0);
     }
 
     @Parameterized.Parameters
@@ -45,7 +45,7 @@ public class VectorAlgebraTest {
                 new Object[]{ZERO, XYZ, ZERO, 1f},
                 new Object[]{ZERO, ZERO, XYZ, 1f},
                 new Object[]{XYZ, XYZ, XYZ, 1f},
-                new Object[]{vect(3, 5, -3), vect(0, -1.5f, 10), vect(2, 2, 2), 3.56f},
+                new Object[]{vect4f(3, 5, -3), vect4f(0, -1.5f, 10), vect4f(2, 2, 2), 3.56f},
                 new Object[]{random(), random(), random(), random.nextFloat()},
                 new Object[]{random(), random(), random(), random.nextFloat()},
                 new Object[]{random(), random(), random(), random.nextFloat()},
