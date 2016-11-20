@@ -1,8 +1,10 @@
 package org.qw3rtrun.aub.engine.vectmath;
 
 import java.io.Serializable;
+import java.util.Arrays;
 
 import static java.util.Arrays.asList;
+import static java.util.Arrays.stream;
 import static org.qw3rtrun.aub.engine.vectmath.Matrix4f.matr;
 import static org.qw3rtrun.aub.engine.vectmath.Vector3f.vect3f;
 import static org.qw3rtrun.aub.engine.vectmath.Vector4f.vect4f;
@@ -55,11 +57,11 @@ public class Quaternion implements Serializable, Near<Quaternion> {
     }
 
     public static Quaternion productAll(Quaternion... vectors) {
-        return asList(vectors).stream().reduce(new Quaternion(0, 0, 0, 1), Quaternion::product);
+        return stream(vectors).reduce(new Quaternion(0, 0, 0, 1), Quaternion::product);
     }
 
     public static Quaternion addAll(Quaternion... vectors) {
-        return asList(vectors).stream().reduce(new Quaternion(0, 0, 0, 0), Quaternion::add);
+        return stream(vectors).reduce(new Quaternion(0, 0, 0, 0), Quaternion::add);
     }
 
     public float getX() {

@@ -53,15 +53,15 @@ public abstract class Transformation {
         protected abstract Transformation invert(Transformation chain);
 
         public Rotation rotate(ObservableQuaternion rotation) {
-            return new Rotation(getChain(), rotation);
+            return new Rotation(this, rotation);
         }
 
         public Scaling scale(ObservableVector3f scaling) {
-            return new Scaling(getChain(), scaling);
+            return new Scaling(this, scaling);
         }
 
         public Translation translate(ObservableVector3f translation) {
-            return new Translation(getChain(), translation);
+            return new Translation(this, translation);
         }
 
         @Override

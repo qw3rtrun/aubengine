@@ -1,16 +1,22 @@
 package org.qw3rtrun.aub.engine.property.transform;
 
+import com.sun.javafx.binding.FloatConstant;
 import org.junit.Assert;
 import org.junit.Test;
 import org.qw3rtrun.aub.engine.Matchers;
 import org.qw3rtrun.aub.engine.property.matrix.Matrix4fBinding;
 import org.qw3rtrun.aub.engine.property.quaternion.Quaternion4fProperty;
+import org.qw3rtrun.aub.engine.property.quaternion.QuaternionBinding;
+import org.qw3rtrun.aub.engine.property.quaternion.QuaternionConstant;
 import org.qw3rtrun.aub.engine.property.vector.Vector3fBinding;
+import org.qw3rtrun.aub.engine.property.vector.Vector3fConstant;
 import org.qw3rtrun.aub.engine.property.vector.Vector3fProperty;
 import org.qw3rtrun.aub.engine.vectmath.Quaternion;
 import org.qw3rtrun.aub.engine.vectmath.Vector3f;
 
 import static org.qw3rtrun.aub.engine.property.matrix.Matrix4fConstant.CONST_E;
+import static org.qw3rtrun.aub.engine.vectmath.Quaternion.QX0;
+import static org.qw3rtrun.aub.engine.vectmath.Vector3f.X;
 import static org.qw3rtrun.aub.engine.vectmath.Vector3f.vect3f;
 
 public class RotationTest {
@@ -77,6 +83,13 @@ public class RotationTest {
         Matrix4fBinding im = r.invert().asMatrix();
 
         Assert.assertThat(m.concat(im), Matchers.nearTo(CONST_E));
+    }
+
+    @Test
+    public void rotateAroundXByZero() {
+        Vector3fConstant v = Vector3fConstant.vect3fc(4, 4, 4);
+        Rotation rotation = new Rotation(QuaternionBinding.axisRotation(Vector3fConstant.CONST_X, FloatConstant.valueOf(0)));
+        Assert.assertThat(rotation.apply(v), Matchers.nearTo(v));
     }
 
 }
