@@ -2,9 +2,10 @@ package org.qw3rtrun.aub.engine.mixin;
 
 import javafx.beans.property.ListProperty;
 import javafx.beans.property.ObjectProperty;
-import org.qw3rtrun.aub.engine.property.matrix.Matrix4fBinding;
+import org.qw3rtrun.aub.engine.property.transform.Transformation;
+import org.qw3rtrun.aub.engine.property.vector.ObservableVector3f;
+import org.qw3rtrun.aub.engine.property.vector.Vector3fBinding;
 import org.qw3rtrun.aub.engine.property.vector.Vector3fProperty;
-import org.qw3rtrun.aub.engine.vectmath.Vector4f;
 
 /**
  * Created by strunov on 9/23/2015.
@@ -13,7 +14,7 @@ public interface Node {
 
     public ObjectProperty<? extends Node> parent();
 
-    public ListProperty<? extends Node> childs();
+    public ListProperty<? extends Node> children();
 
     public Vector3fProperty translation();
 
@@ -21,15 +22,15 @@ public interface Node {
 
     public Vector3fProperty scale();
 
-    public Matrix4fBinding localToAbsolute();
+    public Transformation localToAbsolute();
 
-    public Matrix4fBinding absoluteToLocal();
+    public Transformation absoluteToLocal();
 
-    default public Vector4f toLocal(Vector4f absolute) {
-        return absoluteToLocal().getValue().multiply(absolute);
+    default public Vector3fBinding toLocal(ObservableVector3f absolute) {
+        return absoluteToLocal().apply(absolute);
     }
 
-    default public Vector4f toAbsolute(Vector4f local) {
-        return localToAbsolute().getValue().multiply(local);
+    default public Vector3fBinding toAbsolute(ObservableVector3f local) {
+        return localToAbsolute().apply(local);
     }
 }
