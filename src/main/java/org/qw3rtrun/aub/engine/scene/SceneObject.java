@@ -2,11 +2,8 @@ package org.qw3rtrun.aub.engine.scene;
 
 import javafx.beans.property.*;
 import org.qw3rtrun.aub.engine.mixin.*;
-import org.qw3rtrun.aub.engine.property.matrix.Matrix4fBinding;
 import org.qw3rtrun.aub.engine.property.quaternion.QuaternionBinding;
-import org.qw3rtrun.aub.engine.property.transform.Rotation;
-import org.qw3rtrun.aub.engine.property.transform.Scaling;
-import org.qw3rtrun.aub.engine.property.transform.Translation;
+import org.qw3rtrun.aub.engine.property.transform.Transformation;
 import org.qw3rtrun.aub.engine.property.vector.Vector3fProperty;
 import org.qw3rtrun.aub.engine.vectmath.Vector3f;
 
@@ -50,17 +47,14 @@ public class SceneObject implements Node, Shaped, Tangible {
         }
     };
 
-
-    private final QuaternionBinding orientation = QuaternionBinding.orientation(rotation);
     private final ObjectProperty<SceneObject> parent = new SimpleObjectProperty<>();
     private final ListProperty<SceneObject> childs = new SimpleListProperty<>(observableList(new ArrayList<>()));
-    private final Matrix4fBinding localToAbsolute = new Translation(translation).asMatrix()
-            .concat(new Rotation(orientation).asMatrix())
-            .concat(new Scaling(scale).asMatrix());
-    //.concat(ori)
-    private final Matrix4fBinding absoluteToLocal = new Scaling(scale).invert().asMatrix()
-            .concat(new Rotation(orientation).invert().asMatrix())
-            .concat(new Translation(translation).invert().asMatrix());
+    private final Transformation localToAbsolute = Transformation.start()
+            .scale(scale)
+            .rotate(QuaternionBinding.orientation(rotation))
+            .translate(translation);
+    private final Transformation absoluteToLocal = localToAbsolute.invert();
+
     private StringProperty name = new SimpleStringProperty(super.toString());
 
     public StringProperty name() {
@@ -73,7 +67,7 @@ public class SceneObject implements Node, Shaped, Tangible {
     }
 
     @Override
-    public ListProperty<SceneObject> childs() {
+    public ListProperty<SceneObject> children() {
         return childs;
     }
 
@@ -93,12 +87,12 @@ public class SceneObject implements Node, Shaped, Tangible {
     }
 
     @Override
-    public Matrix4fBinding localToAbsolute() {
+    public Transformation localToAbsolute() {
         return localToAbsolute;
     }
 
     @Override
-    public Matrix4fBinding absoluteToLocal() {
+    public Transformation absoluteToLocal() {
         return absoluteToLocal;
     }
 

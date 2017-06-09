@@ -36,7 +36,7 @@ public class Camera extends SceneObject {
             aspectRatio, zFar, zNear, frustumScale
     );
 
-    private final Matrix4fBinding absoluteToClip = cameraToClip.concat(absoluteToLocal());
+    private final Matrix4fBinding absoluteToClip = cameraToClip.concat(absoluteToLocal().asMatrix());
 
     private final VertexShaderProgram shader = new VertexShaderProgram("");
 
