@@ -138,5 +138,9 @@ public class Vector3fTest {
         assertThat(vect3f(2, 1, 3).product(vect3f(3, 2, 1)), nearTo(vect3f(-5, 7, 1)));
     }
 
+    //    @org.openjdk.jmh.annotations.Benchmark
+    public void measureAdd() {
+
+    }
 }
 

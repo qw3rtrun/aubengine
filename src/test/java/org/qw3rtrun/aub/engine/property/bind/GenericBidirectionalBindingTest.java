@@ -2,12 +2,10 @@ package org.qw3rtrun.aub.engine.property.bind;
 
 import javafx.beans.property.Property;
 import org.junit.Test;
-import org.qw3rtrun.aub.engine.property.vector.Vector3fProperty;
 import org.qw3rtrun.aub.engine.vectmath.Vector3f;
 
 import java.util.function.Function;
 
-import static org.junit.Assert.*;
 import static org.qw3rtrun.aub.engine.property.vector.Vector3fProperty.vectProp;
 
 public class GenericBidirectionalBindingTest {
@@ -19,7 +17,7 @@ public class GenericBidirectionalBindingTest {
 
         Function<Vector3f, Vector3f> inv = Vector3f::inverse;
 
-        new GenericBidirectionalBinding<Vector3f, Vector3f>(v1, v2, inv, inv);
+        new GenericBidirectionalBinding<>(v1, v2, inv, inv);
 
         System.out.println(v1);
         System.out.println(v2);

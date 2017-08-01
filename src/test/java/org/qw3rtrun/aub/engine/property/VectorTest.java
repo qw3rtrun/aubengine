@@ -1,12 +1,19 @@
 package org.qw3rtrun.aub.engine.property;
 
+import org.hamcrest.BaseMatcher;
+import org.hamcrest.CoreMatchers;
+import org.hamcrest.Description;
+import org.hamcrest.Matcher;
 import org.junit.Test;
 import org.qw3rtrun.aub.engine.property.vector.Vector4fBinding;
 import org.qw3rtrun.aub.engine.property.vector.Vector4fProperty;
 import org.qw3rtrun.aub.engine.vectmath.Vector4f;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
+import java.util.Arrays;
+import java.util.List;
+import java.util.function.Function;
+
+import static org.junit.Assert.*;
 import static org.qw3rtrun.aub.engine.property.vector.Vector4fConstant.*;
 import static org.qw3rtrun.aub.engine.property.vector.Vector4fProperty.vectProp;
 import static org.qw3rtrun.aub.engine.vectmath.Vector4f.XYZ;
@@ -26,4 +33,28 @@ public class VectorTest {
         assertEquals(vect4f(10, 9, 8, 6), sum.getValue());
 
     }
+
+    @Test
+    public void name() throws Exception {
+        assertThat(Arrays.asList("A", "B", "C"), mapcher(l -> l.get(0), CoreMatchers.equalTo("A")));
+        assertThat(Arrays.asList("A", "B", "C"), mapcher(List::size, CoreMatchers.equalTo(4)));
+//        List<String> l = null;
+//        assertThat(l, mapcher(List::size, CoreMatchers.equalTo(3)));
+
+    }
+
+    public static <T, R> Matcher<T> mapcher(Function<T, R> map, Matcher<R> matcher) {
+        return new BaseMatcher<T>() {
+            @Override
+            public boolean matches(Object o) {
+                return o == null ? false : matcher.matches(map.apply((T) o));
+            }
+
+            @Override
+            public void describeTo(Description description) {
+                matcher.describeTo(description);
+            }
+        };
+    }
+
 }

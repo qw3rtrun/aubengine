@@ -1,19 +1,13 @@
 package org.qw3rtrun.aub.engine.property.bind;
 
-import com.sun.javafx.binding.BidirectionalBinding;
-import com.sun.javafx.binding.Logging;
 import javafx.beans.WeakListener;
 import javafx.beans.property.Property;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 
 import java.lang.ref.WeakReference;
-import java.text.ParseException;
 import java.util.function.Function;
 
-/**
- * Created by qw3rtrun on 6/10/17.
- */
 public class GenericBidirectionalBinding<T, R> implements ChangeListener<Object>, WeakListener {
 
     private final WeakReference<Property<T>> tRef;
@@ -23,10 +17,10 @@ public class GenericBidirectionalBinding<T, R> implements ChangeListener<Object>
     private boolean updating;
 
     public GenericBidirectionalBinding(Property<T> t, Property<R> r,
-                                                Function<T, R> forward, Function<R, T> backward) {
-        this.tRef = new WeakReference<Property<T>>(t);
+                                       Function<T, R> forward, Function<R, T> backward) {
+        this.tRef = new WeakReference<>(t);
         t.addListener(this);
-        this.rRef = new WeakReference<Property<R>>(r);
+        this.rRef = new WeakReference<>(r);
         r.addListener(this);
         this.to = forward;
         this.from = backward;
@@ -41,7 +35,7 @@ public class GenericBidirectionalBinding<T, R> implements ChangeListener<Object>
     }
 
     @Override
-    public void changed(ObservableValue<? extends Object> observable, Object oldValue, Object newValue) {
+    public void changed(ObservableValue<?> observable, Object oldValue, Object newValue) {
         if (!updating) {
             final Property<T> t = tRef.get();
             final Property<R> r = rRef.get();
