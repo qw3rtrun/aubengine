@@ -4,6 +4,8 @@ import java.io.Serializable;
 
 import static java.lang.Math.abs;
 import static java.util.Arrays.asList;
+import static org.qw3rtrun.aub.engine.vectmath.MathUtils.cos;
+import static org.qw3rtrun.aub.engine.vectmath.MathUtils.sin;
 import static org.qw3rtrun.aub.engine.vectmath.Matrix4f.matr;
 
 public class Vector3f implements Serializable, Near<Vector3f> {
@@ -148,6 +150,22 @@ public class Vector3f implements Serializable, Near<Vector3f> {
 
     public float distance(Vector3f v) {
         return subtract(v).length();
+    }
+
+    public Quaternion toOrientation() {
+        double t0 = cos(z * 0.5);
+        double t1 = sin(z * 0.5);
+        double t2 = cos(x * 0.5);
+        double t3 = sin(x * 0.5);
+        double t4 = cos(y * 0.5);
+        double t5 = sin(y * 0.5);
+
+        return Quaternion.quaternion(
+                (float) (t0 * t3 * t4 - t1 * t2 * t5),
+                (float) (t0 * t2 * t5 + t1 * t3 * t4),
+                (float) (t1 * t2 * t4 - t0 * t3 * t5),
+                (float) (t0 * t2 * t4 + t1 * t3 * t5)
+        );
     }
 
     @Override

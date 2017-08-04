@@ -2,6 +2,7 @@ package org.qw3rtrun.aub.engine.mixin;
 
 import javafx.beans.property.ListProperty;
 import javafx.beans.property.ObjectProperty;
+import org.qw3rtrun.aub.engine.property.quaternion.Quaternion4fProperty;
 import org.qw3rtrun.aub.engine.property.transform.Transformation;
 import org.qw3rtrun.aub.engine.property.vector.ObservableVector3f;
 import org.qw3rtrun.aub.engine.property.vector.Vector3fBinding;
@@ -18,7 +19,9 @@ public interface Node {
 
     public Vector3fProperty translation();
 
-    public Vector3fProperty orientation();
+    public Vector3fProperty rotation();
+
+    public Quaternion4fProperty orientation();
 
     public Vector3fProperty scale();
 

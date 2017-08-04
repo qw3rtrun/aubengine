@@ -1,9 +1,7 @@
 package org.qw3rtrun.aub.engine.vectmath;
 
 import java.io.Serializable;
-import java.util.Arrays;
 
-import static java.util.Arrays.asList;
 import static java.util.Arrays.stream;
 import static org.qw3rtrun.aub.engine.vectmath.Matrix4f.matr;
 import static org.qw3rtrun.aub.engine.vectmath.Vector3f.vect3f;
@@ -150,6 +148,26 @@ public class Quaternion implements Serializable, Near<Quaternion> {
 
     public float distance2(Quaternion q) {
         return this.subtract(q).norm();
+    }
+
+    public Vector3f toEuler() {
+        double ysqr = y * y;
+        // roll (x-axis rotation)
+        double t0 = +2.0 * (a * x + y * z);
+        double t1 = +1.0 - 2.0 * (x * x + ysqr);
+        float roll = (float) Math.atan2(t0, t1);
+
+        // pitch (y-axis rotation)
+        double t2 = +2.0 * (a * y - z * x);
+        t2 = ((t2 > 1.0) ? 1.0 : t2);
+        t2 = ((t2 < -1.0) ? -1.0 : t2);
+        float pitch = (float) Math.asin(t2);
+
+        // yaw (z-axis rotation)
+        double t3 = +2.0 * (a * z + x * y);
+        double t4 = +1.0 - 2.0 * (ysqr + z * z);
+        float yaw = (float) Math.atan2(t3, t4);
+        return vect3f(roll, pitch, yaw);
     }
 
     public Matrix4f rotateMatrix() {

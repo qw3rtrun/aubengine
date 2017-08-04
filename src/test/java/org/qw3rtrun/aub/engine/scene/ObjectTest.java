@@ -16,7 +16,7 @@ public class ObjectTest {
         Vector3fConstant xyzw = Vector3fConstant.vect3fc(Vector3f.XYZ);
         System.out.println(obj.toAbsolute(xyzw).get());
 
-        obj.orientation().setValue(0, (float) Math.PI, 0);
+        obj.rotation().setValue(0, (float) Math.PI, 0);
 
         System.out.println(obj.toAbsolute(xyzw).get());
 

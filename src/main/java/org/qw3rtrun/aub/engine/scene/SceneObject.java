@@ -2,9 +2,12 @@ package org.qw3rtrun.aub.engine.scene;
 
 import javafx.beans.property.*;
 import org.qw3rtrun.aub.engine.mixin.*;
+import org.qw3rtrun.aub.engine.property.bind.GenericBidirectionalBinding;
+import org.qw3rtrun.aub.engine.property.quaternion.Quaternion4fProperty;
 import org.qw3rtrun.aub.engine.property.quaternion.QuaternionBinding;
 import org.qw3rtrun.aub.engine.property.transform.Transformation;
 import org.qw3rtrun.aub.engine.property.vector.Vector3fProperty;
+import org.qw3rtrun.aub.engine.vectmath.Quaternion;
 import org.qw3rtrun.aub.engine.vectmath.Vector3f;
 
 import java.util.ArrayList;
@@ -35,6 +38,18 @@ public class SceneObject implements Node, Shaped, Tangible {
             return "Rotation of " + name.get();
         }
     };
+
+    private final Quaternion4fProperty orientation = new Quaternion4fProperty() {
+        @Override
+        public java.lang.Object getBean() {
+            return SceneObject.this;
+        }
+
+        @Override
+        public String getName() {
+            return "Orientation of " + name.get();
+        }
+    };
     private final Vector3fProperty translation = new Vector3fProperty(Vector3f.ZERO) {
         @Override
         public String getName() {
@@ -46,6 +61,10 @@ public class SceneObject implements Node, Shaped, Tangible {
             return SceneObject.this;
         }
     };
+
+    {
+        new GenericBidirectionalBinding<>(rotation, orientation, Vector3f::toOrientation, Quaternion::toEuler);
+    }
 
     private final ObjectProperty<SceneObject> parent = new SimpleObjectProperty<>();
     private final ListProperty<SceneObject> childs = new SimpleListProperty<>(observableList(new ArrayList<>()));
@@ -77,8 +96,13 @@ public class SceneObject implements Node, Shaped, Tangible {
     }
 
     @Override
-    public Vector3fProperty orientation() {
+    public Vector3fProperty rotation() {
         return rotation;
+    }
+
+    @Override
+    public Quaternion4fProperty orientation() {
+        return orientation;
     }
 
     @Override
@@ -107,6 +131,8 @@ public class SceneObject implements Node, Shaped, Tangible {
     }
 
     public void render() {
+
+
     }
 }
 
