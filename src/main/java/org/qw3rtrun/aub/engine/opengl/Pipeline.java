@@ -3,11 +3,24 @@ package org.qw3rtrun.aub.engine.opengl;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL41;
 
+import static org.lwjgl.opengl.GL41.*;
+
 public class Pipeline extends GLObject {
+
+    private final VertexShader vertexShader;
+    private final FragmentShader fragmentShader;
+
+    public Pipeline(VertexShader vertexShader, FragmentShader fragmentShader) {
+        this.vertexShader = vertexShader;
+        this.fragmentShader = fragmentShader;
+    }
 
     @Override
     protected int glGen() {
-        return GL41.glGenProgramPipelines();
+        int p = GL41.glGenProgramPipelines();
+        glUseProgramStages(p, GL_VERTEX_SHADER_BIT, vertexShader.self());
+        glUseProgramStages(p, GL_FRAGMENT_SHADER_BIT, fragmentShader.self());
+        return p;
     }
 
     @Override
@@ -16,19 +29,17 @@ public class Pipeline extends GLObject {
     }
 
     public void bind() {
-        assertAttached();
         GL20.glUseProgram(0);
-        GL41.glBindProgramPipeline(pointer());
+        GL41.glBindProgramPipeline(self());
     }
 
     public void unbind() {
-        assertAttached();
-        if (GL41.glIsProgramPipeline(pointer())) {
+        if (GL41.glIsProgramPipeline(self())) {
             GL41.glBindProgramPipeline(0);
         }
     }
 
     public boolean isBind(){
-        return isAttached() && GL41.glIsProgramPipeline(pointer());
+        return isAttached() && GL41.glIsProgramPipeline(self());
     }
 }

@@ -13,7 +13,7 @@ public class Scene {
 
     final private ObservableList<SceneObject> objects = FXCollections.observableArrayList();
 
-    private final Pipeline pipeline = new Pipeline();
+    private final Pipeline pipeline = new Pipeline(null, null);
 
     {
         objects.addListener((ListChangeListener<SceneObject>) c -> {

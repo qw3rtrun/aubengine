@@ -1,34 +1,27 @@
 package org.qw3rtrun.aub.engine.opengl;
 
+import java.util.function.IntSupplier;
+
 public abstract class GLObject {
 
-    private int pointer = -1;
+    private int self = -1;
 
-    public final void gen() {
-        pointer = glGen();
+    protected GLObject(IntSupplier glGen) {
+        self = glGen.getAsInt();
     }
 
-    protected abstract int glGen();
-
     public final void delete() {
-        assertAttached();
-        glDelete(pointer);
+        glDelete(self);
     }
 
     protected abstract void glDelete(int pointer);
 
     public final boolean isAttached() {
-        return pointer > 0;
+        return self > 0;
     }
 
-    public int pointer() {
-        return pointer;
-    }
-
-    public void assertAttached() throws IllegalStateException {
-        if (pointer < 1) {
-            throw new IllegalStateException("GL Object isn't attached");
-        }
+    public int self() {
+        return self;
     }
 
     @Override

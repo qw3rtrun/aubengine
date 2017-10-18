@@ -287,12 +287,12 @@ public class SeparatesShaderRun {
 
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear the framebuffer
 
-            glBindProgramPipeline(pipeline);
-
             glUseProgramStages(pipeline, GL_VERTEX_SHADER_BIT, vertexShader);
             glUseProgramStages(pipeline, GL_FRAGMENT_SHADER_BIT, fragmentShader);
 
             glProgramUniform2f(vertexShader, offsetLocation, 0.5f, 0.75f);
+
+            glBindProgramPipeline(pipeline);
 
             final float near = 0.5f;
             final float far = 3f;

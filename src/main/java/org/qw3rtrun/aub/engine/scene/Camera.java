@@ -4,7 +4,7 @@ import javafx.beans.property.FloatProperty;
 import javafx.beans.property.SimpleFloatProperty;
 import org.lwjgl.opengl.GL41;
 import org.qw3rtrun.aub.engine.opengl.Pipeline;
-import org.qw3rtrun.aub.engine.opengl.VertexShaderProgram;
+import org.qw3rtrun.aub.engine.opengl.VertexShader;
 import org.qw3rtrun.aub.engine.property.matrix.Matrix4fBinding;
 
 import static org.qw3rtrun.aub.engine.property.matrix.Matrix4fBinding.binding;
@@ -38,9 +38,9 @@ public class Camera extends SceneObject {
 
     private final Matrix4fBinding absoluteToClip = cameraToClip.concat(absoluteToLocal().asMatrix());
 
-    private final VertexShaderProgram shader = new VertexShaderProgram("");
+    private final VertexShader shader = new VertexShader("");
 
     public void useWith(Pipeline pipeline) {
-        GL41.glUseProgramStages(pipeline.pointer(), shader.getType().getCode(), shader.pointer());
+        GL41.glUseProgramStages(pipeline.self(), shader.getType().getCode(), shader.self());
     }
 }
