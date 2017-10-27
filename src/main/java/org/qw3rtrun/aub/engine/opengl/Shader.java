@@ -6,13 +6,13 @@ import org.lwjgl.opengl.GL41;
 import static org.lwjgl.opengl.GL11.GL_FALSE;
 import static org.lwjgl.opengl.GL20.*;
 
-public abstract class ShaderProgram extends GLObject {
+public abstract class Shader extends GLObject {
 
     private final ShaderTypeEnum type;
 
     private final String glsl;
 
-    ShaderProgram(ShaderTypeEnum type, String glsl) {
+    Shader(ShaderTypeEnum type, String glsl) {
         super(() -> {
             int shader = GL41.glCreateShaderProgramv(type.getCode(), glsl);
             int status = glGetProgrami(shader, GL_LINK_STATUS);

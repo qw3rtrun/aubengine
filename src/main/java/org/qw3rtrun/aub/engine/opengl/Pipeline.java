@@ -11,16 +11,14 @@ public class Pipeline extends GLObject {
     private final FragmentShader fragmentShader;
 
     public Pipeline(VertexShader vertexShader, FragmentShader fragmentShader) {
+        super(() -> {
+            int p = GL41.glGenProgramPipelines();
+            glUseProgramStages(p, GL_VERTEX_SHADER_BIT, vertexShader.self());
+            glUseProgramStages(p, GL_FRAGMENT_SHADER_BIT, fragmentShader.self());
+            return p;
+        });
         this.vertexShader = vertexShader;
         this.fragmentShader = fragmentShader;
-    }
-
-    @Override
-    protected int glGen() {
-        int p = GL41.glGenProgramPipelines();
-        glUseProgramStages(p, GL_VERTEX_SHADER_BIT, vertexShader.self());
-        glUseProgramStages(p, GL_FRAGMENT_SHADER_BIT, fragmentShader.self());
-        return p;
     }
 
     @Override

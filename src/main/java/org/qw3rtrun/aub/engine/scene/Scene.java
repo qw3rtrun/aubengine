@@ -20,26 +20,18 @@ public class Scene {
             c.getAddedSubList().forEach(SceneObject::pushToContext);
             c.getRemoved().forEach(SceneObject::popFromContext);
         });
-
-        camera.addListener((observable, oldValue, newValue) -> {
-            if (pipeline.isAttached()) {
-                newValue.useWith(pipeline);
-            }
-        });
     }
 
     public void bind() {
-        pipeline.gen();
-        camera.get().useWith(pipeline);
+        pipeline.bind();
     }
 
     public void unbind() {
-        pipeline.delete();
+        pipeline.unbind();
         objects.clear();
     }
 
     public void render() throws InterruptedException {
-        pipeline.bind();
         objects.forEach(SceneObject::render);
     }
 

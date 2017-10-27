@@ -1,6 +1,9 @@
 package org.qw3rtrun.aub.engine.vectmath;
 
+import org.lwjgl.BufferUtils;
+
 import java.io.Serializable;
+import java.nio.FloatBuffer;
 import java.util.List;
 
 import static java.lang.Math.abs;
@@ -211,6 +214,17 @@ public class Matrix4f implements Near<Matrix4f>, Serializable {
                                double yx, double yy, double yz,
                                double zx, double zy, double zz) {
         return xx * yy * zz + xy * yz * zx + xz * yx * zy - xz * yy * zx - xy * yx * zz - xx * yz * zy;
+    }
+
+    public FloatBuffer toBuffer() {
+        FloatBuffer buff = BufferUtils.createFloatBuffer(16);
+        buff.put(toArray());
+        buff.flip();
+        return buff;
+    }
+
+    public float[] toArray() {
+        return new float[]{xx, xy, xz, xw, yx, yy, yz, yw, zx, zy, zz, zw, wx, wy, wz, ww};
     }
 
     @Override

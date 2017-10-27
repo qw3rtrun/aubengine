@@ -2,10 +2,8 @@ package org.qw3rtrun.aub.engine.scene;
 
 import javafx.beans.property.FloatProperty;
 import javafx.beans.property.SimpleFloatProperty;
-import org.lwjgl.opengl.GL41;
-import org.qw3rtrun.aub.engine.opengl.Pipeline;
-import org.qw3rtrun.aub.engine.opengl.VertexShader;
 import org.qw3rtrun.aub.engine.property.matrix.Matrix4fBinding;
+import org.qw3rtrun.aub.engine.vectmath.Matrix4f;
 
 import static org.qw3rtrun.aub.engine.property.matrix.Matrix4fBinding.binding;
 import static org.qw3rtrun.aub.engine.vectmath.Matrix4f.matr;
@@ -38,9 +36,11 @@ public class Camera extends SceneObject {
 
     private final Matrix4fBinding absoluteToClip = cameraToClip.concat(absoluteToLocal().asMatrix());
 
-    private final VertexShader shader = new VertexShader("");
+    public Matrix4f getAbsoluteToClip() {
+        return absoluteToClip.get();
+    }
 
-    public void useWith(Pipeline pipeline) {
-        GL41.glUseProgramStages(pipeline.self(), shader.getType().getCode(), shader.self());
+    public Matrix4fBinding absoluteToClipProperty() {
+        return absoluteToClip;
     }
 }

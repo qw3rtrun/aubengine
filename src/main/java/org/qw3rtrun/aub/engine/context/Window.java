@@ -57,8 +57,9 @@ public class Window {
         GLFWErrorCallback.createPrint(System.err).set();
 
         // Initialize GLFW. Most GLFW functions will not work before doing this.
-        if (glfwInit())
+        if (!glfwInit()) {
             throw new IllegalStateException("Unable to initialize GLFW");
+        }
 
         // Configure our window
         glfwDefaultWindowHints(); // optional, the current window hints are already the default
